@@ -1,0 +1,13 @@
+../application/source/interfaces/spi.c:38:6:SPIInit	0	static
+../application/source/interfaces/spi.c:43:6:SPI0Setup	0	static
+../application/source/interfaces/spi.c:48:6:SPI1Setup	0	static
+../application/source/interfaces/spi.c:211:6:SPI0Write	32	static
+../application/source/interfaces/spi.c:53:5:SPI0WritePageRegByte	24	static,ignoring_inline_asm
+../application/source/interfaces/spi.c:77:5:SPI0WritePageRegByteExtended	24	static,ignoring_inline_asm
+../application/source/interfaces/spi.c:147:5:SPI0WritePageRegByteArray	160	static,ignoring_inline_asm
+../application/source/interfaces/spi.c:246:6:SPI0Read	40	static
+../application/source/interfaces/spi.c:104:5:SPI0ReadPageRegByte	32	static,ignoring_inline_asm
+../application/source/interfaces/spi.c:131:5:SPI0ClearPageRegByteWithMask	32	static
+../application/source/interfaces/spi.c:177:5:SPI0ReadPageRegByteArray	224	static,ignoring_inline_asm
+../application/source/interfaces/spi.c:275:5:SPI1WritePageRegByteArray	64	static
+../application/source/interfaces/spi.c:306:5:SPI1ReadPageRegByteArray	104	static

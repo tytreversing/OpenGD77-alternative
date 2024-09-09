@@ -1,0 +1,4 @@
+../application/source/user_interface/uiSplashScreen.c:126:13:updateScreen	80	static
+../application/source/user_interface/uiSplashScreen.c:240:13:pincodeAudioAlert	8	static
+../application/source/user_interface/uiSplashScreen.c:222:13:validatePinCodeCallback	8	static
+../application/source/user_interface/uiSplashScreen.c:50:14:uiSplashScreen	592	static

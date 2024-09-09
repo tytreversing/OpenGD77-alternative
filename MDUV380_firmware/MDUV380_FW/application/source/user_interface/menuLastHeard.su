@@ -1,0 +1,6 @@
+../application/source/user_interface/menuLastHeard.c:390:13:promptsInit	8	static
+../application/source/user_interface/menuLastHeard.c:407:13:displayTalkerAlias.constprop	168	static
+../application/source/user_interface/menuLastHeard.c:121:6:menuLastHeardUpdateScreen	72	static
+../application/source/user_interface/menuLastHeard.c:378:6:menuLastHeardInit	0	static
+../application/source/user_interface/menuLastHeard.c:222:6:menuLastHeardHandleEvent	24	static
+../application/source/user_interface/menuLastHeard.c:53:14:menuLastHeard	24	static

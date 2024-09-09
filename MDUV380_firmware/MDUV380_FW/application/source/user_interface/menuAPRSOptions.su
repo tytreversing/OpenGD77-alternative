@@ -1,0 +1,3 @@
+../application/source/user_interface/menuAPRSOptions.c:685:13:exitCallback	0	static
+../application/source/user_interface/menuAPRSOptions.c:195:13:updateScreen	176	static
+../application/source/user_interface/menuAPRSOptions.c:157:14:menuAPRSOptions	32	static

@@ -1,0 +1,2 @@
+../SeggerRTT/Syscalls/SEGGER_RTT_Syscalls_GCC.c:97:10:_write	8	static
+d:\st\stm32cubeide_1.10.1\stm32cubeide\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.0.202111181127\tools\arm-none-eabi\include\reent.h:158:17:_write_r	8	static

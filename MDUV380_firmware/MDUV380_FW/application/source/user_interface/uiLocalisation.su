@@ -1,0 +1,2 @@
+../application/source/user_interface/uiLocalisation.c:64:9:languagesGetCount	24	static
+../application/source/user_interface/uiLocalisation.c:75:6:currentLanguageGetSymbol	0	static

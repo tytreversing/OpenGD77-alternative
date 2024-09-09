@@ -1,0 +1,7 @@
+../application/source/user_interface/uiTxTgPcContactOwnId.c:144:13:updateScreen	72	static
+../application/source/user_interface/uiTxTgPcContactOwnId.c:309:13:announceContactName	40	static
+../application/source/user_interface/uiTxTgPcContactOwnId.c:117:13:updateCursor	32	static
+../application/source/user_interface/uiTxTgPcContactOwnId.c:234:12:getNextDTMFContact.constprop	32	static
+../application/source/user_interface/uiTxTgPcContactOwnId.c:218:12:getNextContact.constprop	32	static
+../application/source/user_interface/uiTxTgPcContactOwnId.c:282:13:dtmfCode2digits.constprop	32	static
+../application/source/user_interface/uiTxTgPcContactOwnId.c:57:14:menuNumericalEntry	72	static

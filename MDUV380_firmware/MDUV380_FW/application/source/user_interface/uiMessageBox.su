@@ -1,0 +1,4 @@
+../application/source/user_interface/uiMessageBox.c:286:13:displayMessage	88	static
+../application/source/user_interface/uiMessageBox.c:376:13:displayButtons	0	static
+../application/source/user_interface/uiMessageBox.c:200:13:updateScreen	48	static
+../application/source/user_interface/uiMessageBox.c:41:14:uiMessageBox	24	static

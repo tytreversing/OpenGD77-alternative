@@ -1,0 +1,6 @@
+../application/source/user_interface/menuContactList.c:66:13:overrideWithSelectedContact	8	static
+../application/source/user_interface/menuContactList.c:479:13:updateSubMenuScreen	72	static
+../application/source/user_interface/menuContactList.c:79:13:reloadContactList	16	static
+../application/source/user_interface/menuContactList.c:201:13:updateScreen.constprop	112	static
+../application/source/user_interface/menuContactList.c:99:14:menuContactList	32	static
+../application/source/user_interface/menuContactList.c:655:14:menuContactListSubMenu	24	static

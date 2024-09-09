@@ -1,0 +1,2 @@
+../application/source/interfaces/pit.c:41:6:pitInit	0	static
+../application/source/interfaces/pit.c:46:6:PIT0_IRQHandler	0	static

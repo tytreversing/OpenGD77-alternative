@@ -1,0 +1,8 @@
+../application/source/user_interface/menuGPS.c:315:17:getTotalNumberOfUsableSats	12	static
+../application/source/user_interface/menuGPS.c:332:13:displayDirectionFixType	16	static
+../application/source/user_interface/menuGPS.c:355:13:displayDirectionInfoBackground	72	static
+../application/source/user_interface/menuGPS.c:552:13:displayDirectionCourseZeroing	8	static
+../application/source/user_interface/menuGPS.c:268:12:displayBars.constprop	64	static
+../application/source/user_interface/menuGPS.c:778:13:displaySatellitesPolar.constprop	80	static
+../application/source/user_interface/menuGPS.c:1114:13:updateScreen	136	static
+../application/source/user_interface/menuGPS.c:200:14:menuGPS	24	static

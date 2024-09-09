@@ -1,0 +1,2 @@
+../application/source/dmr_codec/codec_interface.c:35:6:codecDecode	120	static,ignoring_inline_asm
+../application/source/dmr_codec/codec_interface.c:95:6:codecEncodeBlock	24	static,ignoring_inline_asm

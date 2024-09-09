@@ -1,0 +1,3 @@
+../application/source/user_interface/menuContactDetails.c:158:13:updateScreen	112	static
+../application/source/user_interface/menuContactDetails.c:136:13:updateCursor	8	static
+../application/source/user_interface/menuContactDetails.c:71:14:menuContactDetails	144	static

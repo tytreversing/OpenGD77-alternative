@@ -1,0 +1,6 @@
+../application/source/io/keyboard.c:242:6:keyboardInit	0	static
+../application/source/io/keyboard.c:256:6:keyboardReset	0	static
+../application/source/io/keyboard.c:265:10:keyboardRead	72	static
+../application/source/io/keyboard.c:321:6:keyboardKeyIsDTMFKey	0	static
+../application/source/io/keyboard.c:337:6:rotaryEncoderISR	8	static
+../application/source/io/keyboard.c:350:6:keyboardCheckKeyEvent	32	static

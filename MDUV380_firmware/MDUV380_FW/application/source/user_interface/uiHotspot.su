@@ -1,0 +1,6 @@
+../application/source/user_interface/uiHotspot.c:582:17:getBatteryAverageInMillivolts	16	static
+../application/source/user_interface/uiHotspot.c:221:13:displayContactInfo.constprop	72	static
+../application/source/user_interface/uiHotspot.c:195:6:menuHotspotRestoreSettings	8	static
+../application/source/user_interface/uiHotspot.c:294:6:uiHotspotUpdateScreen	128	static
+../application/source/user_interface/uiHotspot.c:547:6:hotspotExit	16	static
+../application/source/user_interface/uiHotspot.c:102:14:menuHotspotMode	16	static

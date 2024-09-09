@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+let ret=0
+
+OS=`uname -s`
+
+#Extract destination platform
+MD9600=$(echo "${@:3:1})" | grep -q MD9600_HW && echo 'MD-9600')
+MDUV380=$(echo "${@:3:1})" | grep -q -E 'MDUV380_FW|MDUV380_10W_PLUS_FW' && echo 'MD-UV380')
+DM1701=$(echo "${@:3:1})" | grep -q -E 'DM1701_FW|RT84_FW' && echo 'DM-1701')
+MD2017=$(echo "${@:3:1})" | grep -q MD2017_FW && echo 'MD-2017')
+MD380=$(echo "${@:3:1})" | grep -q MD380_FW && echo 'MD-380')
+
+FWPATH="$(dirname ${@:2:1})"
+if [ ! -z "$MD9600" ]; then
+    FIRMWARE="$(echo $FWPATH/MD9600_firmware.bin)"
+elif [ ! -z "$MD380" ]; then
+    FIRMWARE="$(echo $FWPATH/MD380_firmware.bin)"
+elif [ ! -z "$MD2017" ]; then
+    FIRMWARE="$(echo $FWPATH/MD2017_firmware.bin)"
+else
+    FIRMWARE="$(echo $FWPATH/MDUV380_firmware.bin)"
+fi
+
+case "$OS" in
+    "Linux")
+	$1/opengd77_stm32_firmware_loader.py -m $MD9600 $MDUV380 $DM1701 $MD2017 $MD380 -f $FIRMWARE
+	ret=$?
+	;;
+    "Darwin")
+	$1/opengd77_stm32_firmware_loader.py -m $MD9600 $MDUV380 $DM1701 $MD2017 $MD380 -f $FIRMWARE
+	ret=$?
+	;;
+    *)
+	ret=1
+	;;
+esac
+
+exit $ret
