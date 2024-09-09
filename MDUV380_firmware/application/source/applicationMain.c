@@ -303,7 +303,7 @@ static void updateVolumeGain(int menuScreen)
 
 #if defined(HAS_SOFT_VOLUME)
 	if (settingsIsOptionBitSet(BIT_VISUAL_VOLUME) &&
-			(menuScreen != UI_SPLASH_SCREEN) && (menuScreen != UI_MESSAGE_BOX))
+			(menuScreen != UI_SPLASH_SCREEN) && (menuScreen != UI_MESSAGE_BOX) && (menuScreen != UI_POWER_OFF))
 	{
 		lastDisplayedVolume = lastVolume;
 
@@ -1394,8 +1394,11 @@ void applicationMainTask(void)
 							|| (nonVolatileSettings.backlightMode == BACKLIGHT_MODE_BUTTONS)
 							|| (nonVolatileSettings.backlightMode == BACKLIGHT_MODE_SQUELCH))
 			{
-			    displayEnableBacklight(true, -1);
-			    menuDataGlobal.lightTimer = nonVolatileSettings.backLightTimeout * 1000;
+				if (settingsIsOptionBitSet(BIT_VISUAL_VOLUME))
+				{
+			        displayEnableBacklight(true, -1);
+			        menuDataGlobal.lightTimer = nonVolatileSettings.backLightTimeout * 1000;
+				}
 			}
 		}
 
