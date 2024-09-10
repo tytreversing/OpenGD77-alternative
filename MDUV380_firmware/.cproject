@@ -134,12 +134,12 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="SeggerRTT"/>
-						<entry excluding="include/user_interface/languages/src/languages_builder.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="application"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="SeggerRTT"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="USB_DEVICE"/>
+						<entry excluding="include/user_interface/languages/src/languages_builder.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="application"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -280,12 +280,12 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="SeggerRTT"/>
-						<entry excluding="include/user_interface/languages/src/languages_builder.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="application"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="SeggerRTT"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="USB_DEVICE"/>
+						<entry excluding="include/user_interface/languages/src/languages_builder.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="application"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -426,12 +426,12 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="SeggerRTT"/>
-						<entry excluding="include/user_interface/languages/src/languages_builder.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="application"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="SeggerRTT"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="USB_DEVICE"/>
+						<entry excluding="include/user_interface/languages/src/languages_builder.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="application"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -573,12 +573,12 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="SeggerRTT"/>
-						<entry excluding="include/user_interface/languages/src/languages_builder.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="application"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="SeggerRTT"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="USB_DEVICE"/>
+						<entry excluding="include/user_interface/languages/src/languages_builder.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="application"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -717,12 +717,12 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="SeggerRTT"/>
-						<entry excluding="include/user_interface/languages/src/languages_builder.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="application"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="SeggerRTT"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="USB_DEVICE"/>
+						<entry excluding="include/user_interface/languages/src/languages_builder.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="application"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -863,12 +863,12 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="SeggerRTT"/>
-						<entry excluding="include/user_interface/languages/src/languages_builder.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="application"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="SeggerRTT"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="USB_DEVICE"/>
+						<entry excluding="include/user_interface/languages/src/languages_builder.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="application"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -1009,12 +1009,12 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="SeggerRTT"/>
-						<entry excluding="include/user_interface/languages/src/languages_builder.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="application"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="SeggerRTT"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="USB_DEVICE"/>
+						<entry excluding="include/user_interface/languages/src/languages_builder.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="application"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -1157,12 +1157,12 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="SeggerRTT"/>
-						<entry excluding="include/user_interface/languages/src/languages_builder.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="application"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="SeggerRTT"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="USB_DEVICE"/>
+						<entry excluding="include/user_interface/languages/src/languages_builder.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="application"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
