@@ -1,4 +1,0 @@
-../application/source/interfaces/clockManager.c:55:13:clockManagerSetHSE.isra	80	static
-../application/source/interfaces/clockManager.c:127:28:clockManagerGetRunMode	0	static
-../application/source/interfaces/clockManager.c:140:6:clockManagerSetRunMode	16	static
-../application/source/interfaces/clockManager.c:132:6:clockManagerUsbRequired	0	static

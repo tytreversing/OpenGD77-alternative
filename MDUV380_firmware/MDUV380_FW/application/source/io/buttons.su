@@ -1,6 +1,0 @@
-../application/source/io/buttons.c:63:13:isMButtonLong	0	static
-../application/source/io/buttons.c:73:13:setMButtonsStateAndClearLong	24	static
-../application/source/io/buttons.c:199:13:checkMButtons	48	static
-../application/source/io/buttons.c:52:6:buttonsInit	0	static
-../application/source/io/buttons.c:110:10:buttonsRead	48	static
-../application/source/io/buttons.c:275:6:buttonsCheckButtonsEvent	32	static

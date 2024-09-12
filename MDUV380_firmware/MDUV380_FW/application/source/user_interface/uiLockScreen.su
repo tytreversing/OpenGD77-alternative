@@ -1,4 +1,0 @@
-../application/source/user_interface/uiLockScreen.c:75:13:redrawScreen	40	dynamic
-../application/source/user_interface/uiLockScreen.c:178:13:updateScreen	16	static
-../application/source/user_interface/uiLockScreen.c:43:14:menuLockScreen	16	static
-../application/source/user_interface/uiLockScreen.c:288:6:menuLockScreenPop	8	static

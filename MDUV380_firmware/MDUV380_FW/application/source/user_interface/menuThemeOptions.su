@@ -1,8 +1,0 @@
-../application/source/user_interface/menuThemeOptions.c:492:13:exitBrowserCallback	0	static
-../application/source/user_interface/menuThemeOptions.c:127:13:updateScreen	88	static
-../application/source/user_interface/menuThemeOptions.c:337:13:updateBrowerScreen	80	static
-../application/source/user_interface/menuThemeOptions.c:552:13:updatePickerScreen	96	static
-../application/source/user_interface/menuThemeOptions.c:710:13:exitPickerCallback	0	static
-../application/source/user_interface/menuThemeOptions.c:97:14:menuThemeOptions	24	static
-../application/source/user_interface/menuThemeOptions.c:257:14:menuThemeItemsBrowser	24	static
-../application/source/user_interface/menuThemeOptions.c:500:14:menuColourPicker	32	static

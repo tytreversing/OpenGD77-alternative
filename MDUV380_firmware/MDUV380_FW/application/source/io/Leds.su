@@ -1,4 +1,0 @@
-../application/source/io/Leds.c:63:9:LedRead	0	static
-../application/source/io/Leds.c:72:6:LedWriteDirect	0	static
-../application/source/io/Leds.c:51:6:LedWrite	16	static
-../application/source/io/Leds.c:37:6:LEDsInit	8	static

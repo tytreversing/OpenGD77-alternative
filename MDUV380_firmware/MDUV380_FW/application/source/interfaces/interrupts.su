@@ -1,5 +1,0 @@
-../application/source/interfaces/interrupts.c:32:6:interruptsInitC6000Interface	0	static
-../application/source/interfaces/interrupts.c:36:6:interruptsWasPinTriggered	0	static
-../application/source/interfaces/interrupts.c:41:6:interruptsClearPinFlags	0	static
-../application/source/interfaces/interrupts.c:46:6:interruptsDisableC6000Interrupts	8	static
-../application/source/interfaces/interrupts.c:53:6:interruptsEnableC6000Interrupts	8	static

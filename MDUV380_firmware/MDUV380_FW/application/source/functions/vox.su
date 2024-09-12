@@ -1,6 +1,0 @@
-../application/source/functions/vox.c:80:6:voxIsEnabled	8	static
-../application/source/functions/vox.c:90:6:voxIsTriggered	0	static
-../application/source/functions/vox.c:95:6:voxReset	16	static
-../application/source/functions/vox.c:61:6:voxInit	8	static
-../application/source/functions/vox.c:70:6:voxSetParameters	16	static
-../application/source/functions/vox.c:107:6:voxTick	16	static

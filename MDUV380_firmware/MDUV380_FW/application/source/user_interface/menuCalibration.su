@@ -1,6 +1,0 @@
-../application/source/user_interface/menuCalibration.c:768:13:exitCallback	8	static
-../application/source/user_interface/menuCalibration.c:207:13:updateScreen	112	static
-../application/source/user_interface/menuCalibration.c:730:13:applySettings	32	static
-../application/source/user_interface/menuCalibration.c:705:13:setRefOscTemp	16	static
-../application/source/user_interface/menuCalibration.c:713:13:setDACTemp	0	static
-../application/source/user_interface/menuCalibration.c:155:14:menuCalibration	32	static

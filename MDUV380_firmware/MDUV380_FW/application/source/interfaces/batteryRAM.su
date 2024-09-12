@@ -1,3 +1,0 @@
-../application/source/interfaces/batteryRAM.c:36:6:batteryRAM_Read	0	static
-../application/source/interfaces/batteryRAM.c:55:6:batteryRAM_Write	0	static
-../application/source/interfaces/batteryRAM.c:70:6:batteryRAM_Init	24	static

@@ -1,4 +1,0 @@
-../application/source/user_interface/menuGeneralOptions.c:126:13:updateScreen	144	static
-../application/source/user_interface/menuGeneralOptions.c:759:13:applySettings	8	static
-../application/source/user_interface/menuGeneralOptions.c:785:13:exitCallback	8	static
-../application/source/user_interface/menuGeneralOptions.c:88:14:menuGeneralOptions	24	static

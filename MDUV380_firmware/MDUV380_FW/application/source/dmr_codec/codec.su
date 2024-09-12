@@ -1,7 +1,0 @@
-../application/source/dmr_codec/codec.c:1065:13:g2312	24	static
-../application/source/dmr_codec/codec.c:1097:6:initFrame	616	static
-../application/source/dmr_codec/codec.c:1227:6:codecInitInternalBuffers	8	static
-../application/source/dmr_codec/codec.c:1237:6:codecInit	8	static
-../application/source/dmr_codec/codec.c:1249:6:codecIsAvailable	0	static
-../application/source/dmr_codec/codec.c:1256:6:codecEncodeInit	0	static
-../application/source/dmr_codec/codec.c:1262:6:codecEncode	16	static

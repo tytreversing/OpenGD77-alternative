@@ -1,2 +1,0 @@
-../application/source/interfaces/settingsStorage.c:37:6:settingsStorageRead	0	static
-../application/source/interfaces/settingsStorage.c:46:6:settingsStorageWrite	0	static

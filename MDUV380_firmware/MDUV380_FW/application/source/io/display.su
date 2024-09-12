@@ -1,7 +1,0 @@
-../application/source/io/display.c:44:6:displayWriteCmd	0	static
-../application/source/io/display.c:48:6:displayWriteData	0	static
-../application/source/io/display.c:53:6:displayWriteCmds	16	static
-../application/source/io/display.c:69:6:displaySetInvertedState	40	static
-../application/source/io/display.c:102:6:displayInit	88	static
-../application/source/io/display.c:447:6:displayEnableBacklight	0	static
-../application/source/io/display.c:459:6:displayIsBacklightLit	8	static

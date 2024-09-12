@@ -1,2 +1,0 @@
-../application/source/interfaces/dac.c:31:6:dacInit	0	static
-../application/source/interfaces/dac.c:36:6:dacOut	16	static

@@ -1,6 +1,0 @@
-../Drivers/CMSIS/Include/core_cm4.h:1938:34:__NVIC_SystemReset	0	static,ignoring_inline_asm
-../application/source/usb/usb_com.c:631:13:cpsStopGPSNMEA	8	static
-../application/source/usb/usb_com.c:117:6:tick_com_request	104	static
-../application/source/usb/usb_com.c:1028:6:USB_DEBUG_PRINT	8	static
-../application/source/usb/usb_com.c:1036:6:USB_DEBUG_printf	2064	static
-../application/source/usb/usb_com.c:1051:6:USB_DeviceIsResetting	8	static

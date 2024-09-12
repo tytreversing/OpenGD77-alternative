@@ -1,9 +1,0 @@
-../application/source/functions/ticks.c:49:17:ticksGetMillis	0	static
-../application/source/functions/ticks.c:138:6:cancelTimerCallback	16	static
-../application/source/functions/ticks.c:155:6:ticksTimerReset	0	static
-../application/source/functions/ticks.c:161:6:ticksTimerStart	0	static
-../application/source/functions/ticks.c:167:6:ticksTimerHasExpired	0	static
-../application/source/functions/ticks.c:58:6:handleTimerCallbacks	24	static
-../application/source/functions/ticks.c:95:6:addTimerCallback	32	static
-../application/source/functions/ticks.c:172:10:ticksTimerRemaining	0	static
-../application/source/functions/ticks.c:183:6:ticksTimerIsEnabled	0	static

@@ -1,6 +1,0 @@
-../application/source/functions/rxPowerSaving.c:67:13:resumeBeepAndC6000Tasks	16	static
-../application/source/functions/rxPowerSaving.c:44:6:rxPowerSavingIsRxOn	0	static
-../application/source/functions/rxPowerSaving.c:62:5:rxPowerSavingGetLevel	0	static
-../application/source/functions/rxPowerSaving.c:86:6:rxPowerSavingSetState	16	static
-../application/source/functions/rxPowerSaving.c:49:6:rxPowerSavingSetLevel	16	static
-../application/source/functions/rxPowerSaving.c:111:6:rxPowerSavingTick	24	static

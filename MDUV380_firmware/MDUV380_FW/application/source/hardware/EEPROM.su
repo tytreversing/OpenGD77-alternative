@@ -1,2 +1,0 @@
-../application/source/hardware/EEPROM.c:40:6:EEPROM_Write	0	static
-../application/source/hardware/EEPROM.c:45:6:EEPROM_Read	0	static

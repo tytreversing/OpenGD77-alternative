@@ -1,6 +1,0 @@
-../application/source/user_interface/uiPrivateCall.c:140:13:privateCallCancelAlarmTimer	8	static
-../application/source/user_interface/uiPrivateCall.c:104:13:privateCallCallback	8	static
-../application/source/user_interface/uiPrivateCall.c:123:13:privateCallPostponedAlarm	8	static
-../application/source/user_interface/uiPrivateCall.c:40:14:menuPrivateCall	104	static
-../application/source/user_interface/uiPrivateCall.c:86:6:menuPrivateCallClear	0	static
-../application/source/user_interface/uiPrivateCall.c:94:6:menuPrivateCallDismiss	8	static
