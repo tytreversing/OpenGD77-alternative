@@ -52,9 +52,7 @@
 #include "interfaces/adc.h"
 #include "functions/rxPowerSaving.h"
 
-#if defined(USING_EXTERNAL_DEBUGGER)
-#include "SeggerRTT/RTT/SEGGER_RTT.h"
-#endif
+
 
 #define VOLUME_UPDATE_TIMEOUT      5U
 
