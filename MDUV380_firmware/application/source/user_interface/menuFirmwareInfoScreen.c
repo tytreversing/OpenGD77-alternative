@@ -167,13 +167,6 @@ static void displayBuildDetails(bool playVP)
 
 	sprintf(dateTimeBuf, "%d%02d%02d%02d%02d%02d", BUILD_YEAR, BUILD_MONTH, BUILD_DAY, BUILD_HOUR, BUILD_MIN, BUILD_SEC);
 
-#if defined(PLATFORM_MD9600) || defined(PLATFORM_MDUV380) || defined(PLATFORM_MD380) || defined(PLATFORM_RT84_DM1701) || defined(PLATFORM_MD2017)
-	snprintf(versionBuf, SCREEN_LINE_BUFFER_SIZE, "[ %s", XSTRINGIFY(GITVERSION));
-#else
-	snprintf(versionBuf, SCREEN_LINE_BUFFER_SIZE, "[ %s", GITVERSION);
-#endif
-	versionBuf[9] = 0; // git hash id 7 char long;
-	strcat(versionBuf, (uiDataGlobal.dmrDisabled ? " F ]" : " D ]"));
 
 
 #if defined(PLATFORM_RD5R)
