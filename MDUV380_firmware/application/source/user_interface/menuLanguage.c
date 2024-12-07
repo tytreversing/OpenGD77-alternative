@@ -57,7 +57,7 @@ static menuStatus_t menuLanguageExitCode = MENU_STATUS_SUCCESS;
 
 
 static void clearNonLatinChar(uint8_t *str)
-{
+{/*
 #if ! defined(LANGUAGE_BUILD_JAPANESE)
 	uint8_t *p = str;
 
@@ -200,7 +200,7 @@ static void clearNonLatinChar(uint8_t *str)
 		p++;
 	}
 #endif
-}
+*/}
 
 menuStatus_t menuLanguage(uiEvent_t *ev, bool isFirstRun)
 {
