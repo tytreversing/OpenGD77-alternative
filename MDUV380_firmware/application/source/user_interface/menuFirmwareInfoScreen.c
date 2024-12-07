@@ -165,7 +165,7 @@ static void displayBuildDetails(bool playVP)
 
 	displayClearBuf();
 
-	sprintf(dateTimeBuf, "%d%02d%02d%02d%02d%02d", BUILD_YEAR, BUILD_MONTH, BUILD_DAY, BUILD_HOUR, BUILD_MIN, BUILD_SEC);
+	sprintf(dateTimeBuf, "%d%02d%02d", BUILD_YEAR, BUILD_MONTH, BUILD_DAY);
 
 
 

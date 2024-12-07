@@ -82,14 +82,14 @@ enum KEY_STATE
 static const char keypadAlphaMap[11][31] = {
 		"0 ",
 		"1.!,@-:?()~/[]#<>=*+$%'`&|_^{}",
-		"abc2ABC",
-		"def3DEF",
-		"ghi4GHI",
-		"jkl5JKL",
-		"mno6MNO",
-		"pqrs7PQRS",
-		"tuv8TUV",
-		"wxyz9WXYZ",
+		"אבגדְֱֲֳ2abcABC",
+		"הוזחִֵֶַ3defDEF",
+		"טיךכָֹÊֻ4ghiGHI",
+		"לםמןּֽ־ֿ5jklJKL",
+		"נסעף׀ׁׂ׃6mnoMNO",
+		"פץצקװױײ׳7pqrsPQRS",
+        "רשתû״ÙÚÛ8tuvTUV",
+		"ü‎‏ÿÜÝÞß9wxyzWXYZ",
 		"*"
 };
 
