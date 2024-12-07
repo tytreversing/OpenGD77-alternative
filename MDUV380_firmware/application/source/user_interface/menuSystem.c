@@ -713,7 +713,7 @@ void menuDisplayTitle(const char *title)
 	displayDrawFastHLine(0, 13, DISPLAY_SIZE_X, true);
 
 	displayThemeApply(THEME_ITEM_FG_MENU_NAME, THEME_ITEM_BG);
-	displayPrintCore(0, 3, title, FONT_SIZE_2, TEXT_ALIGN_CENTER, false);
+	displayPrintCore(0, 3, title, FONT_SIZE_1, TEXT_ALIGN_CENTER, false);
 
 	displayThemeApply(fgItem, bgItem);
 }
