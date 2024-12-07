@@ -251,13 +251,10 @@ uint16_t codeplugIntToCSS(uint16_t tone)
 
 void codeplugUtilConvertBufToString(char *codeplugBuf, char *outBuf, int len)
 {
+
 	for(int i = 0; i < len; i++)
 	{
-		if (codeplugBuf[i] > 0xBE && codeplugBuf[i] < 0xFF) //сдвиг на следующий по таблице символ при чтении из кодплага (А->Б)
-		{
-			codeplugBuf[i]++;
-		}
-		else if (codeplugBuf[i] == 0xff)
+		if (codeplugBuf[i] == 0xff)
 		{
 			codeplugBuf[i] = 0;
 		}
@@ -271,11 +268,7 @@ void codeplugUtilConvertStringToBuf(char *inBuf, char *outBuf, int len)
 	memset(outBuf,0xff,len);
 	for (int i = 0; i < len; i++)
 	{
-		if (inBuf[i] >= 0xC0) //сдвиг на предыдущий в таблице символ при записи в кодплаг (Б->А)
-		{
-			inBuf[i]--;
-		}
-		else if (inBuf[i] == 0x00)
+		if (inBuf[i] == 0x00)
 		{
 			break;
 		}
