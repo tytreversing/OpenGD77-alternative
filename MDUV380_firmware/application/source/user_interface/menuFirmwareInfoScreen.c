@@ -46,11 +46,11 @@ enum
 
 static const char *creditTexts[] =
 {
-		"Roger VK3KYY", "Daniel F1RMB", "Kai DG4KLU", "Colin G4EML", "Alex DL4LEX",
+		"OpenGD77 RUS:", "Aufwiegler", "OpenGD77:", "Roger VK3KYY", "Daniel F1RMB", "Kai DG4KLU", "Colin G4EML", "Alex DL4LEX",
 #if defined(PLATFORM_RD5R)
 		"Dzmitry EW1ADG",
 #endif
-		"Jason VK7ZJA (SK)", "Mod by Aufwiegler"
+		"Jason VK7ZJA (SK)"
 };
 static const int maxCredits = (sizeof(creditTexts) / sizeof(creditTexts[0]));
 static const int maxCreditsPages = (maxCredits / maxDisplayedCreditsLines) + ((maxCredits % maxDisplayedCreditsLines) == 0 ? 0 : 1);
@@ -178,7 +178,7 @@ static void displayBuildDetails(bool playVP)
 	displayPrintCentered(5, radioModel, FONT_SIZE_3);
 	displayPrintCentered(20, currentLanguage->built, FONT_SIZE_2);
 	displayPrintCentered(30, dateTimeBuf , FONT_SIZE_2);
-	displayPrintCentered(40, versionBuf, FONT_SIZE_2);
+	//displayPrintCentered(40, versionBuf, FONT_SIZE_2);
 #endif
 
 // STM32 platforms (Genuine or Clone)
