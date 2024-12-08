@@ -46,7 +46,7 @@ enum
 
 static const char *creditTexts[] =
 {
-		"OpenGD77 RUS:", "Aufwiegler", "", "OpenGD77:", "Roger VK3KYY", "Daniel F1RMB", "Kai DG4KLU", "Colin G4EML", "Alex DL4LEX",
+		"OpenGD77 RUS:", "Aufwiegler", "https://opengd77rus.ru", "", "OpenGD77:", "Roger VK3KYY", "Daniel F1RMB", "Kai DG4KLU", "Colin G4EML", "Alex DL4LEX",
 #if defined(PLATFORM_RD5R)
 		"Dzmitry EW1ADG",
 #endif
