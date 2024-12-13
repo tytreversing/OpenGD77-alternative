@@ -154,8 +154,6 @@ static void updateScreen(bool isFirstRun)
 	if (!customDataHasImage)
 	{
 		displayClearBuf();
-
-		displayPrintCentered(8, "OpenGD77", FONT_SIZE_3);
 		displayPrintCentered((DISPLAY_SIZE_Y / 4) * 2, line1, FONT_SIZE_3);
 		displayPrintCentered((DISPLAY_SIZE_Y / 4) * 3, line2, FONT_SIZE_3);
 	}
