@@ -287,8 +287,8 @@ static void cpsHandleReadCommand(void)
 #endif
 				// 10 is reserved for DM1701 with RGB panel
 
-				snprintf(radioInfo.gitRevision, sizeof(radioInfo.gitRevision), "%s", XSTRINGIFY(GITVERSIONREV));
-				snprintf(radioInfo.buildDateTime, sizeof(radioInfo.buildDateTime), "%04d%02d%02d%02d%02d%02d", BUILD_YEAR, BUILD_MONTH, BUILD_DAY, BUILD_HOUR, BUILD_MIN, BUILD_SEC);
+				snprintf(radioInfo.gitRevision, sizeof(radioInfo.gitRevision), "%s", "RUSSIAN");
+				snprintf(radioInfo.buildDateTime, sizeof(radioInfo.buildDateTime), "%04d%02d%02d", BUILD_YEAR, BUILD_MONTH, BUILD_DAY);
 				radioInfo.flashId = flashChipPartNumber;
 				// Features bitfield (16 bits)
 				radioInfo.features = (settingsIsOptionBitSet(BIT_INVERSE_VIDEO) ? 1 : 0);
