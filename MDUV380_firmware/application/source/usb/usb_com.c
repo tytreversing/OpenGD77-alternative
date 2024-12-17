@@ -257,7 +257,7 @@ static void cpsHandleReadCommand(void)
 				{
 					uint32_t structVersion;
 					uint32_t radioType;
-					char gitRevision[16];
+					char identifier[16];
 					char buildDateTime[16];
 					uint32_t flashId;
 					uint16_t features;
@@ -276,7 +276,7 @@ static void cpsHandleReadCommand(void)
 				radioInfo.radioType = 4;
 #elif defined(PLATFORM_MD9600)
 				radioInfo.radioType = 5;
-#elif defined(PLATFORM_MDUV380)
+#elif defined(PLATFORM_MDUV380) && !defined(PLATFORM_VARIANT_UV380_PLUS_10W)
 				radioInfo.radioType = 6;
 #elif defined(PLATFORM_MD380)
 				radioInfo.radioType = 7;
@@ -284,10 +284,12 @@ static void cpsHandleReadCommand(void)
 				radioInfo.radioType = ((DISPLAYLCD_TYPE_IS_RGB(displayLCD_Type) != 0) ? 10 : 8);
 #elif defined(PLATFORM_MD2017)
 				radioInfo.radioType = 9;
+#elif defined(PLATFORM_VARIANT_UV380_PLUS_10W)
+				radioInfo.radioType = 106;
 #endif
 				// 10 is reserved for DM1701 with RGB panel
 
-				snprintf(radioInfo.gitRevision, sizeof(radioInfo.gitRevision), "%s", "RUSSIAN");
+				snprintf(radioInfo.identifier, sizeof(radioInfo.identifier), "%s", "RUSSIAN");
 				snprintf(radioInfo.buildDateTime, sizeof(radioInfo.buildDateTime), "%04d%02d%02d", BUILD_YEAR, BUILD_MONTH, BUILD_DAY);
 				radioInfo.flashId = flashChipPartNumber;
 				// Features bitfield (16 bits)
