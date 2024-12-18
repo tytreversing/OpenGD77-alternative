@@ -776,11 +776,17 @@ void uiChannelModeUpdateScreen(int txTimeSecs)
 
 								if (decPart != 0)
 								{
-									decLen = snprintf(distBuf, SCREEN_LINE_BUFFER_SIZE, "| %u.%u km", intPart, decPart);
+									if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+										decLen = snprintf(distBuf, SCREEN_LINE_BUFFER_SIZE, "| %u.%u км", intPart, decPart);
+									else
+									    decLen = snprintf(distBuf, SCREEN_LINE_BUFFER_SIZE, "| %u.%u km", intPart, decPart);
 								}
 								else
 								{
-									decLen = snprintf(distBuf, SCREEN_LINE_BUFFER_SIZE, "| %u km", intPart);
+								    if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+								        decLen = snprintf(distBuf, SCREEN_LINE_BUFFER_SIZE, "| %u км", intPart);
+								    else
+									    decLen = snprintf(distBuf, SCREEN_LINE_BUFFER_SIZE, "| %u km", intPart);
 								}
 
 								int zLen = snprintf(zNameBuf, SCREEN_LINE_BUFFER_SIZE, "%s", currentZoneName);
@@ -798,12 +804,20 @@ void uiChannelModeUpdateScreen(int txTimeSecs)
 							}
 							else
 							{
-								snprintf(nameBuf, NAME_BUFFER_LEN, "%s | --- km", currentZoneName);
+							    if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+								    snprintf(nameBuf, NAME_BUFFER_LEN, "%s | --- км", currentZoneName);
+								else
+								    snprintf(nameBuf, NAME_BUFFER_LEN, "%s | --- km", currentZoneName);
 							}
 						}
 						else
 						{
-							snprintf(nameBuf, NAME_BUFFER_LEN, "%s Ch:%d",
+						if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+						    snprintf(nameBuf, NAME_BUFFER_LEN, "%s | Канал:%d",
+									(CODEPLUG_ZONE_IS_ALLCHANNELS(currentZone) ? currentLanguage->all_channels : currentZoneName),
+									(codeplugGetLastUsedChannelInCurrentZone() + (CODEPLUG_ZONE_IS_ALLCHANNELS(currentZone) ? 0 : 1)));
+						else
+							snprintf(nameBuf, NAME_BUFFER_LEN, "%s | Ch:%d",
 									(CODEPLUG_ZONE_IS_ALLCHANNELS(currentZone) ? currentLanguage->all_channels : currentZoneName),
 									(codeplugGetLastUsedChannelInCurrentZone() + (CODEPLUG_ZONE_IS_ALLCHANNELS(currentZone) ? 0 : 1)));
 						}

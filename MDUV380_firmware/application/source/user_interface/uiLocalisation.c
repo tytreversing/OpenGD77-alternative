@@ -29,9 +29,6 @@
 #include "user_interface/uiLocalisation.h"
 
 #include "user_interface/languages/english.h"
-#if defined(LANGUAGE_BUILD_JAPANESE)
-#include "user_interface/languages/japanese.h"
-#endif
 
 #if ! defined(LANGUAGE_BUILD_JAPANESE)
 #if defined(PLATFORM_GD77) || defined(PLATFORM_GD77S) || defined(PLATFORM_DM1801) || defined(PLATFORM_DM1801A) || defined(PLATFORM_RD5R)

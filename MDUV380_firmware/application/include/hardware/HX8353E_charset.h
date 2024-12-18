@@ -103,50 +103,50 @@ struct
 } char_hand_assigned[] = {
      // The 5 following chars exists in windows-1252 charmap, but we need this for
      // font array creation (the character in comments)
-     {  FONT_CHAR_CAPITAL_S_WITH_CARON       , "FONT_CHAR_CAPITAL_S_WITH_CARON"       , { "Š" } , '\212' }, // Š
-     {  FONT_CHAR_SMALL_S_WITH_CARON         , "FONT_CHAR_SMALL_S_WITH_CARON"         , { "š" } , '\232' }, // š
-     {  FONT_CHAR_CAPITAL_Z_WITH_CARON       , "FONT_CHAR_CAPITAL_Z_WITH_CARON"       , { "Ž" } , '\216' }, // Ž
-     {  FONT_CHAR_SMALL_Z_WITH_CARON         , "FONT_CHAR_SMALL_Z_WITH_CARON"         , { "ž" } , '\236' }, // ž
-     {  FONT_CHAR_CAPITAL_Y_WITH_DIAERESIS   , "FONT_CHAR_CAPITAL_Y_WITH_DIAERESIS"   , { "Ÿ" } , '\237' }, // Ÿ
+     {  FONT_CHAR_CAPITAL_S_WITH_CARON       , "FONT_CHAR_CAPITAL_S_WITH_CARON"       , { "" } , '\212' }, // Š
+     {  FONT_CHAR_SMALL_S_WITH_CARON         , "FONT_CHAR_SMALL_S_WITH_CARON"         , { "" } , '\232' }, // š
+     {  FONT_CHAR_CAPITAL_Z_WITH_CARON       , "FONT_CHAR_CAPITAL_Z_WITH_CARON"       , { "" } , '\216' }, // Ž
+     {  FONT_CHAR_SMALL_Z_WITH_CARON         , "FONT_CHAR_SMALL_Z_WITH_CARON"         , { "" } , '\236' }, // ž
+     {  FONT_CHAR_CAPITAL_Y_WITH_DIAERESIS   , "FONT_CHAR_CAPITAL_Y_WITH_DIAERESIS"   , { "" } , '\237' }, // Ÿ
      // ---
-     {  FONT_CHAR_CAPITAL_C_WITH_CARON       , "FONT_CHAR_CAPITAL_C_WITH_CARON"       , { "Č" } , '\177' }, // Č
-     {  FONT_CHAR_SMALL_C_WITH_CARON         , "FONT_CHAR_SMALL_C_WITH_CARON"         , { "č" } , '\200' }, // č
-     {  FONT_CHAR_CAPITAL_C_WITH_ACUTE       , "FONT_CHAR_CAPITAL_C_WITH_ACUTE"       , { "Ć" } , '\201' }, // Ć
-     {  FONT_CHAR_SMALL_C_WITH_ACUTE         , "FONT_CHAR_SMALL_C_WITH_ACUTE"         , { "ć" } , '\202' }, // ć
-     {  FONT_CHAR_CAPITAL_A_WITH_OGONEK      , "FONT_CHAR_CAPITAL_A_WITH_OGONEK"      , { "Ą" } , '\203' }, // Ą
-     {  FONT_CHAR_SMALL_A_WITH_OGONEK        , "FONT_CHAR_SMALL_A_WITH_OGONEK"        , { "ą" } , '\204' }, // ą
-     {  FONT_CHAR_CAPITAL_E_WITH_OGONEK      , "FONT_CHAR_CAPITAL_E_WITH_OGONEK"      , { "Ę" } , '\205' }, // Ę
-     {  FONT_CHAR_SMALL_E_WITH_OGONEK        , "FONT_CHAR_SMALL_E_WITH_OGONEK"        , { "ę" } , '\206' }, // ę
-     {  FONT_CHAR_CAPITAL_L_WITH_STROKE      , "FONT_CHAR_CAPITAL_L_WITH_STROKE"      , { "Ł" } , '\207' }, // Ł
-     {  FONT_CHAR_SMALL_L_WITH_STROKE        , "FONT_CHAR_SMALL_L_WITH_STROKE"        , { "ł" } , '\210' }, // ł
-     {  FONT_CHAR_CAPITAL_N_WITH_ACUTE       , "FONT_CHAR_CAPITAL_N_WITH_ACUTE"       , { "Ń" } , '\211' }, // Ń
-     {  FONT_CHAR_SMALL_N_WITH_ACUTE         , "FONT_CHAR_SMALL_N_WITH_ACUTE"         , { "ń" } , '\213' }, // ń
-     {  FONT_CHAR_CAPITAL_S_WITH_ACUTE       , "FONT_CHAR_CAPITAL_S_WITH_ACUTE"       , { "Ś" } , '\214' }, // Ś
-     {  FONT_CHAR_SMALL_S_WITH_ACUTE         , "FONT_CHAR_SMALL_S_WITH_ACUTE"         , { "ś" } , '\215' }, // ś
-     {  FONT_CHAR_CAPITAL_Z_WITH_ACUTE       , "FONT_CHAR_CAPITAL_Z_WITH_ACUTE"       , { "Ź" } , '\217' }, // Ź
-     {  FONT_CHAR_SMALL_Z_WITH_ACUTE         , "FONT_CHAR_SMALL_Z_WITH_ACUTE"         , { "ź" } , '\220' }, // ź
-     {  FONT_CHAR_CAPITAL_Z_WITH_DOT_ABOVE   , "FONT_CHAR_CAPITAL_Z_WITH_DOT_ABOVE"   , { "Ż" } , '\221' }, // Ż
-     {  FONT_CHAR_SMALL_Z_WITH_DOT_ABOVE     , "FONT_CHAR_SMALL_Z_WITH_DOT_ABOVE"     , { "ż" } , '\222' }, // ż
-     {  FONT_CHAR_SMALL_I_DOTLESS            , "FONT_CHAR_SMALL_I_DOTLESS"            , { "ı" } , '\223' }, // ı
-     {  FONT_CHAR_CAPITAL_I_WITH_DOT         , "FONT_CHAR_CAPITAL_I_WITH_DOT"         , { "İ" } , '\224' }, // İ
-     {  FONT_CHAR_S_CAPITAL_WITH_CEDILLA     , "FONT_CHAR_S_CAPITAL_WITH_CEDILLA"     , { "Ş" } , '\225' }, // Ş
-     {  FONT_CHAR_S_SMALL_WITH_CEDILLA       , "FONT_CHAR_S_SMALL_WITH_CEDILLA"       , { "ş" } , '\226' }, // ş
-     {  FONT_CHAR_G_CAPITAL_WITH_BREVE       , "FONT_CHAR_G_CAPITAL_WITH_BREVE"       , { "Ğ" } , '\227' }, // Ğ
-     {  FONT_CHAR_G_SMALL_WITH_BREVE         , "FONT_CHAR_G_SMALL_WITH_BREVE"         , { "ğ" } , '\230' }, // ğ
-     {  FONT_CHAR_CAPITAL_R_WITH_CARON       , "FONT_CHAR_CAPITAL_R_WITH_CARON"       , { "Ř" } , '\231' }, // Ř
-     {  FONT_CHAR_SMALL_R_WITH_CARON         , "FONT_CHAR_SMALL_R_WITH_CARON"         , { "ř" } , '\233' }, // ř
-     {  FONT_CHAR_CAPITAL_E_WITH_CARON       , "FONT_CHAR_CAPITAL_E_WITH_CARON"       , { "Ě" } , '\234' }, // Ě
-     {  FONT_CHAR_SMALL_E_WITH_CARON         , "FONT_CHAR_SMALL_E_WITH_CARON"         , { "ě" } , '\235' }, // ě
-     {  FONT_CHAR_CAPITAL_U_WITH_RING_ABOVE  , "FONT_CHAR_CAPITAL_U_WITH_RING_ABOVE"  , { "Ů" } , '\240' }, // Ů
-     {  FONT_CHAR_SMALL_U_WITH_RING_ABOVE    , "FONT_CHAR_SMALL_U_WITH_RING_ABOVE"    , { "ů" } , '\241' }, // ů
-     {  FONT_CHAR_CAPITAL_O_WITH_DOUBLE_ACUTE, "FONT_CHAR_CAPITAL_O_WITH_DOUBLE_ACUTE", { "Ő" } , '\242' }, // Ő
-     {  FONT_CHAR_SMALL_O_WITH_DOUBLE_ACUTE  , "FONT_CHAR_SMALL_O_WITH_DOUBLE_ACUTE"  , { "ő" } , '\243' }, // ő
-     {  FONT_CHAR_CAPITAL_U_WITH_DOUBLE_ACUTE, "FONT_CHAR_CAPITAL_U_WITH_DOUBLE_ACUTE", { "Ű" } , '\244' }, // Ű
-     {  FONT_CHAR_SMALL_U_WITH_DOUBLE_ACUTE  , "FONT_CHAR_SMALL_U_WITH_DOUBLE_ACUTE"  , { "ű" } , '\245' }, // ű
-     {  FONT_CHAR_CAPITAL_N_WITH_CARON       , "FONT_CHAR_CAPITAL_N_WITH_CARON"       , { "Ň" },  '\246' }, // Ň
-     {  FONT_CHAR_SMALL_N_WITH_CARON         , "FONT_CHAR_SMALL_N_WITH_CARON"         , { "ň" },  '\247' }, // ň
-     {  FONT_CHAR_CAPITAL_D_WITH_CARON       , "FONT_CHAR_CAPITAL_D_WITH_CARON"       , { "Ď" },  '\251' }, // Ď
-     {  FONT_CHAR_SMALL_D_WITH_CARON         , "FONT_CHAR_SMALL_D_WITH_CARON"         , { "ď" },  '\252' }, // ď
+     {  FONT_CHAR_CAPITAL_C_WITH_CARON       , "FONT_CHAR_CAPITAL_C_WITH_CARON"       , { "" } , '\177' }, // Č
+     {  FONT_CHAR_SMALL_C_WITH_CARON         , "FONT_CHAR_SMALL_C_WITH_CARON"         , { "" } , '\200' }, // č
+     {  FONT_CHAR_CAPITAL_C_WITH_ACUTE       , "FONT_CHAR_CAPITAL_C_WITH_ACUTE"       , { "" } , '\201' }, // Ć
+     {  FONT_CHAR_SMALL_C_WITH_ACUTE         , "FONT_CHAR_SMALL_C_WITH_ACUTE"         , { "" } , '\202' }, // ć
+     {  FONT_CHAR_CAPITAL_A_WITH_OGONEK      , "FONT_CHAR_CAPITAL_A_WITH_OGONEK"      , { "" } , '\203' }, // Ą
+     {  FONT_CHAR_SMALL_A_WITH_OGONEK        , "FONT_CHAR_SMALL_A_WITH_OGONEK"        , { "" } , '\204' }, // ą
+     {  FONT_CHAR_CAPITAL_E_WITH_OGONEK      , "FONT_CHAR_CAPITAL_E_WITH_OGONEK"      , { "" } , '\205' }, // Ę
+     {  FONT_CHAR_SMALL_E_WITH_OGONEK        , "FONT_CHAR_SMALL_E_WITH_OGONEK"        , { "" } , '\206' }, // ę
+     {  FONT_CHAR_CAPITAL_L_WITH_STROKE      , "FONT_CHAR_CAPITAL_L_WITH_STROKE"      , { "" } , '\207' }, // Ł
+     {  FONT_CHAR_SMALL_L_WITH_STROKE        , "FONT_CHAR_SMALL_L_WITH_STROKE"        , { "" } , '\210' }, // ł
+     {  FONT_CHAR_CAPITAL_N_WITH_ACUTE       , "FONT_CHAR_CAPITAL_N_WITH_ACUTE"       , { "" } , '\211' }, // Ń
+     {  FONT_CHAR_SMALL_N_WITH_ACUTE         , "FONT_CHAR_SMALL_N_WITH_ACUTE"         , { "" } , '\213' }, // ń
+     {  FONT_CHAR_CAPITAL_S_WITH_ACUTE       , "FONT_CHAR_CAPITAL_S_WITH_ACUTE"       , { "" } , '\214' }, // Ś
+     {  FONT_CHAR_SMALL_S_WITH_ACUTE         , "FONT_CHAR_SMALL_S_WITH_ACUTE"         , { "" } , '\215' }, // ś
+     {  FONT_CHAR_CAPITAL_Z_WITH_ACUTE       , "FONT_CHAR_CAPITAL_Z_WITH_ACUTE"       , { "" } , '\217' }, // Ź
+     {  FONT_CHAR_SMALL_Z_WITH_ACUTE         , "FONT_CHAR_SMALL_Z_WITH_ACUTE"         , { "" } , '\220' }, // ź
+     {  FONT_CHAR_CAPITAL_Z_WITH_DOT_ABOVE   , "FONT_CHAR_CAPITAL_Z_WITH_DOT_ABOVE"   , { "" } , '\221' }, // Ż
+     {  FONT_CHAR_SMALL_Z_WITH_DOT_ABOVE     , "FONT_CHAR_SMALL_Z_WITH_DOT_ABOVE"     , { "" } , '\222' }, // ż
+     {  FONT_CHAR_SMALL_I_DOTLESS            , "FONT_CHAR_SMALL_I_DOTLESS"            , { "" } , '\223' }, // ı
+     {  FONT_CHAR_CAPITAL_I_WITH_DOT         , "FONT_CHAR_CAPITAL_I_WITH_DOT"         , { "" } , '\224' }, // İ
+     {  FONT_CHAR_S_CAPITAL_WITH_CEDILLA     , "FONT_CHAR_S_CAPITAL_WITH_CEDILLA"     , { "" } , '\225' }, // Ş
+     {  FONT_CHAR_S_SMALL_WITH_CEDILLA       , "FONT_CHAR_S_SMALL_WITH_CEDILLA"       , { "" } , '\226' }, // ş
+     {  FONT_CHAR_G_CAPITAL_WITH_BREVE       , "FONT_CHAR_G_CAPITAL_WITH_BREVE"       , { "" } , '\227' }, // Ğ
+     {  FONT_CHAR_G_SMALL_WITH_BREVE         , "FONT_CHAR_G_SMALL_WITH_BREVE"         , { "" } , '\230' }, // ğ
+     {  FONT_CHAR_CAPITAL_R_WITH_CARON       , "FONT_CHAR_CAPITAL_R_WITH_CARON"       , { "" } , '\231' }, // Ř
+     {  FONT_CHAR_SMALL_R_WITH_CARON         , "FONT_CHAR_SMALL_R_WITH_CARON"         , { "" } , '\233' }, // ř
+     {  FONT_CHAR_CAPITAL_E_WITH_CARON       , "FONT_CHAR_CAPITAL_E_WITH_CARON"       , { "" } , '\234' }, // Ě
+     {  FONT_CHAR_SMALL_E_WITH_CARON         , "FONT_CHAR_SMALL_E_WITH_CARON"         , { "" } , '\235' }, // ě
+     {  FONT_CHAR_CAPITAL_U_WITH_RING_ABOVE  , "FONT_CHAR_CAPITAL_U_WITH_RING_ABOVE"  , { "" } , '\240' }, // Ů
+     {  FONT_CHAR_SMALL_U_WITH_RING_ABOVE    , "FONT_CHAR_SMALL_U_WITH_RING_ABOVE"    , { "" } , '\241' }, // ů
+     {  FONT_CHAR_CAPITAL_O_WITH_DOUBLE_ACUTE, "FONT_CHAR_CAPITAL_O_WITH_DOUBLE_ACUTE", { "" } , '\242' }, // Ő
+     {  FONT_CHAR_SMALL_O_WITH_DOUBLE_ACUTE  , "FONT_CHAR_SMALL_O_WITH_DOUBLE_ACUTE"  , { "" } , '\243' }, // ő
+     {  FONT_CHAR_CAPITAL_U_WITH_DOUBLE_ACUTE, "FONT_CHAR_CAPITAL_U_WITH_DOUBLE_ACUTE", { "" } , '\244' }, // Ű
+     {  FONT_CHAR_SMALL_U_WITH_DOUBLE_ACUTE  , "FONT_CHAR_SMALL_U_WITH_DOUBLE_ACUTE"  , { "" } , '\245' }, // ű
+     {  FONT_CHAR_CAPITAL_N_WITH_CARON       , "FONT_CHAR_CAPITAL_N_WITH_CARON"       , { "" },  '\246' }, // Ň
+     {  FONT_CHAR_SMALL_N_WITH_CARON         , "FONT_CHAR_SMALL_N_WITH_CARON"         , { "" },  '\247' }, // ň
+     {  FONT_CHAR_CAPITAL_D_WITH_CARON       , "FONT_CHAR_CAPITAL_D_WITH_CARON"       , { "" },  '\251' }, // Ď
+     {  FONT_CHAR_SMALL_D_WITH_CARON         , "FONT_CHAR_SMALL_D_WITH_CARON"         , { "" },  '\252' }, // ď
 };
 #endif // BUILD_FONT_TOOL || CHAR_CONSTANTS_ONLY
 
