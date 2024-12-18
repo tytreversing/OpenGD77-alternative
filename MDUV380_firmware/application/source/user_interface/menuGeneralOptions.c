@@ -165,13 +165,19 @@ static void updateScreen(bool isFirstRun)
 					leftSide = currentLanguage->key_long;
 					snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%1d.%1d", nonVolatileSettings.keypadTimerLong / 10, nonVolatileSettings.keypadTimerLong % 10);
 					rightSideUnitsPrompt = PROMPT_SECONDS;
-					rightSideUnitsStr = "s";
+					if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+					    rightSideUnitsStr = " с";
+					else
+						rightSideUnitsStr = "s";
 					break;
 				case GENERAL_OPTIONS_MENU_KEYPAD_TIMER_REPEAT:// Timer repeat
 					leftSide = currentLanguage->key_repeat;
 					snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%1d.%1d", nonVolatileSettings.keypadTimerRepeat / 10, nonVolatileSettings.keypadTimerRepeat % 10);
 					rightSideUnitsPrompt = PROMPT_SECONDS;
-					rightSideUnitsStr = "s";
+					if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+						rightSideUnitsStr = " с";
+					else
+						rightSideUnitsStr = "s";
 					break;
 #if !defined(PLATFORM_GD77S)
 				case GENERAL_OPTIONS_MENU_KEYPAD_AUTOLOCK:
@@ -190,7 +196,10 @@ static void updateScreen(bool isFirstRun)
 							snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%u", (uint8_t)seconds);
 						}
 						rightSideUnitsPrompt = PROMPT_MINUTES;
-						rightSideUnitsStr = "min";
+						if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+						    rightSideUnitsStr = " мин";
+						else
+							rightSideUnitsStr = "min";
 					}
 					else
 					{
@@ -243,7 +252,10 @@ static void updateScreen(bool isFirstRun)
 						int batCal = (nonVolatileSettings.batteryCalibration & 0x0F) - 5;
 						leftSide = currentLanguage->battery_calibration;
 						snprintf(buf2, SCREEN_LINE_BUFFER_SIZE, "%c0.%d", (batCal == 0 ? ' ' : (batCal > 0 ? '+' : '-')), abs(batCal));
-						snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%sV", buf2);
+						if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+						    snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%sВ", buf2);
+						else
+							snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%sV", buf2);
 					}
 					break;
 #if !defined(PLATFORM_MD9600) && !defined(PLATFORM_MD380)

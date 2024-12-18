@@ -138,8 +138,16 @@ menuStatus_t menuHotspotMode(uiEvent_t *ev, bool isFirstRun)
 		displayFWVersion = false;
 
 		displayClearBuf();
-		displayPrintCentered(0, "Hotspot", FONT_SIZE_3);
-		displayPrintCentered(32, "Waiting for", FONT_SIZE_3);
+		if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+		{
+		    displayPrintCentered(0, "Хотспот", FONT_SIZE_3);
+		    displayPrintCentered(32, "Ожидание", FONT_SIZE_3);
+		}
+		else
+		{
+			displayPrintCentered(0, "Hotspot", FONT_SIZE_3);
+		    displayPrintCentered(32, "Waiting for", FONT_SIZE_3);
+		}
 		displayPrintCentered(48, "Pi-Star", FONT_SIZE_3);
 		displayRender();
 
@@ -301,7 +309,10 @@ void uiHotspotUpdateScreen(uint8_t rxCommandState)
 
 	displayClearBuf();
 	displayPrintAt(4, 4, "DMR", FONT_SIZE_1);
-	displayPrintCentered(0, "Hotspot", FONT_SIZE_3);
+	if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+	    displayPrintCentered(0, "ХОТСПОТ", FONT_SIZE_3);
+	else
+		displayPrintCentered(0, "Hotspot", FONT_SIZE_3);
 
 	// Display battery percentage/voltage
 	if (settingsIsOptionBitSet(BIT_BATTERY_VOLTAGE_IN_HEADER))
@@ -315,8 +326,10 @@ void uiHotspotUpdateScreen(uint8_t rxCommandState)
 		displayPrintCore(xV, 4, buffer, FONT_SIZE_1, TEXT_ALIGN_LEFT, false);
 
 		displayDrawRect(xV + (6 * 2), 4 + 5, 2, 2, true);
-
-		snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "%1dV", mvolts);
+		if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+		    snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "%1dВ", mvolts);
+		else
+			snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "%1dV", mvolts);
 		displayPrintCore(xV + (6 * 2) + 3, 4, buffer, FONT_SIZE_1, TEXT_ALIGN_LEFT, false);
 	}
 	else
@@ -377,7 +390,10 @@ void uiHotspotUpdateScreen(uint8_t rxCommandState)
 
 		val_before_dp = hotspotFreqTx / 100000;
 		val_after_dp = hotspotFreqTx - val_before_dp * 100000;
-		sprintf(buffer, "T %d.%05d MHz", val_before_dp, val_after_dp);
+		if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+		    sprintf(buffer, "T %d.%05d МГц", val_before_dp, val_after_dp);
+		else
+			sprintf(buffer, "T %d.%05d MHz", val_before_dp, val_after_dp);
 	}
 	else
 	{
@@ -446,7 +462,10 @@ void uiHotspotUpdateScreen(uint8_t rxCommandState)
 		}
 		val_before_dp = hotspotFreqRx / 100000;
 		val_after_dp = hotspotFreqRx - val_before_dp * 100000;
-		snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "R %d.%05d MHz", val_before_dp, val_after_dp);
+		if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+		    snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "R %d.%05d МГц", val_before_dp, val_after_dp);
+		else
+			snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "R %d.%05d MHz", val_before_dp, val_after_dp);
 	}
 
 	displayPrintCentered(48, buffer, FONT_SIZE_3);

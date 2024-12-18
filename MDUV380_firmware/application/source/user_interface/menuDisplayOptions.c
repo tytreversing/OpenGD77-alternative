@@ -64,6 +64,7 @@ static const int BACKLIGHT_PERCENTAGE_STEP = 10;
 static const int BACKLIGHT_PERCENTAGE_STEP_SMALL = 1;
 
 static const char *contactOrders[] = { "Ct/DB/TA", "DB/Ct/TA", "TA/Ct/DB", "TA/DB/Ct" };
+static const char *contactOrdersRus[] = { "Кт/БД/Ал", "БД/Кт/Ал", "Ал/Кт/БД", "Ал/БД/Кт" };
 
 enum
 {
@@ -218,7 +219,10 @@ static void updateScreen(bool isFirstRun)
 						{
 							snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%d", nonVolatileSettings.backLightTimeout);
 							rightSideUnitsPrompt = PROMPT_SECONDS;
-							rightSideUnitsStr = "s";
+							if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+							    rightSideUnitsStr = " с";
+							else
+								rightSideUnitsStr = "s";
 						}
 					}
 					else
@@ -240,7 +244,10 @@ static void updateScreen(bool isFirstRun)
 #endif
 				case DISPLAY_MENU_CONTACT_DISPLAY_ORDER:
 					leftSide = currentLanguage->priority_order;
-					snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%s", contactOrders[nonVolatileSettings.contactDisplayPriority]);
+					if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+					    snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%s", contactOrdersRus[nonVolatileSettings.contactDisplayPriority]);
+					else
+					    snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%s", contactOrders[nonVolatileSettings.contactDisplayPriority]);
 					break;
 
 				case DISPLAY_MENU_CONTACT_DISPLAY_SPLIT_CONTACT:
@@ -257,7 +264,10 @@ static void updateScreen(bool isFirstRun)
 					if (settingsIsOptionBitSet(BIT_BATTERY_VOLTAGE_IN_HEADER))
 					{
 						rightSideUnitsPrompt = PROMPT_VOLTS;
-						rightSideUnitsStr = "V";
+						if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+						    rightSideUnitsStr = "напр.";
+						else
+							rightSideUnitsStr = "V";
 					}
 					else
 					{

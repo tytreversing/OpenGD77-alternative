@@ -165,7 +165,10 @@ static void updateScreen(bool isFirstRun)
 						{
 							snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%d", nonVolatileSettings.txTimeoutBeepX5Secs * 5);
 							rightSideUnitsPrompt = PROMPT_SECONDS;
-							rightSideUnitsStr = "s";
+							if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+							    rightSideUnitsStr = " c";
+							else
+								rightSideUnitsStr = "s";
 						}
 						else
 						{
@@ -181,7 +184,10 @@ static void updateScreen(bool isFirstRun)
 					}
 					else
 					{
-						snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%ddB", (2 - nonVolatileSettings.beepVolumeDivider) * 3);
+						if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+						    snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%dдБ", (2 - nonVolatileSettings.beepVolumeDivider) * 3);
+						else
+							snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%ddB", (2 - nonVolatileSettings.beepVolumeDivider) * 3);
 						soundBeepVolumeDivider = nonVolatileSettings.beepVolumeDivider;
 					}
 
@@ -225,15 +231,21 @@ static void updateScreen(bool isFirstRun)
 					break;
 				case OPTIONS_MIC_GAIN_DMR: // DMR Mic gain
 					leftSide = currentLanguage->dmr_mic_gain;
-					snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%ddB", (nonVolatileSettings.micGainDMR - SETTINGS_DMR_MIC_ZERO) * 3);
+					if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+					    snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%dдБ", (nonVolatileSettings.micGainDMR - SETTINGS_DMR_MIC_ZERO) * 3);
+					else
+						snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%ddB", (nonVolatileSettings.micGainDMR - SETTINGS_DMR_MIC_ZERO) * 3);
 					break;
 				case OPTIONS_MIC_GAIN_FM: // FM Mic gain
 					leftSide = currentLanguage->fm_mic_gain;
-					snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%ddB", (nonVolatileSettings.micGainFM - SETTINGS_FM_MIC_ZERO) * 3);
+					if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+					    snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%dдБ", (nonVolatileSettings.micGainFM - SETTINGS_FM_MIC_ZERO) * 3);
+					else
+						snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%ddB", (nonVolatileSettings.micGainFM - SETTINGS_FM_MIC_ZERO) * 3);
 					break;
 				case OPTIONS_VOX_THRESHOLD:
 					leftSide = currentLanguage->vox_threshold;
-					snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%d", nonVolatileSettings.voxThreshold);
+				    snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%d", nonVolatileSettings.voxThreshold);
 					break;
 				case OPTIONS_VOX_TAIL:
 					leftSide = currentLanguage->vox_tail;
@@ -245,7 +257,10 @@ static void updateScreen(bool isFirstRun)
 
 						snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%d.%d", secs, fracSec);
 						rightSideUnitsPrompt = PROMPT_SECONDS;
-						rightSideUnitsStr = "s";
+						if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+						    rightSideUnitsStr = " с";
+						else
+							rightSideUnitsStr = "s";
 					}
 					else
 					{
@@ -264,7 +279,10 @@ static void updateScreen(bool isFirstRun)
 					leftSide = currentLanguage->dmr_rx_agc;
 					if (nonVolatileSettings.DMR_RxAGC != 0)
 					{
-						snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%ddB", ((nonVolatileSettings.DMR_RxAGC - 1) * 3));
+						if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+						    snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%dдБ", ((nonVolatileSettings.DMR_RxAGC - 1) * 3));
+						else
+							snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%ddB", ((nonVolatileSettings.DMR_RxAGC - 1) * 3));
 					}
 					else
 					{

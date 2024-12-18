@@ -158,19 +158,28 @@ static void updateScreen(bool isFirstRun)
 					leftSide = currentLanguage->dmr_filter_timeout;
 					snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%d", nonVolatileSettings.dmrCaptureTimeout);
 					rightSideUnitsPrompt = PROMPT_SECONDS;
-					rightSideUnitsStr = "s";
+					if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+					    rightSideUnitsStr = " с";
+					else
+						rightSideUnitsStr = "s";
 					break;
 				case RADIO_OPTIONS_MENU_SCAN_DELAY:// Scan hold and pause time
 					leftSide = currentLanguage->scan_delay;
 					snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%d", nonVolatileSettings.scanDelay);
 					rightSideUnitsPrompt = PROMPT_SECONDS;
-					rightSideUnitsStr = "s";
+					if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+					    rightSideUnitsStr = " с";
+					else
+						rightSideUnitsStr = "s";
 					break;
 				case RADIO_OPTIONS_MENU_SCAN_STEP_TIME:// Scan step time
 					leftSide = currentLanguage->scan_dwell_time;
 					snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%d", settingsGetScanStepTimeMilliseconds());
 					rightSideUnitsPrompt = PROMPT_MILLISECONDS;
-					rightSideUnitsStr = "ms";
+					if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+					    rightSideUnitsStr = " мс";
+					else
+						rightSideUnitsStr = "ms";
 					break;
 				case RADIO_OPTIONS_MENU_SCAN_MODE:// scanning mode
 					leftSide = currentLanguage->scan_mode;
@@ -219,7 +228,10 @@ static void updateScreen(bool isFirstRun)
 					leftSide = currentLanguage->mode;
 					snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%s", (settingsIsOptionBitSet(BIT_FORCE_10W_RADIO) ? "10" : "5"));
 					rightSideUnitsPrompt = PROMPT_WATTS;
-					rightSideUnitsStr = "W";
+					if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+					    rightSideUnitsStr = "Вт";
+					else
+						rightSideUnitsStr = "W";
 					break;
 #endif
 			}

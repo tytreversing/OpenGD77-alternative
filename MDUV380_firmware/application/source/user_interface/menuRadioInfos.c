@@ -347,8 +347,10 @@ static void updateScreen(uiEvent_t *ev, bool forceRedraw)
 				{
 					getBatteryVoltage(&volts, &mvolts);
 				}
-
-				snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "%1d.%1dV", volts, mvolts);
+				if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+				    snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "%1d.%1dВ", volts, mvolts);
+				else
+					snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "%1d.%1dV", volts, mvolts);
 				displayPrintAt(((x - (4 * 8)) >> 1), 19 + 1, buffer, FONT_SIZE_3);
 
 				if (pureBatteryLevel == false)
@@ -689,9 +691,15 @@ static void updateScreen(uiEvent_t *ev, bool forceRedraw)
 					displayDrawFastHLine(chartX - 6, (chartY + chartHeight) - maxVH, 3, true);
 					displayPrintAt(chartX - 3 - 12 - 3, ((chartY + chartHeight) - maxVH) - 3, "8V", FONT_SIZE_1);
 #else // Other STM32 platforms
-					displayPrintAt(DISPLAY_H_OFFSET, ((chartY + chartHeight) - minVH) - 3, "7V", FONT_SIZE_1);
+					if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+				  	    displayPrintAt(DISPLAY_H_OFFSET, ((chartY + chartHeight) - minVH) - 3, "7В", FONT_SIZE_1);
+					else
+						displayPrintAt(DISPLAY_H_OFFSET, ((chartY + chartHeight) - minVH) - 3, "7V", FONT_SIZE_1);
 					displayDrawFastHLine(chartX - 6, (chartY + chartHeight) - maxVH, 3, true);
-					displayPrintAt(DISPLAY_H_OFFSET, ((chartY + chartHeight) - maxVH) - 3, "8V", FONT_SIZE_1);
+					if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+					    displayPrintAt(DISPLAY_H_OFFSET, ((chartY + chartHeight) - maxVH) - 3, "8В", FONT_SIZE_1);
+					else
+						displayPrintAt(DISPLAY_H_OFFSET, ((chartY + chartHeight) - maxVH) - 3, "8V", FONT_SIZE_1);
 #endif
 
 					// Time ticks

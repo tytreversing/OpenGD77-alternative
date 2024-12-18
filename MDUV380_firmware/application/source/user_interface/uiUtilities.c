@@ -1314,8 +1314,10 @@ static void displayChannelNameOrRxFrequency(char *buffer, size_t maxLen)
 	{
 		int val_before_dp = currentChannelData->rxFreq / 100000;
 		int val_after_dp = currentChannelData->rxFreq - val_before_dp * 100000;
-
-		snprintf(buffer, maxLen, "%d.%05d MHz", val_before_dp, val_after_dp);
+		if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+		    snprintf(buffer, maxLen, "%d.%05d МГц", val_before_dp, val_after_dp);
+		else
+			snprintf(buffer, maxLen, "%d.%05d MHz", val_before_dp, val_after_dp);
 		displayThemeApply(THEME_ITEM_FG_RX_FREQ, THEME_ITEM_BG);
 	}
 
@@ -1554,7 +1556,10 @@ void uiUtilityDisplayInformation(const char *str, displayInformation_t line, int
 
 				if (type == CSS_TYPE_CTCSS)
 				{
-					p += snprintf(p, bufLen - (p - buf), "%d.%dHz", currentChannelData->rxTone / 10 , currentChannelData->rxTone % 10);
+					if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+					    p += snprintf(p, bufLen - (p - buf), "%d,%d Гц", currentChannelData->rxTone / 10 , currentChannelData->rxTone % 10);
+					else
+						p += snprintf(p, bufLen - (p - buf), "%d.%dHz", currentChannelData->rxTone / 10 , currentChannelData->rxTone % 10);
 				}
 				else if (type & CSS_TYPE_DCS)
 				{
@@ -1570,7 +1575,10 @@ void uiUtilityDisplayInformation(const char *str, displayInformation_t line, int
 				type = codeplugGetCSSType(currentChannelData->txTone);
 				if (type == CSS_TYPE_CTCSS)
 				{
-					p += snprintf(p, bufLen - (p - buf), "%d.%dHz", currentChannelData->txTone / 10 , currentChannelData->txTone % 10);
+					if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+					    p += snprintf(p, bufLen - (p - buf), "%d.%d Гц", currentChannelData->txTone / 10 , currentChannelData->txTone % 10);
+					else
+						p += snprintf(p, bufLen - (p - buf), "%d.%dHz", currentChannelData->txTone / 10 , currentChannelData->txTone % 10);
 				}
 				else if (type & CSS_TYPE_DCS)
 				{
@@ -1585,7 +1593,10 @@ void uiUtilityDisplayInformation(const char *str, displayInformation_t line, int
 				displayPrintCentered(DISPLAY_Y_POS_CSS_INFO, buf, FONT_SIZE_1);
 
 				p = buf;
-				p += snprintf(p, bufLen, "SQL:%d%%", 5 * (((currentChannelData->sql == 0) ? nonVolatileSettings.squelchDefaults[currentRadioDevice->trxCurrentBand[TRX_RX_FREQ_BAND]] : currentChannelData->sql) - 1));
+				if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+				    p += snprintf(p, bufLen, "ШПД:%d%%", 5 * (((currentChannelData->sql == 0) ? nonVolatileSettings.squelchDefaults[currentRadioDevice->trxCurrentBand[TRX_RX_FREQ_BAND]] : currentChannelData->sql) - 1));
+				else
+					p += snprintf(p, bufLen, "SQL:%d%%", 5 * (((currentChannelData->sql == 0) ? nonVolatileSettings.squelchDefaults[currentRadioDevice->trxCurrentBand[TRX_RX_FREQ_BAND]] : currentChannelData->sql) - 1));
 			}
 			else
 			{
@@ -1603,7 +1614,10 @@ void uiUtilityDisplayInformation(const char *str, displayInformation_t line, int
 				{
 					int intPart = currentChannelData->NOT_IN_CODEPLUG_CALCULATED_DISTANCE_X10 / 10;
 					int decPart = currentChannelData->NOT_IN_CODEPLUG_CALCULATED_DISTANCE_X10 - (intPart * 10);
-					p += snprintf(p, bufLen, "|%d.%dkm",intPart,decPart);
+					if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+					    p += snprintf(p, bufLen, "|%d.%d км",intPart,decPart);
+					else
+						p += snprintf(p, bufLen, "|%d.%dkm",intPart,decPart);
 				}
 				displayPrintCentered((radioMode == RADIO_MODE_DIGITAL)? (DISPLAY_Y_POS_CSS_INFO + (FONT_SIZE_2_HEIGHT / 2)): DISPLAY_Y_POS_SQL_INFO, buf, (radioMode == RADIO_MODE_DIGITAL)? FONT_SIZE_2: FONT_SIZE_1);
 #else
@@ -1865,8 +1879,10 @@ void uiUtilityRenderHeader(bool isVFODualWatchScanning, bool isVFOSweepScanning)
 	if (isVFOSweepScanning)
 	{
 		int span = (VFO_SWEEP_SCAN_RANGE_SAMPLE_STEP_TABLE[uiDataGlobal.Scan.sweepStepSizeIndex] * VFO_SWEEP_NUM_SAMPLES) / (VFO_SWEEP_PIXELS_PER_STEP * 100);
-
-		sprintf(buffer, "+/-%dkHz", (span >> 1));
+		if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+		    sprintf(buffer, "+/-%d кГц", (span >> 1));
+		else
+			sprintf(buffer, "+/-%dkHz", (span >> 1));
 		displayPrintCore(MODE_TEXT_X_OFFSET, DISPLAY_Y_POS_HEADER, buffer, FONT_SIZE_1, TEXT_ALIGN_LEFT, false);
 	}
 
@@ -2032,7 +2048,7 @@ void uiUtilityRenderHeader(bool isVFODualWatchScanning, bool isVFOSweepScanning)
 		uint8_t ccode = trxGetDMRColourCode();
 		bool isNotFilteringCC = !(nonVolatileSettings.dmrCcTsFilter & DMR_CC_FILTER_PATTERN);
 
-		snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "C%u", ccode);
+		snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "CC%u", ccode);
 
 		int16_t ccPixLen = (strlen(buffer) * 6);
 		int16_t ccXPos = ((COLOR_CODE_X_CENTER + (itemOffset * 3)) - (ccPixLen >> 1));
@@ -2063,8 +2079,10 @@ void uiUtilityRenderHeader(bool isVFODualWatchScanning, bool isVFOSweepScanning)
 		displayPrintCore(xV, DISPLAY_Y_POS_HEADER, buffer, (apoEnabled ? FONT_SIZE_1_BOLD : FONT_SIZE_1), TEXT_ALIGN_LEFT, ((batteryIsLow ? scanBlinkPhase : false)));
 
 		displayDrawRect(xV + (6 * 2), DISPLAY_Y_POS_HEADER + 5, 2, 2, ((batteryIsLow ? !scanBlinkPhase : true)));
-
-		snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "%1dV", mvolts);
+		if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+		    snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "%1dВ", mvolts);
+		else
+			snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "%1dV", mvolts);
 		displayPrintCore(xV + (6 * 2) + 3, DISPLAY_Y_POS_HEADER, buffer, (apoEnabled ? FONT_SIZE_1_BOLD : FONT_SIZE_1), TEXT_ALIGN_LEFT, ((batteryIsLow ? scanBlinkPhase : false)));
 	}
 	else
@@ -2244,7 +2262,10 @@ void uiUtilityDisplayFrequency(uint8_t y, bool isTX, bool hasFocus, uint32_t fre
 	// Frequency
 	snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "%d.%05d", val_before_dp, val_after_dp);
 	displayPrintAt(FREQUENCY_X_POS, y, buffer, FONT_SIZE_3);
-	displayPrintAt(DISPLAY_SIZE_X - (3 * 8), y, "MHz", FONT_SIZE_3);
+	if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+	    displayPrintAt(DISPLAY_SIZE_X - (3 * 8), y, "МГц", FONT_SIZE_3);
+	else
+		displayPrintAt(DISPLAY_SIZE_X - (3 * 8), y, "MHz", FONT_SIZE_3);
 
 	displayThemeResetToDefault();
 }
@@ -3845,7 +3866,10 @@ const char *getPowerLevel(uint8_t level)
 
 const char *getPowerLevelUnit(uint8_t level)
 {
-	return POWER_LEVEL_UNITS[level];
+	if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+	    return POWER_LEVEL_UNITS_RUS[level];
+	else
+		return POWER_LEVEL_UNITS[level];
 }
 
 void uiSetUTCDateTimeInSecs(time_t_custom UTCdateTimeInSecs)
