@@ -453,7 +453,7 @@ void uiHotspotUpdateScreen(uint8_t rxCommandState)
 				}
 			}
 
-			snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "CC:%u", trxGetDMRColourCode());//, trxGetDMRTimeSlot()+1) ;
+			snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, " CC:%u", trxGetDMRColourCode());//, trxGetDMRTimeSlot()+1) ;
 
 			displayPrintCore(0, 32, buffer, FONT_SIZE_3, TEXT_ALIGN_LEFT, false);
 

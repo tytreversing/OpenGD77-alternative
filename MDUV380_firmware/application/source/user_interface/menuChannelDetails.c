@@ -192,8 +192,13 @@ static void updateScreen(bool isFirstRun, bool allowedToSpeakUpdate)
 
 	if (uiDataGlobal.FreqEnter.index != 0)
 	{
-		snprintf(buf, SCREEN_LINE_BUFFER_SIZE, "%c%c%c%s%c%c%c%c%c%s", uiDataGlobal.FreqEnter.digits[0], uiDataGlobal.FreqEnter.digits[1], uiDataGlobal.FreqEnter.digits[2], (menuDataGlobal.currentItemIndex == CH_DETAILS_DMRID) ? "" : ".",
-				uiDataGlobal.FreqEnter.digits[3], uiDataGlobal.FreqEnter.digits[4], uiDataGlobal.FreqEnter.digits[5], uiDataGlobal.FreqEnter.digits[6], uiDataGlobal.FreqEnter.digits[7], (menuDataGlobal.currentItemIndex == CH_DETAILS_DMRID) ? "" : " MHz");
+		if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+		    snprintf(buf, SCREEN_LINE_BUFFER_SIZE, "%c%c%c%s%c%c%c%c%c%s", uiDataGlobal.FreqEnter.digits[0], uiDataGlobal.FreqEnter.digits[1], uiDataGlobal.FreqEnter.digits[2], (menuDataGlobal.currentItemIndex == CH_DETAILS_DMRID) ? "" : ".",
+				uiDataGlobal.FreqEnter.digits[3], uiDataGlobal.FreqEnter.digits[4], uiDataGlobal.FreqEnter.digits[5], uiDataGlobal.FreqEnter.digits[6], uiDataGlobal.FreqEnter.digits[7], (menuDataGlobal.currentItemIndex == CH_DETAILS_DMRID) ? "" : " МГц");
+		else
+			snprintf(buf, SCREEN_LINE_BUFFER_SIZE, "%c%c%c%s%c%c%c%c%c%s", uiDataGlobal.FreqEnter.digits[0], uiDataGlobal.FreqEnter.digits[1], uiDataGlobal.FreqEnter.digits[2], (menuDataGlobal.currentItemIndex == CH_DETAILS_DMRID) ? "" : ".",
+							uiDataGlobal.FreqEnter.digits[3], uiDataGlobal.FreqEnter.digits[4], uiDataGlobal.FreqEnter.digits[5], uiDataGlobal.FreqEnter.digits[6], uiDataGlobal.FreqEnter.digits[7], (menuDataGlobal.currentItemIndex == CH_DETAILS_DMRID) ? "" : " MHz");
+					displayPrintCentered(32, buf, FONT_SIZE_3);
 		displayPrintCentered(32, buf, FONT_SIZE_3);
 	}
 	else
@@ -318,7 +323,12 @@ static void updateScreen(bool isFirstRun, bool allowedToSpeakUpdate)
 						{
 							if (RxCSSType == CSS_TYPE_CTCSS)
 							{
-								snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "Rx CTCSS:%u.%uHz", tmpChannel.rxTone / 10 , tmpChannel.rxTone % 10);
+								if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+								    snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "Rx CTCSS:%u.%u Гц",
+								    		tmpChannel.rxTone / 10 , tmpChannel.rxTone % 10);
+								else
+									snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "Rx CTCSS:%u.%uHz",
+											tmpChannel.rxTone / 10 , tmpChannel.rxTone % 10);
 							}
 							else if (RxCSSType & CSS_TYPE_DCS)
 							{
@@ -339,7 +349,12 @@ static void updateScreen(bool isFirstRun, bool allowedToSpeakUpdate)
 						{
 							if  (TxCSSType == CSS_TYPE_CTCSS)
 							{
-								snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "Tx CTCSS:%u.%uHz", tmpChannel.txTone / 10 , tmpChannel.txTone % 10);
+								if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+							    	snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "Tx CTCSS:%u.%u Гц",
+										tmpChannel.txTone / 10 , tmpChannel.txTone % 10);
+								else
+									snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "Tx CTCSS:%u.%uHz",
+											tmpChannel.txTone / 10 , tmpChannel.txTone % 10);
 							}
 							else if (TxCSSType & CSS_TYPE_DCS)
 							{
@@ -357,14 +372,20 @@ static void updateScreen(bool isFirstRun, bool allowedToSpeakUpdate)
 						break;
 					case CH_DETAILS_RXFREQ:
 						rightSideUnitsPrompt = PROMPT_MEGAHERTZ;
-						rightSideUnitsStr = "MHz";
+						if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+						    rightSideUnitsStr = " МГц";
+						else
+							rightSideUnitsStr = "MHz";
 						val_before_dp = tmpChannel.rxFreq / 100000;
 						val_after_dp = tmpChannel.rxFreq - val_before_dp * 100000;
 						snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "Rx:%d.%05d", val_before_dp, val_after_dp);
 						break;
 					case CH_DETAILS_TXFREQ:
 						rightSideUnitsPrompt = PROMPT_MEGAHERTZ;
-						rightSideUnitsStr = "MHz";
+						if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+						    rightSideUnitsStr = " МГц";
+						else
+							rightSideUnitsStr = "MHz";
 						val_before_dp = tmpChannel.txFreq / 100000;
 						val_after_dp = tmpChannel.txFreq - val_before_dp * 100000;
 						snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "Tx:%d.%05d", val_before_dp, val_after_dp);
@@ -379,13 +400,19 @@ static void updateScreen(bool isFirstRun, bool allowedToSpeakUpdate)
 						else
 						{
 							rightSideUnitsPrompt = PROMPT_KILOHERTZ;
-							rightSideUnitsStr = "kHz";
+							if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+							    rightSideUnitsStr = " кГц";
+							else
+								rightSideUnitsStr = "kHz";
 							snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%s", ((codeplugChannelGetFlag(&tmpChannel, CHANNEL_FLAG_BW_25K) != 0)) ? "25" : "12.5");
 						}
 						break;
 					case CH_DETAILS_FREQ_STEP:
 						rightSideUnitsPrompt = PROMPT_KILOHERTZ;
-						rightSideUnitsStr = "kHz";
+						if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+						    rightSideUnitsStr = " кГц";
+						else
+							rightSideUnitsStr = "kHz";
 						leftSide = currentLanguage->stepFreq;
 						tmpVal = VFO_FREQ_STEP_TABLE[(tmpChannel.VFOflag5 >> 4)] / 100;
 						snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%u.%02u", tmpVal, VFO_FREQ_STEP_TABLE[(tmpChannel.VFOflag5 >> 4)] - (tmpVal * 100));
@@ -395,7 +422,10 @@ static void updateScreen(bool isFirstRun, bool allowedToSpeakUpdate)
 						if (tmpChannel.tot != 0)
 						{
 							rightSideUnitsPrompt = PROMPT_SECONDS;
-							rightSideUnitsStr = "s";
+							if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+							    rightSideUnitsStr = " с";
+							else
+								rightSideUnitsStr = "s";
 
 							snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%u", tmpChannel.tot * 15);
 						}
@@ -1607,9 +1637,12 @@ static void applyShiftOffset(bool increase)
 			char buf[SCREEN_LINE_BUFFER_SIZE];
 
 			tmpChannel.txFreq = txFreq;
-
-			snprintf(buf, SCREEN_LINE_BUFFER_SIZE, "%s%d.%d MHz", ((shiftOffsetIndex < 0) ? "-" : ""),
+			if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+			snprintf(buf, SCREEN_LINE_BUFFER_SIZE, "%s%d.%d МГц", ((shiftOffsetIndex < 0) ? "-" : ""),
 					(shiftOffsets[abs(shiftOffsetIndex)] / 10),	(shiftOffsets[abs(shiftOffsetIndex)] - ((shiftOffsets[abs(shiftOffsetIndex)] / 10) * 10)));
+			else
+				snprintf(buf, SCREEN_LINE_BUFFER_SIZE, "%s%d.%d MHz", ((shiftOffsetIndex < 0) ? "-" : ""),
+									(shiftOffsets[abs(shiftOffsetIndex)] / 10),	(shiftOffsets[abs(shiftOffsetIndex)] - ((shiftOffsets[abs(shiftOffsetIndex)] / 10) * 10)));
 
 			uiNotificationShow(NOTIFICATION_TYPE_MESSAGE, NOTIFICATION_ID_MESSAGE, 1000, buf, false);
 		}

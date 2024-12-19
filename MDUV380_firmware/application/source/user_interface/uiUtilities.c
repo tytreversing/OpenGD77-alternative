@@ -2048,7 +2048,7 @@ void uiUtilityRenderHeader(bool isVFODualWatchScanning, bool isVFOSweepScanning)
 		uint8_t ccode = trxGetDMRColourCode();
 		bool isNotFilteringCC = !(nonVolatileSettings.dmrCcTsFilter & DMR_CC_FILTER_PATTERN);
 
-		snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "CC%u", ccode);
+		snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, " CC%u", ccode);
 
 		int16_t ccPixLen = (strlen(buffer) * 6);
 		int16_t ccXPos = ((COLOR_CODE_X_CENTER + (itemOffset * 3)) - (ccPixLen >> 1));

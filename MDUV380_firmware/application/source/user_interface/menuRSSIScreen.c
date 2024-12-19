@@ -236,11 +236,17 @@ static void updateScreen(bool forceRedraw, bool isFirstRun)
 	{
 		if (displayRawValues)
 		{
-			snprintf(buffer, LOCATION_TEXT_BUFFER_SIZE, "%d%s [%u %u]", dBm[device], "dBm", rawSignal[device], rawNoise[device]);
+			if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+			    snprintf(buffer, LOCATION_TEXT_BUFFER_SIZE, "%d%s [%u %u]", dBm[device], "дБм", rawSignal[device], rawNoise[device]);
+			else
+				snprintf(buffer, LOCATION_TEXT_BUFFER_SIZE, "%d%s [%u %u]", dBm[device], "dBm", rawSignal[device], rawNoise[device]);
 		}
 		else
 		{
-			snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "%d%s", dBm[device], "dBm");
+			if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+			    snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "%d%s", dBm[device], " дБм");
+			else
+				snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "%d%s", dBm[device], "dBm");
 		}
 		displayPrintCentered(yValuePos, buffer, FONT_SIZE_3);
 
