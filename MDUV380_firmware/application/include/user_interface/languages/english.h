@@ -321,6 +321,7 @@ const stringsTable_t englishLanguage =
 .auto_lock				= "Auto lock", // MaxLen 16 (with ':' + .off or 0.5..15 (.5 step) + 'min')
 .trackball				= "Trackball", // MaxLen 16 (with ':' + .on or .off)
 .dmr_force_dmo				= "Force DMO", // MaxLen 16 (with ':' + .n_a or .on or .off)
+.dmrid                    = "Set DMR ID",
 };
 /********************************************************************
  *

@@ -106,6 +106,7 @@ menuDataGlobal_t menuDataGlobal =
 #if defined(HAS_COLOURS)
 				NULL,// Theme items browser
 				NULL,// Colour picker
+				NULL, //DMRID
 #endif
 		}
 };
@@ -165,6 +166,7 @@ static menuFunctionData_t menuFunctions[] =
 		{ menuThemeItemsBrowser,    NULL, NULL, 0 },
 		{ menuColourPicker,         NULL, NULL, 0 },
 #endif
+		{ menuDMRID,         NULL, NULL, 0 },
 };
 
 static void menuSystemCheckForFirstEntryAudible(menuStatus_t status)
@@ -643,6 +645,7 @@ void menuSystemLanguageHasChanged(void)
 
 const menuItemNewData_t mainMenuItems[] =
 {
+	{ 274, MENU_DMRID           },  //номер строки в zpsrjdjv файле -50
 	{   3, MENU_ZONE_LIST       },
 	{   6, MENU_CONTACTS_MENU   },
 	{  12, MENU_CHANNEL_DETAILS },
@@ -650,7 +653,6 @@ const menuItemNewData_t mainMenuItems[] =
 	{   8, MENU_FIRMWARE_INFO   },
 	{   9, MENU_OPTIONS         },
 	{   7, MENU_LAST_HEARD      },
-	{ 150, MENU_RADIO_INFOS     },
 	{ 173, MENU_SATELLITE       },
 #if defined(HAS_GPS)
 	{ 195, MENU_GPS		        },
@@ -690,6 +692,7 @@ static const menuItemNewData_t optionsMenuItems[] =
 #if !defined(PLATFORM_GD77S)
 	{ 257, MENU_APRS            },
 #endif
+	{ 150, MENU_RADIO_INFOS     },
 };
 
 const menuItemsList_t menuDataOptions =

@@ -38,19 +38,11 @@
 #include "interfaces/gps.h"
 #endif
 
-static SemaphoreHandle_t battSemaphore = NULL;
 
-#define VOLTAGE_BUFFER_LEN 128
-static const float BATTERY_CRITICAL_VOLTAGE = 66.7f;
-static const int TEMPERATURE_CRITICAL = 500; // 50°C
 static const uint8_t daysPerMonth[12] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
-static float prevAverageBatteryVoltage = 0.0f;
-static int prevTemperature = 0;
 static char keypadInputDigits[17]; // HHMMSS + terminator (Displayed as HH:MM:SS, or YYYY:MM:DD or LAT.LATIT,LON.LONGI)
 static int keypadInputDigitsLength = 0;
 static menuStatus_t menuRadioInfosExitCode = MENU_STATUS_SUCCESS;
-//static int32_t timeClockPITOffset = 0; // Time difference between PITCounter and real time.
-#define VP_TIMEBUF_SIZE 9
 static uint32_t hours;
 static uint32_t minutes;
 static uint32_t seconds;
@@ -58,92 +50,18 @@ static struct tm timeAndDate;
 bool latLonIsSouthernHemisphere = false;
 bool latLonIsWesternHemisphere = false;
 
-typedef struct
-{
-	int32_t  buffer[VOLTAGE_BUFFER_LEN];
-	int32_t *head;
-	int32_t *tail;
-	int32_t *end;
-	bool     modified;
-} voltageCircularBuffer_t;
 
-#if defined(PLATFORM_MD9600) || defined(PLATFORM_MDUV380) || defined(PLATFORM_MD380) || defined(PLATFORM_RT84_DM1701) || defined(PLATFORM_MD2017)
-__attribute__((section(".ccmram")))
-#else
-__attribute__((section(".data.$RAM2")))
-#endif
-voltageCircularBuffer_t batteryVoltageHistory;
 
-enum
-{
-	GRAPH_FILL = 0,
-	GRAPH_LINE
-};
 
-static int displayMode = RADIO_INFOS_BATTERY_LEVEL;
-static bool pureBatteryLevel = false;
-static int graphStyle = GRAPH_FILL;
-static int battery_stack_iter = 0;
-static const int BATTERY_ITER_PUSHBACK = 20;
+
+
+static int displayMode = RADIO_INFOS_CURRENT_TIME;
+
 
 static void updateScreen(uiEvent_t *ev, bool forceRedraw);
 static void handleEvent(uiEvent_t *ev);
 static void updateVoicePrompts(bool spellIt, bool firstRun);
 static uint32_t menuRadioInfosNextUpdateTime = 0;
-
-
-
-static void circularBufferInit(voltageCircularBuffer_t *cb)
-{
-	cb->end = &cb->buffer[VOLTAGE_BUFFER_LEN - 1];
-	cb->head = cb->buffer;
-	cb->tail = cb->buffer;
-	cb->modified = false;
-}
-
-static void circularBufferPushBack(voltageCircularBuffer_t *cb, const int32_t item)
-{
-	cb->modified = true;
-
-	*cb->head = item;
-	cb->head++;
-
-    if(cb->head == cb->end)
-    {
-    	cb->head = cb->buffer;
-    }
-
-    if (cb->tail == cb->head)
-    {
-    	cb->tail++;
-
-    	if(cb->tail == cb->end)
-    	{
-    		cb->tail = cb->buffer;
-    	}
-    }
-}
-
-static size_t circularBufferGetData(voltageCircularBuffer_t *cb, int32_t *data, size_t dataLen)
-{
-     size_t  count = 0;
-     int32_t *p = cb->tail;
-
-     while ((p != cb->head) && (count < dataLen))
-     {
-    	 *(data + count) = *p;
-
-    	 p++;
-    	 count++;
-
-    	 if (p == cb->end)
-    	 {
-    		 p = cb->buffer;
-    	 }
-     }
-
-     return count;
-}
 
 static uint32_t inputDigitsLonToFixed_10_5(void)
 {
@@ -234,162 +152,6 @@ static void updateScreen(uiEvent_t *ev, bool forceRedraw)
 
 	switch (displayMode)
 	{
-		case RADIO_INFOS_BATTERY_LEVEL:
-		{
-			if ((prevAverageBatteryVoltage != averageBatteryVoltage) || (averageBatteryVoltage < BATTERY_CRITICAL_VOLTAGE) || pureBatteryLevel || forceRedraw)
-			{
-#if defined(PLATFORM_MD9600)
-				int volts, mvolts;
-				const int x = 72;
-				const int battLevelHeight = 28;
-
-				prevAverageBatteryVoltage = averageBatteryVoltage;
-				renderArrowOnly = false;
-
-				if (forceRedraw)
-				{
-					displayClearBuf();
-					menuDisplayTitle(currentLanguage->battery);
-
-					// Draw...
-					// Inner body frame
-					displayDrawRoundRect(x + 1, 23, 49, 34, 3, true);
-					// Outer body frame
-					displayDrawRoundRect(x, 22, 51, 36, 3, true);
-					// Positive poles frame
-					displayFillRoundRect(x + 5, 18, 9, 6, 2, true);
-					displayFillRoundRect(x + 37, 18, 9, 6, 2, true);
-				}
-				else
-				{
-					// Clear voltage area
-					displayFillRect(0, (((DISPLAY_SIZE_Y - (14 + FONT_SIZE_3_HEIGHT)) >> 1) + 14), x - 1, 16, true);
-					// Clear level area
-					displayFillRoundRect(x + 4, 26, 43, battLevelHeight, 2, false);
-				}
-
-				// Want to display instant battery voltage, not the averaged value.
-				if (pureBatteryLevel)
-				{
-					volts = (int)(batteryVoltage / 10);
-					mvolts = (int)(batteryVoltage - (volts * 10));
-				}
-				else
-				{
-					getBatteryVoltage(&volts, &mvolts);
-				}
-
-				snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "%2d.%1dV", volts, mvolts);
-				displayPrintAt(((x - (5 * 8)) >> 1), (((DISPLAY_SIZE_Y - (14 + FONT_SIZE_3_HEIGHT)) >> 1) + 14), buffer, FONT_SIZE_3);
-
-				if (pureBatteryLevel == false)
-				{
-					uint32_t h = (uint32_t)(((averageBatteryVoltage - CUTOFF_VOLTAGE_UPPER_HYST) * battLevelHeight) / (BATTERY_MAX_VOLTAGE - CUTOFF_VOLTAGE_UPPER_HYST));
-					if (h > battLevelHeight)
-					{
-						h = battLevelHeight;
-					}
-
-					// Draw Level
-					displayFillRoundRect(x + 4, 26 + battLevelHeight - h , 43, h, 2, (averageBatteryVoltage < BATTERY_CRITICAL_VOLTAGE) ? blink : true);
-				}
-				else
-				{
-					displayPrintCore(x + (20 / 2), 26 + ((battLevelHeight - FONT_SIZE_3_HEIGHT) >> 1), "?", FONT_SIZE_3, TEXT_ALIGN_LEFT, blink);
-				}
-
-				if (voicePromptsIsPlaying() == false)
-				{
-					updateVoicePrompts(false, false);
-				}
-#else
-				int volts, mvolts;
-				const int x = 88;
-				const int battLevelHeight = (DISPLAY_SIZE_Y - 28);
-
-				prevAverageBatteryVoltage = averageBatteryVoltage;
-				renderArrowOnly = false;
-
-				if (forceRedraw)
-				{
-					displayClearBuf();
-					menuDisplayTitle(currentLanguage->battery);
-
-					displayThemeApply(THEME_ITEM_FG_DECORATION, THEME_ITEM_BG);
-
-					// Draw...
-					// Inner body frame
-					displayDrawRoundRect(x + 1, 20, 26 + DISPLAY_H_EXTRA_PIXELS, DISPLAY_SIZE_Y - 22, 3, true);
-					// Outer body frame
-					displayDrawRoundRect(x, 19, 28 + DISPLAY_H_EXTRA_PIXELS, DISPLAY_SIZE_Y - 20, 3, true);
-					// Positive pole frame
-					displayFillRoundRect(x + 9 + DISPLAY_H_OFFSET, 15, 10, 6, 2, true);
-				}
-				else
-				{
-					displayThemeApply(THEME_ITEM_FG_DECORATION, THEME_ITEM_BG);
-
-					// Clear voltage area
-					displayFillRect(((x - (4 * 8)) >> 1), 19 + 1, (4 * 8), (DISPLAY_SIZE_Y - 20) - 4, true);
-					// Clear level area
-					displayFillRoundRect(x + 4, 23, 20 + DISPLAY_H_EXTRA_PIXELS, battLevelHeight, 2, false);
-				}
-
-				displayThemeResetToDefault();
-
-				// Want to display instant battery voltage, not the averaged value.
-				if (pureBatteryLevel)
-				{
-					volts = (int)(batteryVoltage / 10);
-					mvolts = (int)(batteryVoltage - (volts * 10));
-				}
-				else
-				{
-					getBatteryVoltage(&volts, &mvolts);
-				}
-				if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
-				    snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "%1d.%1dВ", volts, mvolts);
-				else
-					snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "%1d.%1dV", volts, mvolts);
-				displayPrintAt(((x - (4 * 8)) >> 1), 19 + 1, buffer, FONT_SIZE_3);
-
-				if (pureBatteryLevel == false)
-				{
-					snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "%d%%", getBatteryPercentage());
-					displayPrintAt(((x - (strlen(buffer) * 8)) >> 1), (DISPLAY_SIZE_Y - 20)
-#if defined(PLATFORM_RD5R)
-							+ 7
-#endif
-							, buffer, FONT_SIZE_3);
-
-					uint32_t h = (uint32_t)(((averageBatteryVoltage - CUTOFF_VOLTAGE_UPPER_HYST) * battLevelHeight) / (BATTERY_MAX_VOLTAGE - CUTOFF_VOLTAGE_UPPER_HYST));
-					if (h > battLevelHeight)
-					{
-						h = battLevelHeight;
-					}
-
-					displayThemeApply(THEME_ITEM_FG_DECORATION, THEME_ITEM_BG);
-					// Draw Level
-					displayFillRoundRect(x + 4, 23 + battLevelHeight - h , 20 + DISPLAY_H_EXTRA_PIXELS, h, 2, (averageBatteryVoltage < BATTERY_CRITICAL_VOLTAGE) ? blink : true);
-				}
-				else
-				{
-					displayPrintCore(x + ((20 + DISPLAY_H_EXTRA_PIXELS) / 2), 23 + ((battLevelHeight - FONT_SIZE_3_HEIGHT) >> 1), "?", FONT_SIZE_3, TEXT_ALIGN_LEFT, blink);
-				}
-
-				if (voicePromptsIsPlaying() == false)
-				{
-					updateVoicePrompts(false, false);
-				}
-#endif
-			}
-
-			displayThemeApply(THEME_ITEM_FG_DECORATION, THEME_ITEM_BG);
-			// Low blinking arrow
-			displayFillTriangle(63 + DISPLAY_H_OFFSET, (DISPLAY_SIZE_Y - 1), 59 + DISPLAY_H_OFFSET, (DISPLAY_SIZE_Y - 5), 67 + DISPLAY_H_OFFSET, (DISPLAY_SIZE_Y - 5), blink);
-		}
-		break;
-
 		case RADIO_INFOS_CURRENT_TIME:
 			{
 				displayClearBuf();
@@ -543,285 +305,7 @@ static void updateScreen(uiEvent_t *ev, bool forceRedraw)
 			displayFillTriangle(63 + DISPLAY_H_OFFSET, (DISPLAY_SIZE_Y - 5), 59 + DISPLAY_H_OFFSET, (DISPLAY_SIZE_Y - 3), 67 + DISPLAY_H_OFFSET, (DISPLAY_SIZE_Y - 3), blink);
 			break;
 
-		case RADIO_INFOS_TEMPERATURE_LEVEL:
-		{
-			int temperature = getTemperature();
 
-			if ((prevTemperature != temperature) || (temperature > TEMPERATURE_CRITICAL) || forceRedraw)
-			{
-				const int x = 102 + DISPLAY_H_OFFSET;
-#if defined(PLATFORM_RD5R)
-				const int temperatureHeight = (DISPLAY_SIZE_Y - 34);
-				const int tankVCenter = (DISPLAY_SIZE_Y - 10);
-				const int tankRadius = 9;
-#else
-				const int temperatureHeight = (DISPLAY_SIZE_Y - 40);
-				const int tankVCenter = (DISPLAY_SIZE_Y - 14);
-				const int tankRadius = 11;
-#endif
-				prevTemperature = temperature;
-				renderArrowOnly = false;
-
-				if (forceRedraw)
-				{
-					displayClearBuf();
-					menuDisplayTitle(currentLanguage->temperature);
-
-					displayThemeApply(THEME_ITEM_FG_DECORATION, THEME_ITEM_BG);
-
-					// Body frame
-					displayDrawCircleHelper(x, 20 + 2, 7, (1 | 2), true);
-					displayDrawCircleHelper(x, 20 + 2, 6, (1 | 2), true);
-					displaySetPixel(x, (20 + 2) - 7, true);
-					displayDrawFastVLine(x - 7, 20 + 2, temperatureHeight - 1, true);
-					displayDrawFastVLine(x - 6, 20 + 2, temperatureHeight - 2, true);
-					displayDrawFastVLine(x + 6, 20 + 2, temperatureHeight - 2, true);
-					displayDrawFastVLine(x + 7, 20 + 2, temperatureHeight - 1, true);
-
-					displayDrawCircle(x, tankVCenter, tankRadius, true);
-					displayDrawCircle(x, tankVCenter, tankRadius - 1, true);
-					displayFillCircle(x, tankVCenter, tankRadius - 3, ((temperature > TEMPERATURE_CRITICAL) ? !blink : true));
-					displayFillRect(x - 5, 20, 11, temperatureHeight, true);
-
-					// H lines, min/max markers
-					displayDrawFastHLine(x - (7 + 5), 20, 5, true); // MAX: 70°C
-					displayDrawFastHLine(x - (7 + 5), (temperatureHeight + 20) - 1, 5, true); // MIN: 10°C
-				}
-				else
-				{
-					displayThemeApply(THEME_ITEM_FG_DECORATION, THEME_ITEM_BG);
-
-					// Clear temperature text area
-					displayFillRect((((x - (7 + 5)) - (7 * 8)) >> 1), 20, (7 * 8), (DISPLAY_SIZE_Y - 20) - 4, true);
-
-					// Clear thermo area
-					displayFillCircle(x, tankVCenter, tankRadius - 3, ((temperature > TEMPERATURE_CRITICAL) ? !blink : true));
-					displayFillRect(x - 4, 20, 9, temperatureHeight, true);
-				}
-
-				displayThemeResetToDefault();
-
-				snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "%3d.%1d%s", (temperature / 10), abs(temperature % 10), currentLanguage->celcius);
-				displayPrintAt((((x - (7 + 5)) - (7 * 8)) >> 1), (((DISPLAY_SIZE_Y - (14 + FONT_SIZE_3_HEIGHT)) >> 1) + 14), buffer, FONT_SIZE_3);
-
-				uint32_t t = (uint32_t)((((CLAMP(temperature, 100, 700)) - 100) * temperatureHeight) / (700 - 100)); // clamp to 10..70 °C, then scale
-
-				// Draw Level
-				if (t)
-				{
-					displayThemeApply(THEME_ITEM_FG_DECORATION, THEME_ITEM_BG);
-					displayFillRect(x - 4, 20 + temperatureHeight - t , 9, t, (temperature > TEMPERATURE_CRITICAL) ? blink : false);
-				}
-
-				if (voicePromptsIsPlaying() == false)
-				{
-					updateVoicePrompts(false, false);
-				}
-			}
-
-			displayThemeApply(THEME_ITEM_FG_DECORATION, THEME_ITEM_BG);
-			// Up/Down blinking arrow
-			displayFillTriangle(63 + DISPLAY_H_OFFSET, (DISPLAY_SIZE_Y - 1), 59 + DISPLAY_H_OFFSET, (DISPLAY_SIZE_Y - 3), 67 + DISPLAY_H_OFFSET, (DISPLAY_SIZE_Y - 3), blink);
-			displayFillTriangle(63 + DISPLAY_H_OFFSET, (DISPLAY_SIZE_Y - 5), 59 + DISPLAY_H_OFFSET, (DISPLAY_SIZE_Y - 3), 67 + DISPLAY_H_OFFSET, (DISPLAY_SIZE_Y - 3), blink);
-		}
-		break;
-
-		case RADIO_INFOS_BATTERY_GRAPH:
-		{
-#define  CHART_WIDTH 104
-			static int32_t hist[CHART_WIDTH];
-			static size_t histLen = 0;
-			bool newHistAvailable = false;
-
-			// Grab history values.
-			// There is a 10 ticks timeout, if it kicks in, history length will be 0, then
-			// redraw will be done on the next run
-			if (xSemaphoreTake(battSemaphore, (TickType_t)10) == pdTRUE)
-			{
-				if ((newHistAvailable = batteryVoltageHistory.modified) == true)
-				{
-					histLen = circularBufferGetData(&batteryVoltageHistory, hist, (sizeof(hist) / sizeof(hist[0])));
-					batteryVoltageHistory.modified = false;
-				}
-				xSemaphoreGive(battSemaphore);
-			}
-
-			if (newHistAvailable || forceRedraw)
-			{
-				static const uint8_t chartX = 2 + (2 * 6) + 3 + 2 + DISPLAY_H_OFFSET;
-				static const uint8_t chartY = 14 + 1 + 2;
-				const int chartHeight = (DISPLAY_SIZE_Y - 26);
-
-#if defined(PLATFORM_MD9600)
-				// Min is 10V, Max is 15V
-				// Pick: MIN @ 11V, MAX @ 14V
-				uint32_t minVH = (uint32_t)(((110 - CUTOFF_VOLTAGE_UPPER_HYST) * chartHeight) / (BATTERY_MAX_VOLTAGE - CUTOFF_VOLTAGE_UPPER_HYST));
-				uint32_t maxVH = (uint32_t)(((140 - CUTOFF_VOLTAGE_UPPER_HYST) * chartHeight) / (BATTERY_MAX_VOLTAGE - CUTOFF_VOLTAGE_UPPER_HYST));
-#else
-				// Min is 6.4V, Max is 8.2V
-				// Pick: MIN @ 7V, MAX @ 8V
-				uint32_t minVH = (uint32_t)(((70 - CUTOFF_VOLTAGE_UPPER_HYST) * chartHeight) / (BATTERY_MAX_VOLTAGE - CUTOFF_VOLTAGE_UPPER_HYST));
-				uint32_t maxVH = (uint32_t)(((80 - CUTOFF_VOLTAGE_UPPER_HYST) * chartHeight) / (BATTERY_MAX_VOLTAGE - CUTOFF_VOLTAGE_UPPER_HYST));
-#endif
-
-				renderArrowOnly = false;
-
-				// Redraw chart's axes, ticks and so on
-				if (forceRedraw)
-				{
-					displayClearBuf();
-					menuDisplayTitle(currentLanguage->battery);
-
-					displayThemeApply(THEME_ITEM_FG_DECORATION, THEME_ITEM_BG);
-
-					// 2 axis chart
-					displayDrawFastVLine(chartX - 3, chartY - 2, chartHeight + 2 + 3, true);
-					displayDrawFastVLine(chartX - 2, chartY - 2, chartHeight + 2 + 2, true);
-					displayDrawFastHLine(chartX - 3, chartY + chartHeight + 2, CHART_WIDTH + 3 + 3, true);
-					displayDrawFastHLine(chartX - 2, chartY + chartHeight + 1, CHART_WIDTH + 3 + 2, true);
-
-					// Min/Max Voltage ticks and values
-					displayDrawFastHLine(chartX - 6, (chartY + chartHeight) - minVH, 3, true);
-#if defined(PLATFORM_MD9600)
-					displayPrintAt(DISPLAY_H_OFFSET, ((chartY + chartHeight) - minVH) - 3, "11V", FONT_SIZE_1);
-					displayDrawFastHLine(chartX - 6, (chartY + chartHeight) - maxVH, 3, true);
-					displayPrintAt(DISPLAY_H_OFFSET, ((chartY + chartHeight) - maxVH) - 3, "14V", FONT_SIZE_1);
-#elif defined(PLATFORM_GD77) || defined(PLATFORM_GD77S) || defined(PLATFORM_DM1801) || defined(PLATFORM_DM1801A) || defined(PLATFORM_RD5R)
-					displayPrintAt(chartX - 3 - 12 - 3, ((chartY + chartHeight) - minVH) - 3, "7V", FONT_SIZE_1);
-					displayDrawFastHLine(chartX - 6, (chartY + chartHeight) - maxVH, 3, true);
-					displayPrintAt(chartX - 3 - 12 - 3, ((chartY + chartHeight) - maxVH) - 3, "8V", FONT_SIZE_1);
-#else // Other STM32 platforms
-					if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
-				  	    displayPrintAt(DISPLAY_H_OFFSET, ((chartY + chartHeight) - minVH) - 3, "7В", FONT_SIZE_1);
-					else
-						displayPrintAt(DISPLAY_H_OFFSET, ((chartY + chartHeight) - minVH) - 3, "7V", FONT_SIZE_1);
-					displayDrawFastHLine(chartX - 6, (chartY + chartHeight) - maxVH, 3, true);
-					if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
-					    displayPrintAt(DISPLAY_H_OFFSET, ((chartY + chartHeight) - maxVH) - 3, "8В", FONT_SIZE_1);
-					else
-						displayPrintAt(DISPLAY_H_OFFSET, ((chartY + chartHeight) - maxVH) - 3, "8V", FONT_SIZE_1);
-#endif
-
-					// Time ticks
-					for (uint8_t i = 0; i < CHART_WIDTH + 2; i += 22 /* ~ 15 minutes */)
-					{
-						displaySetPixel(chartX + i, (chartY + chartHeight) + 3, true);
-					}
-				}
-				else
-				{
-					displayThemeApply(THEME_ITEM_FG_DECORATION, THEME_ITEM_BG);
-					displayFillRect(chartX, chartY, CHART_WIDTH, chartHeight, true);
-				}
-
-				// Draw chart values, according to style
-				for (size_t i = 0; i < histLen; i++)
-				{
-					uint32_t y = (uint32_t)((((CLAMP(hist[i], CUTOFF_VOLTAGE_UPPER_HYST, BATTERY_MAX_VOLTAGE)) - CUTOFF_VOLTAGE_UPPER_HYST) *
-							chartHeight) / (BATTERY_MAX_VOLTAGE - CUTOFF_VOLTAGE_UPPER_HYST));
-
-					if (graphStyle == GRAPH_FILL)
-					{
-						displayDrawFastVLine(chartX + i, ((chartY + chartHeight) - y), y, true);
-					}
-					else
-					{
-						displaySetPixel(chartX + i, ((chartY + chartHeight) - y), true);
-					}
-				}
-
-				// Min/Max dot lines
-				for (uint8_t i = 0; i < CHART_WIDTH + 2; i++)
-				{
-					displaySetPixel(chartX + i, ((chartY + chartHeight) - minVH), (i % 2) ? false : true);
-					displaySetPixel(chartX + i, ((chartY + chartHeight) - maxVH), (i % 2) ? false : true);
-				}
-			}
-			else
-			{
-				displayThemeApply(THEME_ITEM_FG_DECORATION, THEME_ITEM_BG);
-			}
-
-			// Up blinking arrow
-			displayFillTriangle(63 + DISPLAY_H_OFFSET, (DISPLAY_SIZE_Y - 5), 59 + DISPLAY_H_OFFSET, (DISPLAY_SIZE_Y - 3), 67 + DISPLAY_H_OFFSET, (DISPLAY_SIZE_Y - 3), blink);
-
-			if (voicePromptsIsPlaying() == false)
-			{
-				updateVoicePrompts(false, false);
-			}
-		}
-		break;
-
-		case RADIO_INFOS_UP_TIME:
-		{
-			displayClearBuf();
-			menuDisplayTitle(currentLanguage->uptime);
-			uint32_t timeInSeconds = 0;//   (ev->time + uiDataGlobal.timeClockPITOffset) / 1000;
-
-			hours = timeInSeconds / (60 * 60);
-			minutes = (timeInSeconds % (60 * 60)) / 60;
-
-			snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "%u %s", hours, currentLanguage->hours);
-			displayPrintCentered((DISPLAY_SIZE_Y / 2) - 8, buffer, FONT_SIZE_3);
-
-			snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "%u %s", minutes, currentLanguage->minutes);
-			displayPrintCentered(((DISPLAY_SIZE_Y * 3) / 4) - 8, buffer, FONT_SIZE_3);
-
-			if (voicePromptsIsPlaying() == false)
-			{
-				updateVoicePrompts(false, false);
-			}
-
-			renderArrowOnly = false;
-
-			displayThemeApply(THEME_ITEM_FG_DECORATION, THEME_ITEM_BG);
-			// Up/Down blinking arrow
-			displayFillTriangle(63 + DISPLAY_H_OFFSET, (DISPLAY_SIZE_Y - 1), 59 + DISPLAY_H_OFFSET, (DISPLAY_SIZE_Y - 3), 67 + DISPLAY_H_OFFSET, (DISPLAY_SIZE_Y - 3), blink);
-			displayFillTriangle(63 + DISPLAY_H_OFFSET, (DISPLAY_SIZE_Y - 5), 59 + DISPLAY_H_OFFSET, (DISPLAY_SIZE_Y - 3), 67 + DISPLAY_H_OFFSET, (DISPLAY_SIZE_Y - 3), blink);
-		}
-		break;
-
-		case RADIO_INFOS_TIME_ALARM:
-			{
-				displayClearBuf();
-				menuDisplayTitle(currentLanguage->alarm_time);
-
-				if (keypadInputDigitsLength == 0)
-				{
-					hours = (uiDataGlobal.SatelliteAndAlarmData.alarmTime % (60 * 60 * 24))/ (60 * 60);
-					minutes = (uiDataGlobal.SatelliteAndAlarmData.alarmTime % (60 * 60)) / 60;
-					seconds = (uiDataGlobal.SatelliteAndAlarmData.alarmTime % 60);
-					snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "%02u:%02u:%02u", hours, minutes, seconds);
-
-					if (voicePromptsIsPlaying() == false)
-					{
-						updateVoicePrompts(false, false);
-					}
-				}
-				else
-				{
-					strcpy(buffer,"__:__:__");
-					int bufPos = 0;
-					for(int i = 0; i < keypadInputDigitsLength; i++)
-					{
-						buffer[bufPos++] = keypadInputDigits[i];
-						if ((bufPos == 2) || (bufPos == 5))
-						{
-							bufPos++;
-						}
-					}
-					displayThemeApply(THEME_ITEM_FG_TEXT_INPUT, THEME_ITEM_BG);
-				}
-
-				displayPrintCentered((DISPLAY_SIZE_Y / 2) - 8, buffer, FONT_SIZE_4);
-				renderArrowOnly = false;
-
-				displayThemeApply(THEME_ITEM_FG_DECORATION, THEME_ITEM_BG);
-				// Up/Down blinking arrow
-				displayFillTriangle(63 + DISPLAY_H_OFFSET, (DISPLAY_SIZE_Y - 1), 59 + DISPLAY_H_OFFSET, (DISPLAY_SIZE_Y - 3), 67 + DISPLAY_H_OFFSET, (DISPLAY_SIZE_Y - 3), blink);
-				displayFillTriangle(63 + DISPLAY_H_OFFSET, (DISPLAY_SIZE_Y - 5), 59 + DISPLAY_H_OFFSET, (DISPLAY_SIZE_Y - 3), 67 + DISPLAY_H_OFFSET, (DISPLAY_SIZE_Y - 3), blink);
-			}
-			break;
 	}
 
 	blink = !blink;
@@ -856,16 +340,6 @@ static void handleEvent(uiEvent_t *ev)
 			return;
 		}
 
-		if ((pureBatteryLevel == false) && BUTTONCHECK_EXTRALONGDOWN(ev, BUTTON_SK2))
-		{
-			pureBatteryLevel = true;
-			updateScreen(ev, true);
-		}
-		else if (pureBatteryLevel && (BUTTONCHECK_EXTRALONGDOWN(ev, BUTTON_SK2) == 0))
-		{
-			pureBatteryLevel = false;
-			updateScreen(ev, true);
-		}
 	}
 
 	if ((KEYCHECK_SHORTUP(ev->keys, KEY_GREEN) && BUTTONCHECK_DOWN(ev, BUTTON_SK2))
@@ -1084,7 +558,7 @@ static void handleEvent(uiEvent_t *ev)
 					return;
 				}
 
-				if (displayMode > RADIO_INFOS_BATTERY_LEVEL)
+				if (displayMode > RADIO_INFOS_CURRENT_TIME)
 				{
 					displayMode--;
 					updateScreen(ev, true);
@@ -1098,16 +572,7 @@ static void handleEvent(uiEvent_t *ev)
 #endif
 				switch(displayMode)
 				{
-					case RADIO_INFOS_BATTERY_GRAPH:
-						if (graphStyle == GRAPH_LINE)
-						{
-							graphStyle = GRAPH_FILL;
-							updateScreen(ev, true);
-						}
-						break;
-
 					case RADIO_INFOS_CURRENT_TIME:
-					case RADIO_INFOS_TIME_ALARM:
 					case RADIO_INFOS_DATE:
 					case RADIO_INFOS_LOCATION:
 						{
@@ -1126,16 +591,6 @@ static void handleEvent(uiEvent_t *ev)
 #if defined(PLATFORM_RT84_DM1701) || defined(PLATFORM_MD2017)
 			case KEY_ROTARY_INCREMENT:
 #endif
-				switch(displayMode)
-				{
-					case RADIO_INFOS_BATTERY_GRAPH:
-						if (graphStyle == GRAPH_FILL)
-						{
-							graphStyle = GRAPH_LINE;
-							updateScreen(ev, true);
-						}
-						break;
-				}
 				break;
 
 			default:
@@ -1383,33 +838,8 @@ static void handleEvent(uiEvent_t *ev)
 
 void menuRadioInfosInit(void)
 {
-	battSemaphore = xSemaphoreCreateMutex();
-
-	if (battSemaphore == NULL)
-	{
-		while(true); // Something better maybe ?
-	}
-
-	circularBufferInit(&batteryVoltageHistory);
 }
 
-// called every 2000 ticks
-void menuRadioInfosPushBackVoltage(int32_t voltage)
-{
-	// Store value each 40k ticks
-	if ((battery_stack_iter == 0) || (battery_stack_iter > BATTERY_ITER_PUSHBACK))
-	{
-		if (xSemaphoreTake(battSemaphore, (TickType_t)10) == pdTRUE)
-		{
-			circularBufferPushBack(&batteryVoltageHistory, voltage);
-			xSemaphoreGive(battSemaphore);
-		}
-
-		battery_stack_iter = 0;
-	}
-
-	battery_stack_iter++;
-}
 
 static void updateVoicePrompts(bool spellIt, bool firstRun)
 {
@@ -1429,30 +859,6 @@ static void updateVoicePrompts(bool spellIt, bool firstRun)
 
 		switch (displayMode)
 		{
-			case RADIO_INFOS_BATTERY_LEVEL:
-			case RADIO_INFOS_BATTERY_GRAPH:
-			{
-				int volts, mvolts;
-
-				voicePromptsAppendLanguageString(currentLanguage->battery);
-				getBatteryVoltage(&volts,  &mvolts);
-				snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, " %1d.%1d", volts, mvolts);
-				voicePromptsAppendString(buffer);
-				voicePromptsAppendPrompt(PROMPT_VOLTS);
-				voicePromptsAppendInteger(getBatteryPercentage());
-				voicePromptsAppendPrompt(PROMPT_PERCENT);
-			}
-			break;
-			case RADIO_INFOS_TEMPERATURE_LEVEL:
-			{
-				int temperature = getTemperature();
-
-				voicePromptsAppendLanguageString(currentLanguage->temperature);
-				snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "%d.%1d", (temperature / 10), (temperature % 10));
-				voicePromptsAppendString(buffer);
-				voicePromptsAppendLanguageString(currentLanguage->celcius);
-			}
-			break;
 			case RADIO_INFOS_CURRENT_TIME:
 				voicePromptsAppendLanguageString(currentLanguage->time);
 				if (!(nonVolatileSettings.timezone & 0x80))
@@ -1484,15 +890,6 @@ static void updateVoicePrompts(bool spellIt, bool firstRun)
 				voicePromptsAppendLanguageString(currentLanguage->date);
 				snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "%04u %02u %02u", (timeAndDate.tm_year + 1900),(timeAndDate.tm_mon + 1),timeAndDate.tm_mday);
 				voicePromptsAppendString(buffer);
-			break;
-			case RADIO_INFOS_UP_TIME:
-				voicePromptsAppendLanguageString(currentLanguage->uptime);
-				snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "%u", hours);
-				voicePromptsAppendString(buffer);
-				voicePromptsAppendLanguageString(currentLanguage->hours);
-				snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "%u", minutes);
-				voicePromptsAppendString(buffer);
-				voicePromptsAppendLanguageString(currentLanguage->minutes);
 			break;
 		}
 

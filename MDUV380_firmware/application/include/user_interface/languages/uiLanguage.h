@@ -327,6 +327,7 @@ typedef struct
    const char auto_lock[LANGUAGE_TEXTS_LENGTH];
    const char trackball[LANGUAGE_TEXTS_LENGTH];
    const char dmr_force_dmo[LANGUAGE_TEXTS_LENGTH];
+   const char dmrid[LANGUAGE_TEXTS_LENGTH];
 } stringsTable_t;
 
 #endif // _OPENGD77_UILANGUAGE_H_

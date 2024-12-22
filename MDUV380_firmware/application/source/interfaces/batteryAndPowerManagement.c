@@ -265,7 +265,6 @@ void batteryUpdate(void)
 			batteryVoltageCallbackTick++;
 			if (batteryVoltageCallbackTick >= BATTERY_VOLTAGE_CALLBACK_TICK_RELOAD)
 			{
-				menuRadioInfosPushBackVoltage(averageBatteryVoltage);
 				batteryVoltageCallbackTick = 0;
 			}
 		}

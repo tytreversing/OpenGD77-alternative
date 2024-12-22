@@ -288,6 +288,7 @@ const stringsTable_t russianLanguage =
 .auto_lock				= "Автоблок.", // MaxLen 16 (with ':' + .off or 0.5..15 (.5 step) + 'min')
 .trackball				= "Трекбол", // MaxLen 16 (with ':' + .on or .off)
 .dmr_force_dmo				= "Принуд. DMO", // MaxLen 16 (with ':' + .n_a or .on or .off)
+.dmrid                    = "Ввод DMR ID",
 };
 /********************************************************************
  *

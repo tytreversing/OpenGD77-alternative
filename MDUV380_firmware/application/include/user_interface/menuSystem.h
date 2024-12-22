@@ -327,6 +327,7 @@ enum MENU_SCREENS
 	MENU_THEME_ITEMS_BROWSER,
 	MENU_COLOUR_PICKER,
 #endif
+	MENU_DMRID,
 	NUM_MENU_ENTRIES
 };
 
@@ -408,15 +409,10 @@ typedef struct
 
 enum
 {
-	RADIO_INFOS_BATTERY_LEVEL = 0,
-	RADIO_INFOS_CURRENT_TIME,
+	RADIO_INFOS_CURRENT_TIME = 0,
 	RADIO_INFOS_DATE,
 	RADIO_INFOS_LOCATION,
-	RADIO_INFOS_TEMPERATURE_LEVEL,
-	RADIO_INFOS_BATTERY_GRAPH,
 	NUM_RADIO_INFOS_MENU_ITEMS,
-	RADIO_INFOS_UP_TIME,
-	RADIO_INFOS_TIME_ALARM
 };
 
 extern menuDataGlobal_t 		menuDataGlobal;
@@ -435,7 +431,7 @@ menuStatus_t uiPowerOff(uiEvent_t *event, bool isFirstRun);
 menuStatus_t menuZoneList(uiEvent_t *event, bool isFirstRun);
 menuStatus_t menuDisplayMenuList(uiEvent_t *event, bool isFirstRun);
 menuStatus_t menuRadioInfos(uiEvent_t *event, bool isFirstRun);
-
+menuStatus_t menuDMRID(uiEvent_t *event, bool isFirstRun);
 menuStatus_t menuFirmwareInfoScreen(uiEvent_t *event, bool isFirstRun);
 menuStatus_t menuNumericalEntry(uiEvent_t *event, bool isFirstRun);
 menuStatus_t menuTxScreen(uiEvent_t *event, bool isFirstRun);
