@@ -1,5 +1,5 @@
-#ifndef USER_INTERFACE_LANGUAGES_CATALAN_H_
-#define USER_INTERFACE_LANGUAGES_CATALAN_H_
+#ifndef USER_INTERFACE_LANGUAGES_RUSSIAN_H_
+#define USER_INTERFACE_LANGUAGES_RUSSIAN_H_
 /********************************************************************
  *
  * VERY IMPORTANT.
@@ -11,7 +11,7 @@
 #if defined(PLATFORM_GD77) || defined(PLATFORM_GD77S) || defined(PLATFORM_DM1801) || defined(PLATFORM_DM1801A) || defined(PLATFORM_RD5R)
 __attribute__((section(".upper_text")))
 #endif
-const stringsTable_t catalanLanguage =
+const stringsTable_t russianLanguage =
 {
 .magicNumber                            = { LANGUAGE_TAG_MAGIC_NUMBER, LANGUAGE_TAG_VERSION },
 .LANGUAGE_NAME 				= "Русский", // MaxLen: 16

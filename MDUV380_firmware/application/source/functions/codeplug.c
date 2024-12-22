@@ -249,25 +249,32 @@ uint16_t codeplugIntToCSS(uint16_t tone)
 	return ((tone == 0x0) ? CODEPLUG_CSS_TONE_NONE : tone);
 }
 
+
 void codeplugUtilConvertBufToString(char *codeplugBuf, char *outBuf, int len)
 {
-
-	for(int i = 0; i < len; i++)
+	if (codeplugBuf[0] !=0)
 	{
-		if (codeplugBuf[i] == 0xff)
+		for(int i = 0; i < len; i++)
 		{
-			codeplugBuf[i] = 0;
+			if (codeplugBuf[i] == 0xff)
+			{
+				codeplugBuf[i] = 0;
+			}
+			if (codeplugBuf[i] == 0x7f) // замена подменного символа на "я"
+				{
+				outBuf[i] = 0xff;
+				}
+			else
+				{
+				outBuf[i] = codeplugBuf[i];
+				}
 		}
-		if (codeplugBuf[i] == 0x7f) // замена подменного символа на "я"
-			{
-			   outBuf[i] = 0xff;
-			}
-		else
-			{
-			   outBuf[i] = codeplugBuf[i];
-			}
+		outBuf[len] = 0;
 	}
-	outBuf[len] = 0;
+	else
+	{
+		outBuf[0] = 0;
+	}
 }
 
 void codeplugUtilConvertStringToBuf(char *inBuf, char *outBuf, int len)

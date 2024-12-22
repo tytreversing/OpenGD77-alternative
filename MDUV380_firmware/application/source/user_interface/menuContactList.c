@@ -339,7 +339,7 @@ static void handleEvent(uiEvent_t *ev)
 				updateScreen(false);
 				menuContactListExitCode |= MENU_STATUS_LIST_TYPE;
 			}
-			else if (KEYCHECK_SHORTUP(ev->keys, KEY_HASH))
+			else if (KEYCHECK_SHORTUP(ev->keys, KEY_HASH) || KEYCHECK_SHORTUP(ev->keys, KEY_ROTARY_DECREMENT) || KEYCHECK_SHORTUP(ev->keys, KEY_ROTARY_INCREMENT))
 			{
 				if (contactListType == MENU_CONTACT_LIST_CONTACT_DIGITAL)
 				{

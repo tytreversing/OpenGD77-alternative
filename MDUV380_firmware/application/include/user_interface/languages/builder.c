@@ -44,26 +44,9 @@
 
 // These two aren't exported as gla file
 #include "english.h"
-#include "japanese.h"
+#include "russian.h"
 
-#include "french.h"
-#include "german.h"
-#include "portuguese.h"
-#include "catalan.h"
-#include "spanish.h"
-#include "italian.h"
-#include "danish.h"
-#include "finnish.h"
-#include "polish.h"
-#include "turkish.h"
-#include "czech.h"
-#include "dutch.h"
-#include "slovenian.h"
-#include "portugues_brazil.h"
-#include "swedish.h"
-#include "hungarian.h"
-#include "croatian.h"
-#include "romanian.h"
+
 
 
 #define VERSION_MAJOR 0
@@ -89,49 +72,8 @@ static const struct option long_options[] = {
 
 static bool languagesInError = false;
 
-const stringsTable_t languages[]=
-{
-     catalanLanguage,
-     danishLanguage,
-     frenchLanguage,
-     germanLanguage,
-     italianLanguage,
-     portuguesLanguage,
-     spanishLanguage,
-     finnishLanguage,
-     polishLanguage,
-     turkishLanguage,
-     czechLanguage,
-     dutchLanguage,
-     slovenianLanguage,
-     portuguesBrazilLanguage,
-     swedishLanguage,
-     hungarianLanguage,
-     croatianLanguage,
-     romanianLanguage
-};
+const stringsTable_t language = russianLanguage;
 
-const char *languageEnglishNames[] =
-{
-     "Catalan",
-     "Danish",
-     "French",
-     "German",
-     "Italian",
-     "Portuguese",
-     "Spanish",
-     "Finnish",
-     "Polish",
-     "Turkish",
-     "Czech",
-     "Dutch",
-     "Slovenian",
-     "PortuguesBrazil",
-     "Swedish",
-     "Hungarian",
-     "Croatian",
-     "Romanian"
-};
 
 
 static bool CreateLanguageFile(const stringsTable_t *language, const char *filename)
@@ -177,8 +119,6 @@ static void checkLanguage(const stringsTable_t *l, const char *name)
 
 	  if (strlen(buffer) > (LANGUAGE_TEXTS_LENGTH - 1))
 	  {
-	       //fprintf(stdout, "                                                   1      \\0\n");
-	       //fprintf(stdout, "                                          1234567890123456\n");
 	       fprintf(stdout, "  > LENGTH ERROR in member #%3" PRIu64 " / %3" PRIu64 ":  ", i + 1, (len / LANGUAGE_TEXTS_LENGTH));
 	       fprintf(stdout, " '%-*s' len: >= %" PRIu64 " (max: %u)\n", LANGUAGE_TEXTS_LENGTH, buffer, strlen(buffer), (LANGUAGE_TEXTS_LENGTH - 1));
 
@@ -198,43 +138,11 @@ static void checkLanguage(const stringsTable_t *l, const char *name)
 
 static void checkLanguages(void)
 {
-     // English
      checkLanguage(&englishLanguage, "English");
-
-     // Japanese
-     checkLanguage(&japaneseLanguage, "Japanese");
-
-     // Other languages
-     for (size_t i = 0; i < (sizeof(languages) / sizeof(stringsTable_t)); i++)
-     {
-	  checkLanguage(&languages[i], languageEnglishNames[i]);
-     }
+     checkLanguage(&russianLanguage, "Russian");
 }
 
-static void CreateAllLanguageFiles(void)
-{
-     checkLanguages();
 
-     if (languagesInError)
-     {
-	  fprintf(stdout, "\n\n ************************************************************************\n");
-	  fprintf(stdout, " **** Error(s) found in language file{s), won't build the gla files. ****\n");
-	  fprintf(stdout, " ************************************************************************\n\n");
-	  return;
-     }
-     
-     for (size_t i = 0; i < (sizeof(languages) / sizeof(stringsTable_t)); i++)
-     {
-	  char filename[1024];
-
-	  snprintf(filename, sizeof(filename), "%s.gla", languageEnglishNames[i]);
-
-	  if (CreateLanguageFile(&languages[i], filename) == false)
-	  {
-	       abort();
-	  }
-     }
-}
 
 static void displayHelp(void)
 {
@@ -251,7 +159,7 @@ int main(int argc, char **argv)
      int  c = '?';
      int  option_index = 0;
 
-     fprintf(stdout, "languages_builder v%u.%u.%u (c) 2023 Daniel Caujolle-Bert, F1RMB.\n", VERSION_MAJOR, VERSION_MINOR, VERSION_REV);
+     fprintf(stdout, "languages_builder v%u.%u.%u (c) 2023 Daniel Caujolle-Bert, F1RMB.\nModified by Aufwiegler (c) 2024\n", VERSION_MAJOR, VERSION_MINOR, VERSION_REV);
 
      if (argc > 1)
      {
@@ -278,9 +186,13 @@ int main(int argc, char **argv)
      else
      {
      createLanguages:
-	  CreateAllLanguageFiles();
+	  if (CreateLanguageFile(&language, "Russian.gla") == false)
+	   {
+	      abort();
+	   }
      }
-
+	 fprintf(stdout, "Press any key to exit...");
+     getchar();
 
      return 0;
 }

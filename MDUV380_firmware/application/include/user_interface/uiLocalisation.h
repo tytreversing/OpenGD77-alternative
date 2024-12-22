@@ -36,11 +36,7 @@ extern const stringsTable_t *currentLanguage;
 typedef enum
 {
 	englishLanguageName = 0,
-#if ! defined(LANGUAGE_BUILD_JAPANESE)
 	userLanguageName
-#else
-	japaneseLanguageName
-#endif
 } languageNamesOrder_t;
 
 extern const languageNamesOrder_t LANGUAGE_DISPLAY_ORDER[];

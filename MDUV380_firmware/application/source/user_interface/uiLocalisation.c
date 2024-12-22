@@ -30,12 +30,11 @@
 
 #include "user_interface/languages/english.h"
 
-#if ! defined(LANGUAGE_BUILD_JAPANESE)
+
 #if defined(PLATFORM_GD77) || defined(PLATFORM_GD77S) || defined(PLATFORM_DM1801) || defined(PLATFORM_DM1801A) || defined(PLATFORM_RD5R)
 __attribute__((section(".upper_text")))
 #endif
-const stringsTable_t userLanguage = { .magicNumber = { LANGUAGE_TAG_MAGIC_NUMBER, { 0x00, 0x00, 0x00, 0x00 } }, .LANGUAGE_NAME = "User" }; // Don't change the version number
-#endif
+const stringsTable_t userLanguage = { .magicNumber = { LANGUAGE_TAG_MAGIC_NUMBER, { 0x00, 0x00, 0x00, 0x00 } }, .LANGUAGE_NAME = "User" }; 
 
 
 /*
@@ -49,11 +48,7 @@ const stringsTable_t userLanguage = { .magicNumber = { LANGUAGE_TAG_MAGIC_NUMBER
 const stringsTable_t languages[]=
 {
 		englishLanguage,        // englishLanguageName
-#if defined(LANGUAGE_BUILD_JAPANESE)
-		japaneseLanguage       // japaneseLanguageName
-#else
 		userLanguage // User language, written by the CPS
-#endif
 };
 const stringsTable_t *currentLanguage;
 

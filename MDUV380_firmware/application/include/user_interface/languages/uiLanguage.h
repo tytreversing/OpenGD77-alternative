@@ -30,11 +30,9 @@
 
 #define LANGUAGE_TEXTS_LENGTH 17
 
-#if defined(LANGUAGE_BUILD_JAPANESE)
-#define LANGUAGE_TAG_MAGIC_NUMBER { 'I', 'G', 'N', 'R' }, { 'L', 'A', 'N', 'G' } // Never change this tag.
-#else
+
 #define LANGUAGE_TAG_MAGIC_NUMBER { 'G', 'D', '7', '7' }, { 'L', 'A', 'N', 'G' } // Never change this tag.
-#endif
+
 #define LANGUAGE_TAG_VERSION      { 0x00, 0x00, 0x00, 0x03 } // Bump the version each time the language struct is changed
 
 typedef struct
