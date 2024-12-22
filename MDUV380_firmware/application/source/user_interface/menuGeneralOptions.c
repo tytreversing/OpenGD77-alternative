@@ -58,7 +58,7 @@ enum
 	GENERAL_OPTIONS_TRACKBALL_ENABLED,
 #endif
 	GENERAL_OPTIONS_MENU_HOTSPOT_TYPE,
-	GENERAL_OPTIONS_MENU_TEMPERATURE_CALIBRATON,
+	//GENERAL_OPTIONS_MENU_TEMPERATURE_CALIBRATON,
 	GENERAL_OPTIONS_MENU_BATTERY_CALIBRATON,
 #if !defined(PLATFORM_MD9600) && !defined(PLATFORM_MD380)
 	GENERAL_OPTIONS_MENU_ECO_LEVEL,
@@ -238,7 +238,7 @@ static void updateScreen(bool isFirstRun)
 					}
 #endif
 					break;
-				case GENERAL_OPTIONS_MENU_TEMPERATURE_CALIBRATON:
+				/*case GENERAL_OPTIONS_MENU_TEMPERATURE_CALIBRATON:
 					{
 						int absValue = abs(nonVolatileSettings.temperatureCalibration);
 						leftSide = currentLanguage->temperature_calibration;
@@ -246,7 +246,7 @@ static void updateScreen(bool isFirstRun)
 								(nonVolatileSettings.temperatureCalibration > 0 ? '+' : '-')), ((absValue) / 2), ((absValue % 2) * 5));
 						snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%s%s", buf2, currentLanguage->celcius);
 					}
-					break;
+					break;*/
 				case GENERAL_OPTIONS_MENU_BATTERY_CALIBRATON:
 					{
 						int batCal = (nonVolatileSettings.batteryCalibration & 0x0F) - 5;
@@ -352,12 +352,12 @@ static void updateScreen(bool isFirstRun)
 
 				if ((rightSideVar[0] != 0) || ((rightSideVar[0] == 0) && (rightSideConst == NULL)))
 				{
-					if (mNum == GENERAL_OPTIONS_MENU_TEMPERATURE_CALIBRATON)
+					/*if (mNum == GENERAL_OPTIONS_MENU_TEMPERATURE_CALIBRATON)
 					{
 						voicePromptsAppendString(buf2);
 						voicePromptsAppendLanguageString(currentLanguage->celcius);
 					}
-					else if (mNum == GENERAL_OPTIONS_MENU_BATTERY_CALIBRATON)
+					else */if (mNum == GENERAL_OPTIONS_MENU_BATTERY_CALIBRATON)
 					{
 						voicePromptsAppendString(buf2);
 						voicePromptsAppendPrompt(PROMPT_VOLTS);
@@ -547,12 +547,12 @@ static void handleEvent(uiEvent_t *ev)
 					}
 #endif
 					break;
-				case GENERAL_OPTIONS_MENU_TEMPERATURE_CALIBRATON:
+				/*case GENERAL_OPTIONS_MENU_TEMPERATURE_CALIBRATON:
 					if (nonVolatileSettings.temperatureCalibration < 20)
 					{
 						settingsIncrement(nonVolatileSettings.temperatureCalibration, 1);
 					}
-					break;
+					break;*/
 				case GENERAL_OPTIONS_MENU_BATTERY_CALIBRATON:
 					{
 						uint32_t batVal = nonVolatileSettings.batteryCalibration & 0x0F;// lower 4 bits
@@ -674,12 +674,12 @@ static void handleEvent(uiEvent_t *ev)
 					}
 #endif
 					break;
-				case GENERAL_OPTIONS_MENU_TEMPERATURE_CALIBRATON:
+				/*case GENERAL_OPTIONS_MENU_TEMPERATURE_CALIBRATON:
 					if (nonVolatileSettings.temperatureCalibration > -20)
 					{
 						settingsDecrement(nonVolatileSettings.temperatureCalibration, 1);
 					}
-					break;
+					break;*/
 				case GENERAL_OPTIONS_MENU_BATTERY_CALIBRATON:
 					{
 						uint32_t batVal = nonVolatileSettings.batteryCalibration & 0x0F;// lower 4 bits
