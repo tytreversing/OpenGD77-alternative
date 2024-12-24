@@ -52,6 +52,11 @@ bool latLonIsWesternHemisphere = false;
 
 
 
+#if defined(PLATFORM_MD9600) || defined(PLATFORM_MDUV380) || defined(PLATFORM_MD380) || defined(PLATFORM_RT84_DM1701) || defined(PLATFORM_MD2017)
+__attribute__((section(".ccmram")))
+#else
+__attribute__((section(".data.$RAM2")))
+#endif
 
 
 

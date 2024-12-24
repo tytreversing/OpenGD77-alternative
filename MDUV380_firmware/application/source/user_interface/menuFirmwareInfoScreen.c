@@ -46,11 +46,7 @@ enum
 
 static const char *creditTexts[] =
 {
-		"OpenGD77 RUS:", "Aufwiegler", "https://opengd77rus.ru", "", "OpenGD77:", "Roger VK3KYY", "Daniel F1RMB", "Kai DG4KLU", "Colin G4EML", "Alex DL4LEX",
-#if defined(PLATFORM_RD5R)
-		"Dzmitry EW1ADG",
-#endif
-		"Jason VK7ZJA (SK)"
+		"OpenGD77 RUS:", "Дмитрий Вишнев", "https://opengd77rus.ru", "", "Шрифт Terminus:", "Димитар Жеков", "",  "OpenGD77:", "Roger VK3KYY", "Daniel F1RMB", "Kai DG4KLU", "Colin G4EML", "Alex DL4LEX", "Jason VK7ZJA (SK)"
 };
 static const int maxCredits = (sizeof(creditTexts) / sizeof(creditTexts[0]));
 static const int maxCreditsPages = (maxCredits / maxDisplayedCreditsLines) + ((maxCredits % maxDisplayedCreditsLines) == 0 ? 0 : 1);

@@ -645,7 +645,7 @@ void menuSystemLanguageHasChanged(void)
 
 const menuItemNewData_t mainMenuItems[] =
 {
-	{ 274, MENU_DMRID           },  //номер строки в zpsrjdjv файле -50
+	//{ 274, MENU_DMRID           },  //номер строки в языковом файле -50
 	{   3, MENU_ZONE_LIST       },
 	{   6, MENU_CONTACTS_MENU   },
 	{  12, MENU_CHANNEL_DETAILS },
