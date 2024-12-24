@@ -641,6 +641,7 @@ void uiVFOModeUpdateScreen(int txTimeSecs)
 
 				}
 			}
+			displayPrintAt(0, DISPLAY_Y_POS_TX_FREQ + 22, currentLanguage->vfomenu, FONT_SIZE_3);
 			displayRender();
 			break;
 

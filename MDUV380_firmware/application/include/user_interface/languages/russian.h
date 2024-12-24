@@ -289,6 +289,10 @@ const stringsTable_t russianLanguage =
 .trackball				= "Трекбол", // MaxLen 16 (with ':' + .on or .off)
 .dmr_force_dmo				= "Принуд. DMO", // MaxLen 16 (with ':' + .n_a or .on or .off)
 .dmrid                    = "Ввод DMR ID",
+.dmridtext = "",
+.aliastext = "",
+.vfomenu = " Меню        Каналы ",
+.chmenu = " Меню           VFO ",
 };
 /********************************************************************
  *

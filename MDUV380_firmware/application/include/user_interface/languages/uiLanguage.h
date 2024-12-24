@@ -328,6 +328,10 @@ typedef struct
    const char trackball[LANGUAGE_TEXTS_LENGTH];
    const char dmr_force_dmo[LANGUAGE_TEXTS_LENGTH];
    const char dmrid[LANGUAGE_TEXTS_LENGTH];
+   const char dmridtext[LANGUAGE_TEXTS_LENGTH];
+   const char aliastext[LANGUAGE_TEXTS_LENGTH];
+   const char vfomenu[21];
+   const char chmenu[21];
 } stringsTable_t;
 
 #endif // _OPENGD77_UILANGUAGE_H_

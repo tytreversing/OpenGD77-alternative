@@ -322,6 +322,10 @@ const stringsTable_t englishLanguage =
 .trackball				= "Trackball", // MaxLen 16 (with ':' + .on or .off)
 .dmr_force_dmo				= "Force DMO", // MaxLen 16 (with ':' + .n_a or .on or .off)
 .dmrid                    = "Set DMR ID",
+.dmridtext = "",
+.aliastext = "",
+.vfomenu = " Menu      Channels ",
+.chmenu = " Menu           VFO ",
 };
 /********************************************************************
  *

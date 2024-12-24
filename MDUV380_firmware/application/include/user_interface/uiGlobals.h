@@ -126,9 +126,9 @@ typedef uint32_t time_t_custom;     /* date/time in unix secs past 1-Jan-70 */
 #define DISPLAY_Y_POS_CSS_INFO               (16 + 8)
 #define DISPLAY_Y_POS_SQL_INFO               (25 + 8)
 #define DISPLAY_Y_POS_TX_TIMER                (8 + 16)
-#define DISPLAY_Y_POS_RX_FREQ                (40 + 40)
-#define DISPLAY_Y_POS_TX_FREQ                (48 + 48)
-#define DISPLAY_Y_POS_ZONE                   (50 + DISPLAY_V_EXTRA_PIXELS)
+#define DISPLAY_Y_POS_RX_FREQ                (40 + 32)
+#define DISPLAY_Y_POS_TX_FREQ                (48 + 40)
+#define DISPLAY_Y_POS_ZONE                   (32 + DISPLAY_V_EXTRA_PIXELS)
 #define DISPLAY_Y_POS_RSSI_VALUE             (18 + 16)
 #define DISPLAY_Y_POS_RSSI_BAR               (40 + DISPLAY_V_OFFSET)
 #define TITLE_BOX_HEIGHT                      21
