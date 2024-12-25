@@ -437,7 +437,6 @@ void uiVFOModeUpdateScreen(int txTimeSecs)
 
 	displayClearBuf();
 	uiUtilityRenderHeader(uiVFOModeDualWatchIsScanning(), uiVFOModeSweepScanning(true));
-
 	switch(uiDataGlobal.displayQSOState)
 	{
 		case QSO_DISPLAY_DEFAULT_SCREEN:
@@ -641,8 +640,11 @@ void uiVFOModeUpdateScreen(int txTimeSecs)
 
 				}
 			}
+			displayThemeApply(THEME_ITEM_FG_HEADER_TEXT, THEME_ITEM_BG_HEADER_TEXT);
+			displayFillRect(0, DISPLAY_SIZE_Y-18, DISPLAY_SIZE_X, 16, true);
 			displayPrintAt(0, DISPLAY_Y_POS_TX_FREQ + 22, currentLanguage->vfomenu, FONT_SIZE_3);
 			displayRender();
+			displayThemeResetToDefault();
 			break;
 
 		case QSO_DISPLAY_CALLER_DATA:
@@ -3314,7 +3316,6 @@ static void sweepScanStep(void)
 	if (ticksTimerHasExpired(&uiDataGlobal.Scan.timer))
 	{
 		ticksTimerStart(&uiDataGlobal.Scan.timer, VFO_SWEEP_STEP_TIME);
-
 		if (uiDataGlobal.Scan.sweepSampleIndex < VFO_SWEEP_NUM_SAMPLES)
 		{
 #if defined(PLATFORM_MD380) || defined(PLATFORM_MDUV380) || defined(PLATFORM_RT84_DM1701) || defined(PLATFORM_MD2017)

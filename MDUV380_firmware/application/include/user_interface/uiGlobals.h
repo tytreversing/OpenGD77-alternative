@@ -57,7 +57,7 @@
 
 typedef uint32_t time_t_custom;     /* date/time in unix secs past 1-Jan-70 */
 
-#define MAX_ZONE_SCAN_NUISANCE_CHANNELS       16
+#define MAX_ZONE_SCAN_NUISANCE_CHANNELS       32
 #define NUM_LASTHEARD_STORED                  32
 
 #if defined(PLATFORM_RD5R)

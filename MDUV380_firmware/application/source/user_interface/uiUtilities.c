@@ -1919,7 +1919,7 @@ void uiUtilityRenderHeader(bool isVFODualWatchScanning, bool isVFOSweepScanning)
 				{
 					bool aprsSuspended = false;
 
-					strcpy(buffer, "APRS");
+					strcpy(buffer, "A");
 
 #if ! defined(PLATFORM_GD77S)
 					if ((aprsBeaconingGetMode() == APRS_BEACONING_MODE_OFF) || aprsBeaconingIsSuspended())
@@ -2064,7 +2064,7 @@ void uiUtilityRenderHeader(bool isVFODualWatchScanning, bool isVFOSweepScanning)
 #if defined(PLATFORM_MD380) || defined(PLATFORM_MDUV380) || defined(PLATFORM_RT84_DM1701) || defined(PLATFORM_MD2017)
 	if (nonVolatileSettings.gps >= GPS_MODE_ON)
 	{
-		displayPrintCore(DISPLAY_SIZE_X - 50, DISPLAY_Y_POS_HEADER, currentLanguage->gps, ((gpsData.Status & GPS_STATUS_HAS_FIX) ? FONT_SIZE_1_BOLD : FONT_SIZE_1), TEXT_ALIGN_LEFT, false);
+		displayPrintCore(DISPLAY_SIZE_X - 50, DISPLAY_Y_POS_HEADER, "G", ((gpsData.Status & GPS_STATUS_HAS_FIX) ? FONT_SIZE_1_BOLD : FONT_SIZE_1), TEXT_ALIGN_LEFT, false);
 	}
 #endif
 #endif
