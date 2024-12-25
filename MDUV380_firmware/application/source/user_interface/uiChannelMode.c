@@ -1937,7 +1937,10 @@ static void updateQuickMenuScreen(bool isFirstRun)
 					}
 					else
 					{
-						snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%s", DMR_DESTINATION_FILTER_LEVELS[uiDataGlobal.QuickMenu.tmpDmrDestinationFilterLevel - 1]);
+						if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+												snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%s", DMR_DESTINATION_FILTER_LEVELS_RUS[uiDataGlobal.QuickMenu.tmpDmrDestinationFilterLevel - 1]);
+											else
+												snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%s", DMR_DESTINATION_FILTER_LEVELS[uiDataGlobal.QuickMenu.tmpDmrDestinationFilterLevel - 1]);
 					}
 					break;
 				case CH_SCREEN_QUICK_MENU_DMR_CC_SCAN:

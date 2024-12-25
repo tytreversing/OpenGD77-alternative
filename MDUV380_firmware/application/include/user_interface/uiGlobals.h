@@ -571,6 +571,7 @@ extern const char 				*POWER_LEVELS[];
 extern const char 				*POWER_LEVEL_UNITS[];
 extern const char 				*POWER_LEVEL_UNITS_RUS[];
 extern const char 				*DMR_DESTINATION_FILTER_LEVELS[];
+extern const char 				*DMR_DESTINATION_FILTER_LEVELS_RUS[];
 extern const char 				*DMR_CCTS_FILTER_LEVELS[];
 extern const char 				*ANALOG_FILTER_LEVELS[];
 
