@@ -140,7 +140,7 @@
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="SeggerRTT"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="USB_DEVICE"/>
-						<entry excluding="include/user_interface/languages/src/languages_builder.c|include/user_interface/languages/builder.c" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="application"/>
+						<entry excluding="source/user_interface/menuRSSIScreen.c|include/user_interface/languages/src/languages_builder.c|include/user_interface/languages/builder.c" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="application"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -287,7 +287,7 @@
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="SeggerRTT"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="USB_DEVICE"/>
-						<entry excluding="include/user_interface/languages/src/languages_builder.c|include/user_interface/languages/builder.c" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="application"/>
+						<entry excluding="source/user_interface/menuRSSIScreen.c|include/user_interface/languages/src/languages_builder.c|include/user_interface/languages/builder.c" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="application"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -432,7 +432,7 @@
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="SeggerRTT"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="USB_DEVICE"/>
-						<entry excluding="include/user_interface/languages/src/languages_builder.c|include/user_interface/languages/builder.c" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="application"/>
+						<entry excluding="source/user_interface/menuRSSIScreen.c|include/user_interface/languages/src/languages_builder.c|include/user_interface/languages/builder.c" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="application"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -579,7 +579,7 @@
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="SeggerRTT"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="USB_DEVICE"/>
-						<entry excluding="include/user_interface/languages/src/languages_builder.c|include/user_interface/languages/builder.c" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="application"/>
+						<entry excluding="source/user_interface/menuRSSIScreen.c|include/user_interface/languages/src/languages_builder.c|include/user_interface/languages/builder.c" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="application"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

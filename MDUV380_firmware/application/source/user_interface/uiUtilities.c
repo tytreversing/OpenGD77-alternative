@@ -1570,13 +1570,13 @@ void uiUtilityDisplayInformation(const char *str, displayInformation_t line, int
 					p += snprintf(p, bufLen - (p - buf), "%s", currentLanguage->none);
 				}
 
-				p += snprintf(p, bufLen - (p - buf), "|Tx:");
+				p += snprintf(p, bufLen - (p - buf), " Tx:");
 
 				type = codeplugGetCSSType(currentChannelData->txTone);
 				if (type == CSS_TYPE_CTCSS)
 				{
 					if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
-					    p += snprintf(p, bufLen - (p - buf), "%d.%d Гц", currentChannelData->txTone / 10 , currentChannelData->txTone % 10);
+					    p += snprintf(p, bufLen - (p - buf), "%d,%d Гц", currentChannelData->txTone / 10 , currentChannelData->txTone % 10);
 					else
 						p += snprintf(p, bufLen - (p - buf), "%d.%dHz", currentChannelData->txTone / 10 , currentChannelData->txTone % 10);
 				}
@@ -1796,7 +1796,7 @@ void uiUtilityRenderHeader(bool isVFODualWatchScanning, bool isVFOSweepScanning)
 	const int COLOR_CODE_X_CENTER = 89;
 #else
 	const int FILTER_TEXT_X_CENTER = 34;
-	const int POWER_X_CENTER = 63;
+	const int POWER_X_CENTER = 60;
 	const int COLOR_CODE_X_CENTER = 92;
 #endif
 	char buffer[SCREEN_LINE_BUFFER_SIZE];
@@ -2038,7 +2038,7 @@ void uiUtilityRenderHeader(bool isVFODualWatchScanning, bool isVFOSweepScanning)
 	}
 	else
 	{
-		displayPrintCore(((POWER_X_CENTER + (itemOffset * 2)) - ((strlen(buffer) * 6) >> 1)), DISPLAY_Y_POS_HEADER, buffer,
+		displayPrintCore(((COLOR_CODE_X_CENTER + (itemOffset * 2)) - ((strlen(buffer) * 6) >> 1)), DISPLAY_Y_POS_HEADER, buffer,
 				((isPerChannelPower && (nonVolatileSettings.extendedInfosOnScreen & (INFO_ON_SCREEN_PWR & INFO_ON_SCREEN_BOTH))) ? FONT_SIZE_1_BOLD : FONT_SIZE_1), TEXT_ALIGN_LEFT, false);
 	}
 
@@ -2048,10 +2048,10 @@ void uiUtilityRenderHeader(bool isVFODualWatchScanning, bool isVFOSweepScanning)
 		uint8_t ccode = trxGetDMRColourCode();
 		bool isNotFilteringCC = !(nonVolatileSettings.dmrCcTsFilter & DMR_CC_FILTER_PATTERN);
 
-		snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, " CC%u", ccode);
+		snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "CC%u", ccode);
 
 		int16_t ccPixLen = (strlen(buffer) * 6);
-		int16_t ccXPos = ((COLOR_CODE_X_CENTER + (itemOffset * 3)) - (ccPixLen >> 1));
+		int16_t ccXPos = ((POWER_X_CENTER + (itemOffset * 3)) - (ccPixLen >> 1));
 		if (isNotFilteringCC)
 		{
 			displayFillRect((ccXPos - 1), DISPLAY_Y_POS_HEADER - 1, (ccPixLen + 1), 9, false);
@@ -2113,24 +2113,62 @@ void uiUtilityRedrawHeaderOnly(bool isVFODualWatchScanning, bool isVFOSweepScann
 	displayRenderRows(0, 2);
 }
 
+#define BAR_X 9
+DECLARE_SMETER_ARRAY(rssiMeterBar, (DISPLAY_SIZE_X - (BAR_X - 1)));
+
 static void drawHeaderBar(int *barWidth, int16_t barHeight)
 {
 	*barWidth = CLAMP(*barWidth, 0, DISPLAY_SIZE_X);
 
-	displayThemeApply(THEME_ITEM_FG_RSSI_BAR, THEME_ITEM_BG_HEADER_TEXT);
+	displayThemeApply(THEME_ITEM_FG_DEFAULT, THEME_ITEM_BG);
+	displayDrawRect((BAR_X - 2), (DISPLAY_Y_POS_RSSI - 2), (DISPLAY_SIZE_X - (BAR_X - 2)), (8 + 4), true);
+	displayDrawFastVLine((DISPLAY_SIZE_X - 1), (DISPLAY_Y_POS_RSSI - 1), (8 + 2), false);
+	displayPrintAt(1, DISPLAY_Y_POS_RSSI, "S", FONT_SIZE_1_BOLD);
+
+		int xPos;
+		int currentMode = trxGetMode();
+
+		for (uint8_t i = 0; i < 10; i++)
+		{
+			// Scale the bar graph so values S0 - S9 take 70% of the scale width, and signals above S9 take the last 30%
+			// On DMR the max signal is S9+10, so teh entire bar can be the sale scale
+			// ON FM signals above S9, the scale is compressed to 2/STRONG_SIGNAL_RESCALE
+			if ((i <= 9) || (currentMode == RADIO_MODE_DIGITAL))
+			{
+				xPos = rssiMeterBar[i];
+			}
+			else
+			{
+				xPos = ((rssiMeterBar[i] - rssiMeterBar[9]) / STRONG_SIGNAL_RESCALE) + rssiMeterBar[9];
+			}
+			xPos *= 2;
+
+			// V ticks
+			displayDrawFastVLine(((BAR_X - 2) + xPos), (DISPLAY_Y_POS_RSSI + 8) + 2, ((i % 2) ? 3 : 1), ((i < 10) ? true : false));
+
+			if ((i % 2) && (i < 10))
+			{
+				char buf[2];
+				sprintf(buf, "%d", i);
+				displayPrintAt(((((BAR_X - 2) + xPos) - 2) - 1)/* FONT_2 H offset */, DISPLAY_Y_POS_RSSI + 15, buf, FONT_SIZE_2);
+			}
+		}
+	displayThemeApply(THEME_ITEM_FG_RSSI_BAR, THEME_ITEM_BG);
 	if (*barWidth)
 	{
-		displayFillRect(0, DISPLAY_Y_POS_BAR, *barWidth, barHeight, false);
+		displayFillRect(BAR_X, DISPLAY_Y_POS_RSSI, *barWidth, barHeight, false);
 	}
 
 	// Clear the end of the bar area, if needed
 	if (*barWidth < DISPLAY_SIZE_X)
 	{
-		displayFillRect(*barWidth, DISPLAY_Y_POS_BAR, (DISPLAY_SIZE_X - *barWidth), barHeight, true);
+		displayFillRect(*barWidth, DISPLAY_Y_POS_RSSI, (DISPLAY_SIZE_X - *barWidth), barHeight, true);
 	}
-
+	//displayRenderRows(3, 5);
 	displayThemeResetToDefault();
 }
+
+
 
 void uiUtilityDrawRSSIBarGraph(void)
 {
@@ -2146,7 +2184,7 @@ void uiUtilityDrawRSSIBarGraph(void)
 		// So no scaling is required, as the full scale value is approximately S9+10dB
 	}
 
-
+	displayThemeResetToDefault();
 	// Scale the entire bar by 2.
 	// Because above S9 the values are scaled to 1/5. This results in the signal below S9 being doubled in scale
 	// Signals above S9 the scales is compressed to 2/5.
@@ -2154,9 +2192,8 @@ void uiUtilityDrawRSSIBarGraph(void)
 
 	int barWidth = ((rssi * rssiMeterHeaderBarNumUnits) / rssiMeterHeaderBarDivider);
 
-	drawHeaderBar(&barWidth, 4);
+	drawHeaderBar(&barWidth, 8);
 
-#if defined(HAS_COLOURS)
 	int xPos = 0;
 
 	if (rssi > SMETER_S9)
@@ -2165,30 +2202,11 @@ void uiUtilityDrawRSSIBarGraph(void)
 
 		if (barWidth > xPos)
 		{
-			displayThemeApply(THEME_ITEM_FG_RSSI_BAR_S9P, THEME_ITEM_BG_HEADER_TEXT);
-			displayFillRect(xPos, DISPLAY_Y_POS_BAR, (barWidth - xPos), 4, false);
+			displayThemeApply(THEME_ITEM_FG_RSSI_BAR_S9P, THEME_ITEM_BG);
+			displayFillRect(xPos, DISPLAY_Y_POS_RSSI, (barWidth - xPos), 8, false);
 			displayThemeResetToDefault();
 		}
 	}
-#endif
-
-#if 0 // Commented for now, maybe an option later.
-	int currentMode = trxGetMode();
-	for (uint8_t i = 1; ((i < 10) && (xPos <= barWidth)); i += 2)
-	{
-		if ((i <= 9) || (currentMode == RADIO_MODE_DIGITAL))
-		{
-			xPos = rssiMeterHeaderBar[i];
-		}
-		else
-		{
-			xPos = ((rssiMeterHeaderBar[i] - rssiMeterHeaderBar[9]) / STRONG_SIGNAL_RESCALE) + rssiMeterHeaderBar[9];
-		}
-		xPos *= 2;
-
-		ucDrawFastVLine(xPos, (DISPLAY_Y_POS_BAR + 1), 2, false);
-	}
-#endif
 }
 
 void uiUtilityDrawFMMicLevelBarGraph(void)

@@ -308,14 +308,15 @@ menuStatus_t uiVFOMode(uiEvent_t *ev, bool isFirstRun)
 						// as there is no need to redraw the rest of the screen
 						if (doRendering)
 						{
-							if (uiNotificationIsVisible())
-							{
+							/*if (uiNotificationIsVisible())
+							{*/
 								displayRender();
-							}
+							/*}
 							else
 							{
 								displayRenderRows(((uiDataGlobal.Scan.active && (uiDataGlobal.Scan.state == SCAN_STATE_PAUSED)) ? 0 : 1), 2);
-							}
+								displayRenderRows(3, 5);
+							}*/
 						}
 					}
 

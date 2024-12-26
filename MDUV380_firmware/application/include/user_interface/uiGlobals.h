@@ -117,6 +117,7 @@ typedef uint32_t time_t_custom;     /* date/time in unix secs past 1-Jan-70 */
 #define DISPLAY_Y_POS_MENU_ENTRY_HIGHLIGHT   (32 + DISPLAY_V_OFFSET)
 #endif
 #define DISPLAY_Y_POS_BAR                     10
+#define DISPLAY_Y_POS_RSSI                   42
 #define DISPLAY_Y_POS_CONTACT                (16 + 8)
 #define DISPLAY_Y_POS_CONTACT_TX             (34 + DISPLAY_V_OFFSET)
 #define DISPLAY_Y_POS_CONTACT_TX_FRAME       (34 + DISPLAY_V_OFFSET)
@@ -125,7 +126,7 @@ typedef uint32_t time_t_custom;     /* date/time in unix secs past 1-Jan-70 */
 #define DISPLAY_Y_POS_SQUELCH_BAR             16
 #define DISPLAY_Y_POS_CSS_INFO               (16 + 8)
 #define DISPLAY_Y_POS_SQL_INFO               (25 + 8)
-#define DISPLAY_Y_POS_TX_TIMER                (8 + 16)
+#define DISPLAY_Y_POS_TX_TIMER                8//(8 + 16)
 #define DISPLAY_Y_POS_RX_FREQ                (40 + 32)
 #define DISPLAY_Y_POS_TX_FREQ                (48 + 40)
 #define DISPLAY_Y_POS_ZONE                   (32 + DISPLAY_V_EXTRA_PIXELS)

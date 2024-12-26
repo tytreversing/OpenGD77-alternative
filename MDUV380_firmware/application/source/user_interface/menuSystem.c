@@ -62,7 +62,7 @@ menuDataGlobal_t menuDataGlobal =
 				&menuDataContact,
 				NULL,// zone
 				NULL,// RadioInfos
-				NULL,// RSSI
+				//NULL,// RSSI
 				NULL,// LastHeard
 				&menuDataOptions,// Options
 				NULL,// General options
@@ -117,7 +117,7 @@ static menuFunctionData_t menuFunctions[] =
 		{ menuDisplayMenuList,      NULL, NULL, 0 },// display Contact menu using the menu display system
 		{ menuZoneList,             NULL, NULL, 0 },
 		{ menuRadioInfos,           NULL, NULL, 0 },
-		{ menuRSSIScreen,           NULL, NULL, 0 },
+		//{ menuRSSIScreen,           NULL, NULL, 0 },
 		{ menuLastHeard,            NULL, NULL, 0 },
 		{ menuDisplayMenuList,      NULL, NULL, 0 },
 		{ menuGeneralOptions,       NULL, NULL, 0 },
@@ -649,7 +649,7 @@ const menuItemNewData_t mainMenuItems[] =
 	{   3, MENU_ZONE_LIST       },
 	{   6, MENU_CONTACTS_MENU   },
 	{  12, MENU_CHANNEL_DETAILS },
-	{   4, MENU_RSSI_SCREEN     },
+	//{   4, MENU_RSSI_SCREEN     },
 	{   8, MENU_FIRMWARE_INFO   },
 	{   9, MENU_OPTIONS         },
 	{   7, MENU_LAST_HEARD      },
