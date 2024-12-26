@@ -2253,19 +2253,19 @@ void uiUtilityDisplayFrequency(uint8_t y, bool isTX, bool hasFocus, uint32_t fre
 	// Focus + direction
 	snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "%c%c", ((hasFocus && !isScanMode)? '>' : ' '), (isTX ? 'T' : 'R'));
 
-	displayPrintAt(0, y, buffer, FONT_SIZE_3);
+	displayPrintAt(12, y, buffer, FONT_SIZE_3);
 	// VFO
 	if (displayVFOChannel)
 	{
-		displayPrintAt(16, y + VFO_LETTER_Y_OFFSET, (((dualWatchVFO == 0) && (nonVolatileSettings.currentVFONumber == 0)) || (dualWatchVFO == 1)) ? "A" : "B", FONT_SIZE_1);
+		displayPrintAt(28, y + VFO_LETTER_Y_OFFSET, (((dualWatchVFO == 0) && (nonVolatileSettings.currentVFONumber == 0)) || (dualWatchVFO == 1)) ? "A" : "B", FONT_SIZE_1);
 	}
 	// Frequency
 	snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "%d.%05d", val_before_dp, val_after_dp);
-	displayPrintAt(FREQUENCY_X_POS, y, buffer, FONT_SIZE_3);
+	displayPrintAt(FREQUENCY_X_POS+10, y, buffer, FONT_SIZE_3);
 	if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
-	    displayPrintAt(DISPLAY_SIZE_X - (3 * 8), y, "МГц", FONT_SIZE_3);
+	    displayPrintAt(DISPLAY_SIZE_X - (6 * 8), y, "МГц", FONT_SIZE_3);
 	else
-		displayPrintAt(DISPLAY_SIZE_X - (3 * 8), y, "MHz", FONT_SIZE_3);
+		displayPrintAt(DISPLAY_SIZE_X - (6 * 8), y, "MHz", FONT_SIZE_3);
 
 	displayThemeResetToDefault();
 }
