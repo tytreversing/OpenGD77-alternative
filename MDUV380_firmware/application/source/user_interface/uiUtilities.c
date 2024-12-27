@@ -2116,9 +2116,14 @@ void uiUtilityRedrawHeaderOnly(bool isVFODualWatchScanning, bool isVFOSweepScann
 #define BAR_X 9
 DECLARE_SMETER_ARRAY(rssiMeterBar, (DISPLAY_SIZE_X - (BAR_X - 1)));
 
+static int dBm = 0;
+
+
+
+
 static void drawHeaderBar(int *barWidth, int16_t barHeight)
 {
-	*barWidth = CLAMP(*barWidth, 0, DISPLAY_SIZE_X);
+	//*barWidth = CLAMP(*barWidth, 0, DISPLAY_SIZE_X);
 
 	displayThemeApply(THEME_ITEM_FG_DEFAULT, THEME_ITEM_BG);
 	displayDrawRect((BAR_X - 2), (DISPLAY_Y_POS_RSSI - 2), (DISPLAY_SIZE_X - (BAR_X - 2)), (8 + 4), true);
@@ -2130,9 +2135,6 @@ static void drawHeaderBar(int *barWidth, int16_t barHeight)
 
 		for (uint8_t i = 0; i < 10; i++)
 		{
-			// Scale the bar graph so values S0 - S9 take 70% of the scale width, and signals above S9 take the last 30%
-			// On DMR the max signal is S9+10, so teh entire bar can be the sale scale
-			// ON FM signals above S9, the scale is compressed to 2/STRONG_SIGNAL_RESCALE
 			if ((i <= 9) || (currentMode == RADIO_MODE_DIGITAL))
 			{
 				xPos = rssiMeterBar[i];
@@ -2142,10 +2144,7 @@ static void drawHeaderBar(int *barWidth, int16_t barHeight)
 				xPos = ((rssiMeterBar[i] - rssiMeterBar[9]) / STRONG_SIGNAL_RESCALE) + rssiMeterBar[9];
 			}
 			xPos *= 2;
-
-			// V ticks
 			displayDrawFastVLine(((BAR_X - 2) + xPos), (DISPLAY_Y_POS_RSSI + 8) + 2, ((i % 2) ? 3 : 1), ((i < 10) ? true : false));
-
 			if ((i % 2) && (i < 10))
 			{
 				char buf[2];
@@ -2158,13 +2157,10 @@ static void drawHeaderBar(int *barWidth, int16_t barHeight)
 	{
 		displayFillRect(BAR_X, DISPLAY_Y_POS_RSSI, *barWidth, barHeight, false);
 	}
-
-	// Clear the end of the bar area, if needed
 	if (*barWidth < DISPLAY_SIZE_X)
 	{
 		displayFillRect(*barWidth, DISPLAY_Y_POS_RSSI, (DISPLAY_SIZE_X - *barWidth), barHeight, true);
 	}
-	//displayRenderRows(3, 5);
 	displayThemeResetToDefault();
 }
 
@@ -2172,26 +2168,18 @@ static void drawHeaderBar(int *barWidth, int16_t barHeight)
 
 void uiUtilityDrawRSSIBarGraph(void)
 {
-	int rssi = trxGetRSSIdBm(RADIO_DEVICE_PRIMARY);
+	char buffer[10];
+	int rssi = dBm = trxGetRSSIdBm(RADIO_DEVICE_PRIMARY);
 
 	if ((rssi > SMETER_S9) && (trxGetMode() == RADIO_MODE_ANALOG))
 	{
-		// In Analog mode, the max RSSI value from the hardware is over S9+60.
-		// So scale this to fit in the last 30% of the display
 		rssi = ((rssi - SMETER_S9) / STRONG_SIGNAL_RESCALE) + SMETER_S9;
-
-		// in Digital mode. The maximum signal is around S9+10 dB.
-		// So no scaling is required, as the full scale value is approximately S9+10dB
 	}
 
 	displayThemeResetToDefault();
-	// Scale the entire bar by 2.
-	// Because above S9 the values are scaled to 1/5. This results in the signal below S9 being doubled in scale
-	// Signals above S9 the scales is compressed to 2/5.
 	rssi = (rssi - SMETER_S0) * 2;
-
 	int barWidth = ((rssi * rssiMeterHeaderBarNumUnits) / rssiMeterHeaderBarDivider);
-
+	barWidth = CLAMP((barWidth - 1), 0, (DISPLAY_SIZE_X - BAR_X));
 	drawHeaderBar(&barWidth, 8);
 
 	int xPos = 0;
@@ -2207,6 +2195,11 @@ void uiUtilityDrawRSSIBarGraph(void)
 			displayThemeResetToDefault();
 		}
 	}
+	if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+				    snprintf(buffer, 10, "%d%s", dBm, " дБм");
+				else
+					snprintf(buffer, 10, "%d%s", dBm, "dBm");
+	displayPrintAt(DISPLAY_X_POS_DBM, DISPLAY_Y_POS_RSSI, buffer, FONT_SIZE_2);
 }
 
 void uiUtilityDrawFMMicLevelBarGraph(void)
