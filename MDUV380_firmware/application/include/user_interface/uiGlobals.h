@@ -114,7 +114,7 @@ typedef uint32_t time_t_custom;     /* date/time in unix secs past 1-Jan-70 */
 #define DISPLAY_X_POS_MENU_OFFSET              4
 #define DISPLAY_X_POS_MENU_TEXT_OFFSET       (DISPLAY_X_POS_MENU_OFFSET + 4)
 #define DISPLAY_Y_POS_MENU_START             (16 + MENU_ENTRY_HEIGHT)
-#define DISPLAY_X_POS_DBM                      90
+#define DISPLAY_X_POS_DBM                     80
 #if defined(PLATFORM_VARIANT_DM1701)
 #define DISPLAY_Y_POS_MENU_ENTRY_HIGHLIGHT   (32 + DISPLAY_V_OFFSET - (MENU_ENTRY_HEIGHT / 2))
 #else
