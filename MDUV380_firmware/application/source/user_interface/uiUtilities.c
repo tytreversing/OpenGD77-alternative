@@ -2234,7 +2234,7 @@ void uiUtilityDrawFMMicLevelBarGraph(void)
 void uiUtilityDrawDMRMicLevelBarGraph(void)
 {
 	int barWidth = ((uint16_t)(sqrt(micAudioSamplesTotal) * 1.5));
-	barWidth = CLAMP((barWidth - 1), 0, (DISPLAY_SIZE_X));
+	barWidth = CLAMP((barWidth - 1), 0, (DISPLAY_SIZE_X - BAR_X));
 	drawHeaderBar(&barWidth, 8, false);
 }
 
