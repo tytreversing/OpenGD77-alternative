@@ -2121,37 +2121,40 @@ static int dBm = 0;
 
 
 
-static void drawHeaderBar(int *barWidth, int16_t barHeight)
+static void drawHeaderBar(int *barWidth, int16_t barHeight, bool isRSSI)
 {
-	//*barWidth = CLAMP(*barWidth, 0, DISPLAY_SIZE_X);
-
+	*barWidth = CLAMP(*barWidth, BAR_X, DISPLAY_SIZE_X);
 	displayThemeApply(THEME_ITEM_FG_DEFAULT, THEME_ITEM_BG);
 	displayDrawRect((BAR_X - 2), (DISPLAY_Y_POS_RSSI - 2), (DISPLAY_SIZE_X - (BAR_X - 2)), (8 + 4), true);
 	displayDrawFastVLine((DISPLAY_SIZE_X - 1), (DISPLAY_Y_POS_RSSI - 1), (8 + 2), false);
-	displayPrintAt(1, DISPLAY_Y_POS_RSSI, "S", FONT_SIZE_1_BOLD);
-
-		int xPos;
-		int currentMode = trxGetMode();
-
-		for (uint8_t i = 0; i < 10; i++)
-		{
-			if ((i <= 9) || (currentMode == RADIO_MODE_DIGITAL))
-			{
-				xPos = rssiMeterBar[i];
-			}
-			else
-			{
-				xPos = ((rssiMeterBar[i] - rssiMeterBar[9]) / STRONG_SIGNAL_RESCALE) + rssiMeterBar[9];
-			}
-			xPos *= 2;
-			displayDrawFastVLine(((BAR_X - 2) + xPos), (DISPLAY_Y_POS_RSSI + 8) + 2, ((i % 2) ? 3 : 1), ((i < 10) ? true : false));
-			if ((i % 2) && (i < 10))
-			{
-				char buf[2];
-				sprintf(buf, "%d", i);
-				displayPrintAt(((((BAR_X - 2) + xPos) - 2) - 1)/* FONT_2 H offset */, DISPLAY_Y_POS_RSSI + 15, buf, FONT_SIZE_2);
-			}
-		}
+	if (isRSSI)
+		displayPrintAt(1, DISPLAY_Y_POS_RSSI, "S", FONT_SIZE_1_BOLD);
+	else
+		displayPrintAt(1, DISPLAY_Y_POS_RSSI, "M", FONT_SIZE_1_BOLD);
+	int xPos;
+	int currentMode = trxGetMode();
+    if (isRSSI)
+    {
+    	for (uint8_t i = 0; i < 10; i++)
+    	{
+    		if ((i <= 9) || (currentMode == RADIO_MODE_DIGITAL))
+    		{
+    			xPos = rssiMeterBar[i];
+    		}
+    		else
+    		{
+    			xPos = ((rssiMeterBar[i] - rssiMeterBar[9]) / STRONG_SIGNAL_RESCALE) + rssiMeterBar[9];
+    		}
+    		xPos *= 2;
+    		displayDrawFastVLine(((BAR_X - 2) + xPos), (DISPLAY_Y_POS_RSSI + 8) + 2, ((i % 2) ? 3 : 1), ((i < 10) ? true : false));
+    		if ((i % 2) && (i < 10))
+    		{
+    			char buf[2];
+    			sprintf(buf, "%d", i);
+    			displayPrintAt(((((BAR_X - 2) + xPos) - 2) - 1)/* FONT_2 H offset */, DISPLAY_Y_POS_RSSI + 15, buf, FONT_SIZE_2);
+    		}
+    	}
+    }
 	displayThemeApply(THEME_ITEM_FG_RSSI_BAR, THEME_ITEM_BG);
 	if (*barWidth)
 	{
@@ -2180,7 +2183,7 @@ void uiUtilityDrawRSSIBarGraph(void)
 	rssi = (rssi - SMETER_S0) * 2;
 	int barWidth = ((rssi * rssiMeterHeaderBarNumUnits) / rssiMeterHeaderBarDivider);
 	barWidth = CLAMP((barWidth - 1), 0, (DISPLAY_SIZE_X - BAR_X));
-	drawHeaderBar(&barWidth, 8);
+	drawHeaderBar(&barWidth, 8, true);
 
 	int xPos = 0;
 
@@ -2205,7 +2208,6 @@ void uiUtilityDrawRSSIBarGraph(void)
 void uiUtilityDrawFMMicLevelBarGraph(void)
 {
 	trxReadVoxAndMicStrength();
-
 	uint16_t micdB =
 #if defined(PLATFORM_MD9600) || defined(PLATFORM_MD380) || defined(PLATFORM_MDUV380) || defined(PLATFORM_RT84_DM1701) || defined(PLATFORM_MD2017)
 			trxTxMic + // trxTxMic is in 0.2dB unit
@@ -2223,14 +2225,14 @@ void uiUtilityDrawFMMicLevelBarGraph(void)
 			((uint16_t)(((float)DISPLAY_SIZE_X / 50.0) * ((float)micdB - 50.0))) // display from 50dB to 100dB, span over 128pix
 #endif
 			, DISPLAY_SIZE_X);
-
-	drawHeaderBar(&barWidth, 4);
+	drawHeaderBar(&barWidth, 8, false);
 }
 
 void uiUtilityDrawDMRMicLevelBarGraph(void)
 {
 	int barWidth = ((uint16_t)(sqrt(micAudioSamplesTotal) * 1.5));
-	drawHeaderBar(&barWidth, 4);
+	barWidth = CLAMP((barWidth - 1), 0, (DISPLAY_SIZE_X - BAR_X));
+	drawHeaderBar(&barWidth, 8, false);
 }
 
 void setOverrideTGorPC(uint32_t tgOrPc, bool privateCall)
