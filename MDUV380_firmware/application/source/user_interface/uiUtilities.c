@@ -1919,7 +1919,7 @@ void uiUtilityRenderHeader(bool isVFODualWatchScanning, bool isVFOSweepScanning)
 				{
 					bool aprsSuspended = false;
 
-					strcpy(buffer, "A");
+					strcpy(buffer, "APRS");
 
 #if ! defined(PLATFORM_GD77S)
 					if ((aprsBeaconingGetMode() == APRS_BEACONING_MODE_OFF) || aprsBeaconingIsSuspended())
@@ -1927,8 +1927,10 @@ void uiUtilityRenderHeader(bool isVFODualWatchScanning, bool isVFOSweepScanning)
 						aprsSuspended = true;
 					}
 #endif
-					displayPrintCore(MODE_TEXT_X_OFFSET + (modePixelLen + 6), DISPLAY_Y_POS_HEADER, buffer,
+					displayThemeResetToDefault();
+					displayPrintCore(DISPLAY_X_POS_APRS, DISPLAY_Y_POS_SECONDSTRING, buffer,
 							(aprsSuspended ? FONT_SIZE_1 : FONT_SIZE_1_BOLD), TEXT_ALIGN_LEFT, false);
+					displayThemeApply(THEME_ITEM_FG_HEADER_TEXT, THEME_ITEM_BG_HEADER_TEXT);
 				}
 			}
 
@@ -2060,14 +2062,7 @@ void uiUtilityRenderHeader(bool isVFODualWatchScanning, bool isVFOSweepScanning)
 		displayPrintCore(ccXPos, DISPLAY_Y_POS_HEADER, buffer, FONT_SIZE_1, TEXT_ALIGN_LEFT, isNotFilteringCC);
 	}
 
-#if defined(HAS_GPS)
-#if defined(PLATFORM_MD380) || defined(PLATFORM_MDUV380) || defined(PLATFORM_RT84_DM1701) || defined(PLATFORM_MD2017)
-	if (nonVolatileSettings.gps >= GPS_MODE_ON)
-	{
-		displayPrintCore(DISPLAY_SIZE_X - 50, DISPLAY_Y_POS_HEADER, "G", ((gpsData.Status & GPS_STATUS_HAS_FIX) ? FONT_SIZE_1_BOLD : FONT_SIZE_1), TEXT_ALIGN_LEFT, false);
-	}
-#endif
-#endif
+
 
 	// Display battery percentage/voltage
 	bool apoEnabled = (nonVolatileSettings.apo > 0);
@@ -2092,6 +2087,14 @@ void uiUtilityRenderHeader(bool isVFODualWatchScanning, bool isVFOSweepScanning)
 	}
 
 	displayThemeResetToDefault();
+#if defined(HAS_GPS)
+#if defined(PLATFORM_MD380) || defined(PLATFORM_MDUV380) || defined(PLATFORM_RT84_DM1701) || defined(PLATFORM_MD2017)
+	if (nonVolatileSettings.gps >= GPS_MODE_ON)
+	{
+		displayPrintCore(DISPLAY_X_POS_GPS, DISPLAY_Y_POS_SECONDSTRING, "GPS", ((gpsData.Status & GPS_STATUS_HAS_FIX) ? FONT_SIZE_1_BOLD : FONT_SIZE_1), TEXT_ALIGN_LEFT, false);
+	}
+#endif
+#endif
 }
 
 void uiUtilityRedrawHeaderOnly(bool isVFODualWatchScanning, bool isVFOSweepScanning)
@@ -2182,7 +2185,7 @@ void uiUtilityDrawRSSIBarGraph(void)
 	displayThemeResetToDefault();
 	rssi = (rssi - SMETER_S0) * 2;
 	int barWidth = ((rssi * rssiMeterHeaderBarNumUnits) / rssiMeterHeaderBarDivider);
-	barWidth = CLAMP((barWidth - 1), 0, (DISPLAY_SIZE_X - BAR_X));
+	barWidth = CLAMP((barWidth - 1), 0, (DISPLAY_SIZE_X));
 	drawHeaderBar(&barWidth, 8, true);
 
 	int xPos = 0;
@@ -2231,7 +2234,7 @@ void uiUtilityDrawFMMicLevelBarGraph(void)
 void uiUtilityDrawDMRMicLevelBarGraph(void)
 {
 	int barWidth = ((uint16_t)(sqrt(micAudioSamplesTotal) * 1.5));
-	barWidth = CLAMP((barWidth - 1), 0, (DISPLAY_SIZE_X - BAR_X));
+	barWidth = CLAMP((barWidth - 1), 0, (DISPLAY_SIZE_X));
 	drawHeaderBar(&barWidth, 8, false);
 }
 
