@@ -642,7 +642,7 @@ void uiVFOModeUpdateScreen(int txTimeSecs)
 				}
 			}
 			displayThemeApply(THEME_ITEM_FG_HEADER_TEXT, THEME_ITEM_BG_HEADER_TEXT);
-			displayFillRect(0, DISPLAY_SIZE_Y-18, DISPLAY_SIZE_X, 16, true);
+			displayFillRect(0, DISPLAY_SIZE_Y-18, DISPLAY_SIZE_X, 18, true);
 			displayPrintAt(0, DISPLAY_Y_POS_TX_FREQ + 22, currentLanguage->vfomenu, FONT_SIZE_3);
 			displayRender();
 			displayThemeResetToDefault();

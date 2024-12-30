@@ -28,27 +28,14 @@
 #include "main.h"
 #include "user_interface/uiLocalisation.h"
 
+#include "user_interface/languages/russian.h"
 #include "user_interface/languages/english.h"
 
 
-#if defined(PLATFORM_GD77) || defined(PLATFORM_GD77S) || defined(PLATFORM_DM1801) || defined(PLATFORM_DM1801A) || defined(PLATFORM_RD5R)
-__attribute__((section(".upper_text")))
-#endif
-const stringsTable_t userLanguage = { .magicNumber = { LANGUAGE_TAG_MAGIC_NUMBER, { 0x00, 0x00, 0x00, 0x00 } }, .LANGUAGE_NAME = "User" }; 
-
-
-/*
- * Note.
- *
- * Do not re-order the list of languages, unless you also change the MagicNumber in the settings
- * Because otherwise the radio will load a different language than the one the user previously saved when the radio was turned off
- * Add new languages at the end of the list
- *
- */
 const stringsTable_t languages[]=
 {
-		englishLanguage,        // englishLanguageName
-		userLanguage // User language, written by the CPS
+		russianLanguage,
+		englishLanguage
 };
 const stringsTable_t *currentLanguage;
 
