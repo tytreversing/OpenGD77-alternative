@@ -48,7 +48,7 @@ const char *POWER_LEVELS[]                  = { "50", "250", "500", "750", "1", 
 #endif
 
 const char *POWER_LEVEL_UNITS[]             = { "mW", "mW",  "mW",  "mW",  "W", "W", "W", "W", "W", "" };
-const char *POWER_LEVEL_UNITS_RUS[]             = { "мВт", "мВт",  "мВт",  "мВт",  "Вт", "Вт", "Вт", "Вт", "Вт", "" };
+const char *POWER_LEVEL_UNITS_RUS[]             = { " мВт", " мВт",  " мВт",  " мВт",  " Вт", " Вт", " Вт", " Вт", " Вт", "" };
 const char *DMR_DESTINATION_FILTER_LEVELS[] = { "TG", "Ct", "TGL" };
 const char *DMR_DESTINATION_FILTER_LEVELS_RUS[] = { "Гр", "Кт", "СпГ" };
 const char *ANALOG_FILTER_LEVELS[]          = { "CTCSS|DCS" };

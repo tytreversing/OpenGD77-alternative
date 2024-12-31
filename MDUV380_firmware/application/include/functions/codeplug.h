@@ -399,6 +399,7 @@ bool codeplugDTMFContactGetDataForIndex(int index, struct_codeplugDTMFContact_t 
 uint32_t codeplugGetUserDMRID(void);
 void codeplugSetUserDMRID(uint32_t dmrId);
 void codeplugGetRadioName(char *buf);
+void codeplugSetRadioName(char *buf);
 void codeplugGetBootScreenData(char *line1, char *line2, uint8_t *displayType);
 void codeplugGetVFO_ChannelData(struct_codeplugChannel_t *vfoBuf, Channel_t VFONumber);
 void codeplugSetVFO_ChannelData(struct_codeplugChannel_t *vfoBuf, Channel_t VFONumber);

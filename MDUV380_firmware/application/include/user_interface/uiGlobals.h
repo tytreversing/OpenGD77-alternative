@@ -137,6 +137,8 @@ typedef uint32_t time_t_custom;     /* date/time in unix secs past 1-Jan-70 */
 #define DISPLAY_Y_POS_RSSI_VALUE             (18 + 16)
 #define DISPLAY_Y_POS_RSSI_BAR               (40 + DISPLAY_V_OFFSET)
 #define TITLE_BOX_HEIGHT                      21
+#if defined(PLATFORM_VARIANT_DM1701)
+#endif
 #elif defined(PLATFORM_MD2017)
 #define DISPLAY_H_EXTRA_PIXELS                32
 #define DISPLAY_H_OFFSET                     (DISPLAY_H_EXTRA_PIXELS / 2)
@@ -189,17 +191,17 @@ typedef uint32_t time_t_custom;     /* date/time in unix secs past 1-Jan-70 */
 #define DISPLAY_Y_POS_CONTACT                 16
 #define DISPLAY_Y_POS_CONTACT_TX              34
 #define DISPLAY_Y_POS_CONTACT_TX_FRAME        34
-#define DISPLAY_Y_POS_CHANNEL_FIRST_LINE      32
-#define DISPLAY_Y_POS_CHANNEL_SECOND_LINE     48
+#define DISPLAY_Y_POS_CHANNEL_FIRST_LINE      33
+#define DISPLAY_Y_POS_CHANNEL_SECOND_LINE     49
 #define DISPLAY_Y_POS_SQUELCH_BAR             16
 #define DISPLAY_Y_POS_CSS_INFO                16
 #define DISPLAY_Y_POS_SQL_INFO                25
-#define DISPLAY_Y_POS_TX_TIMER                8
-#define DISPLAY_Y_POS_RX_FREQ                 32
-#define DISPLAY_Y_POS_TX_FREQ                 48
-#define DISPLAY_Y_POS_ZONE                    50
-#define DISPLAY_Y_POS_RSSI_VALUE              18
-#define DISPLAY_Y_POS_RSSI_BAR                40
+#define DISPLAY_Y_POS_TX_TIMER                8//(8 + 16)
+#define DISPLAY_Y_POS_RX_FREQ                (40 + 32)
+#define DISPLAY_Y_POS_TX_FREQ                (48 + 40)
+#define DISPLAY_Y_POS_ZONE                   (32 + DISPLAY_V_EXTRA_PIXELS)
+#define DISPLAY_Y_POS_RSSI_VALUE             (18 + 16)
+#define DISPLAY_Y_POS_RSSI_BAR               (40 + DISPLAY_V_OFFSET)
 #define TITLE_BOX_HEIGHT                      21
 #else
 #define DISPLAY_H_EXTRA_PIXELS                 0
@@ -217,21 +219,21 @@ typedef uint32_t time_t_custom;     /* date/time in unix secs past 1-Jan-70 */
 #define DISPLAY_X_POS_MENU_TEXT_OFFSET       (DISPLAY_X_POS_MENU_OFFSET + 0)
 #define DISPLAY_Y_POS_MENU_START             (16 + MENU_ENTRY_HEIGHT)
 #define DISPLAY_Y_POS_MENU_ENTRY_HIGHLIGHT    32
-#define DISPLAY_Y_POS_BAR                     10
-#define DISPLAY_Y_POS_CONTACT                 16
-#define DISPLAY_Y_POS_CONTACT_TX              34
-#define DISPLAY_Y_POS_CONTACT_TX_FRAME        34
-#define DISPLAY_Y_POS_CHANNEL_FIRST_LINE      32
-#define DISPLAY_Y_POS_CHANNEL_SECOND_LINE     48
-#define DISPLAY_Y_POS_SQUELCH_BAR             16
-#define DISPLAY_Y_POS_CSS_INFO                16
-#define DISPLAY_Y_POS_SQL_INFO                25
-#define DISPLAY_Y_POS_TX_TIMER                8
-#define DISPLAY_Y_POS_RX_FREQ                 32
-#define DISPLAY_Y_POS_TX_FREQ                 48
-#define DISPLAY_Y_POS_ZONE                    50
-#define DISPLAY_Y_POS_RSSI_VALUE              18
-#define DISPLAY_Y_POS_RSSI_BAR                40
+#define DISPLAY_Y_POS_BAR                     12
+#define DISPLAY_Y_POS_CONTACT                 12
+#define DISPLAY_Y_POS_CONTACT_TX              28
+#define DISPLAY_Y_POS_CONTACT_TX_FRAME        26
+#define DISPLAY_Y_POS_CHANNEL_FIRST_LINE      24
+#define DISPLAY_Y_POS_CHANNEL_SECOND_LINE     38
+#define DISPLAY_Y_POS_SQUELCH_BAR             14
+#define DISPLAY_Y_POS_CSS_INFO                13
+#define DISPLAY_Y_POS_SQL_INFO                22
+#define DISPLAY_Y_POS_TX_TIMER                12
+#define DISPLAY_Y_POS_RX_FREQ                 31
+#define DISPLAY_Y_POS_TX_FREQ                 40
+#define DISPLAY_Y_POS_ZONE                    40
+#define DISPLAY_Y_POS_RSSI_VALUE              16
+#define DISPLAY_Y_POS_RSSI_BAR                27
 #define TITLE_BOX_HEIGHT                      21
 #endif
 

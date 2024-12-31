@@ -1315,6 +1315,13 @@ void codeplugGetRadioName(char *buf)
 	codeplugUtilConvertBufToString(buf, buf, 8);
 }
 
+void codeplugSetRadioName(char *buf)
+{
+	codeplugUtilConvertStringToBuf(buf, buf, 8);
+	EEPROM_Write(CODEPLUG_ADDR_USER_CALLSIGN, (uint8_t *)buf, 8);
+
+}
+
 // Max length the user can enter is 16. Hence buf must be 17 chars to allow for the termination
 void codeplugGetBootScreenData(char *line1, char *line2, uint8_t *displayType)
 {
