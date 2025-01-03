@@ -885,6 +885,9 @@ static void cpsHandleCommand(void)
 			}
 #endif
 			break;
+		case 77: //сброс настроек
+			settingsRestoreDefaultSettings();
+			break;
 		case 254: // PING
 #if defined(HAS_GPS)
 			cpsStopGPSNMEA();

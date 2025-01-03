@@ -171,7 +171,7 @@ const stringsTable_t russianLanguage =
 .vfo_freq_bind_mode			= "Связ. Tx с Rx",
 .overwrite_qm				= "Переписать?", //Maxlen: 14 chars
 .eco_level				= "Экономайзер",
-.buttons				= "Кнопки",
+.buttons				= "кнопки",
 .leds					= "Светодиод",
 .scan_dwell_time			= "Время скан.",
 .battery_calibration			= "Кал. акк.",
@@ -208,7 +208,7 @@ const stringsTable_t russianLanguage =
 .radio_options			= "Радиосвязь",
 .auto_night				= "Авто реж.", // MaxLen: 16 (with .on or .off)
 .dmr_rx_agc				= "АРУ DMR",
-.speaker_click_suppress			= "Подавл. щелчк.",
+.speaker_click_suppress			= "Без щелчк.",
 .gps					= "GPS",
 .end_only				= "в конце",
 .dmr_crc				= "DMR CRC",
@@ -293,6 +293,9 @@ const stringsTable_t russianLanguage =
 .aliastext = "Алиас",
 .vfomenu = " Меню        Каналы ",
 .chmenu = " Меню           VFO ",
+.satcom = "SATCOM",
+.ham = "Р/Л",
+.cps = "по CPS",
 };
 /********************************************************************
  *

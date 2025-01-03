@@ -71,7 +71,7 @@ const frequencyHardwareBand_t RADIO_HARDWARE_FREQUENCY_BANDS[RADIO_BANDS_TOTAL_N
 														.calIQTableMinFreq = 13600000,
 														.calPowerTableMinFreq = 13500000,
 														.minFreq=19000000,
-														.maxFreq=28200000
+														.maxFreq=34900000
 													},// 220Mhz
 #endif
 													{
@@ -118,7 +118,7 @@ frequencyBand_t USER_FREQUENCY_BANDS[RADIO_BANDS_TOTAL_NUM] =  {
 													},// VHF
 													{
 														.minFreq=22200000,
-														.maxFreq=22500000
+														.maxFreq=34900000
 													},// 220Mhz
 													{
 														.minFreq=42000000,
@@ -133,7 +133,7 @@ const frequencyBand_t DEFAULT_USER_FREQUENCY_BANDS[RADIO_BANDS_TOTAL_NUM] =  {
 													},// VHF
 													{
 														.minFreq=22200000,
-														.maxFreq=22500000
+														.maxFreq=34900000
 													},// 220Mhz
 													{
 														.minFreq=42000000,

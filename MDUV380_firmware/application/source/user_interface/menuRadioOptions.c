@@ -143,13 +143,13 @@ static void updateScreen(bool isFirstRun)
 					switch(nonVolatileSettings.txFreqLimited)
 					{
 						case BAND_LIMITS_NONE:
-							rightSideConst = currentLanguage->off;
+							rightSideConst = currentLanguage->satcom;
 							break;
 						case BAND_LIMITS_ON_LEGACY_DEFAULT:
-							rightSideConst = currentLanguage->on;
+							rightSideConst = currentLanguage->ham;
 							break;
 						case BAND_LIMITS_FROM_CPS:
-							strcpy(rightSideVar,"CPS");
+							rightSideConst = currentLanguage->cps;
 							break;
 					}
 

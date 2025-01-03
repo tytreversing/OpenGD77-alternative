@@ -332,6 +332,9 @@ typedef struct
    const char aliastext[LANGUAGE_TEXTS_LENGTH];
    const char vfomenu[21];
    const char chmenu[21];
+   const char satcom[LANGUAGE_TEXTS_LENGTH];
+   const char ham[LANGUAGE_TEXTS_LENGTH];
+   const char cps[LANGUAGE_TEXTS_LENGTH];
 } stringsTable_t;
 
 #endif // _OPENGD77_UILANGUAGE_H_

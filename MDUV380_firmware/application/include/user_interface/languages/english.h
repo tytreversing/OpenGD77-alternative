@@ -326,6 +326,9 @@ const stringsTable_t englishLanguage =
 .aliastext = "Alias",
 .vfomenu = " Menu      Channels ",
 .chmenu = " Menu           VFO ",
+.satcom = "SATCOM",
+.ham = "HAM",
+.cps = "by CPS",
 };
 /********************************************************************
  *

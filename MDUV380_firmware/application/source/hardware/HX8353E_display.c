@@ -1328,7 +1328,7 @@ void displayConvertGD77ImageData(uint8_t *dataBuf)
 			uint8_t d = dataBuf[(y * 128) + x];
 			for(int r = 0; r < 8; r++)
 			{
-				screenBuf[startOffset + (((y * 8) + r) * DISPLAY_SIZE_X) + x] = ((d >> r) & 0x01) ? backgroundColour : foregroundColour;
+				screenBuf[startOffset + (((y * 8) + r) * DISPLAY_SIZE_X) + x] = ((d >> r) & 0x01) ? foregroundColour : backgroundColour;
 			}
 		}
 	}

@@ -268,7 +268,7 @@ bool settingsRestoreDefaultSettings(void)
 #else
 			BACKLIGHT_MODE_AUTO;
 #endif
-	nonVolatileSettings.backLightTimeout = 0U;//0 = never timeout. 1 - 255 time in seconds
+	nonVolatileSettings.backLightTimeout = 5U;//0 = never timeout. 1 - 255 time in seconds
 	nonVolatileSettings.displayContrast =
 #if defined(PLATFORM_DM1801) || defined(PLATFORM_DM1801A)
 			0x0e; // 14
@@ -291,7 +291,7 @@ bool settingsRestoreDefaultSettings(void)
 #if defined(PLATFORM_GD77S)
 			BAND_LIMITS_NONE;//GD-77S is channelised, and there is no way to disable band limits from the UI, so disable limits by default.
 #else
-			BAND_LIMITS_ON_LEGACY_DEFAULT;// Limit Tx frequency to US Amateur bands
+			BAND_LIMITS_NONE;// Limit Tx frequency to US Amateur bands
 #endif
 	nonVolatileSettings.txPowerLevel =
 #if defined(PLATFORM_GD77S)
@@ -337,11 +337,11 @@ bool settingsRestoreDefaultSettings(void)
 	nonVolatileSettings.scanDelay = 5U;// 5 seconds
 	nonVolatileSettings.scanStepTime = 0;// 30ms
 	nonVolatileSettings.scanModePause = SCAN_MODE_HOLD;
-	nonVolatileSettings.squelchDefaults[RADIO_BAND_VHF]		= 10U;// 1 - 21 = 0 - 100% , same as from the CPS variable squelch
+	nonVolatileSettings.squelchDefaults[RADIO_BAND_VHF]		= 4U;// 1 - 21 = 0 - 100% , same as from the CPS variable squelch
 #if !(defined(PLATFORM_MD9600) || defined(PLATFORM_MD380))
-	nonVolatileSettings.squelchDefaults[RADIO_BAND_220MHz]	= 10U;// 1 - 21 = 0 - 100% , same as from the CPS variable squelch
+	nonVolatileSettings.squelchDefaults[RADIO_BAND_220MHz]	= 4U;// 1 - 21 = 0 - 100% , same as from the CPS variable squelch
 #endif
-	nonVolatileSettings.squelchDefaults[RADIO_BAND_UHF]		= 10U;// 1 - 21 = 0 - 100% , same as from the CPS variable squelch
+	nonVolatileSettings.squelchDefaults[RADIO_BAND_UHF]		= 4U;// 1 - 21 = 0 - 100% , same as from the CPS variable squelch
 	nonVolatileSettings.hotspotType =
 #if defined(PLATFORM_GD77S)
 			HOTSPOT_TYPE_MMDVM;
