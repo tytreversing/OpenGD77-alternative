@@ -22,8 +22,8 @@ static bool preview = false;
 
 enum
 {
-	MENU_ALIAS = 0,
-	MENU_DMRID_VALUE,
+	MENU_DMRID_VALUE = 0,
+	MENU_ALIAS,
 	NUM_DMRID_ITEMS
 };
 
@@ -43,7 +43,7 @@ menuStatus_t menuDMRID(uiEvent_t *ev, bool isFirstRun)
         sprintf(digits, "%d", dmrID);
 	    menuDataGlobal.currentMenuList = (menuItemNewData_t *)menuDataGlobal.data[currentMenuNumber]->items;
 	    menuDataGlobal.numItems = menuDataGlobal.data[currentMenuNumber]->numItems;
-		menuDataGlobal.currentItemIndex = MENU_ALIAS;
+		menuDataGlobal.currentItemIndex = MENU_DMRID_VALUE;
 		menuDataGlobal.numItems = NUM_DMRID_ITEMS;
 		updateScreen(isFirstRun, true);
 		updateCursor(true);
@@ -237,6 +237,7 @@ static void handleEvent(uiEvent_t *ev)
                     uiDataGlobal.userDMRId = codeplugGetUserDMRID();
 				    onlyLatin = false;
 				    updateScreen(false, false);
+				    uiNotificationShow(NOTIFICATION_TYPE_MESSAGE, NOTIFICATION_ID_MESSAGE, 1000, currentLanguage->contact_saved, true);
 				    menuSystemPopPreviousMenu();
 					return;
 			}
