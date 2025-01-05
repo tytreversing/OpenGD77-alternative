@@ -51,6 +51,8 @@ static char keypadAlphaKey;
 static int keypadAlphaIndex;
 volatile bool keypadAlphaEnable;
 volatile bool keypadLocked = false;
+volatile bool onlyLatin;
+
 
 
 /*
@@ -79,9 +81,9 @@ enum KEY_STATE
 };
 
 
-static const char keypadAlphaMap[11][31] = {
+static const char keypadAlphaMap[11][30] = {
 		"0 ",
-		"1.!,@-:?()~/[]#<>=*+$%'`&|_^{}",
+		"1.!,@-:?()~/[]#<>=*+$%'&|_^{}",
 		"абвгАБВГ2abcABC",
 		"дежзДЕЖЗ3defDEF",
 		"ийклИЙКЛ4ghiGHI",
@@ -92,6 +94,21 @@ static const char keypadAlphaMap[11][31] = {
 		"ьэюяЬЭЮЯ9wxyzWXYZ",
 		"*"
 };
+
+static const char keypadAlphaMapLatin[11][5] = {
+		"0 ",
+		"1",
+		"ABC2",
+		"DEF3",
+		"GHI4",
+		"JKL5",
+		"MNO6",
+		"PQRS7",
+        "TUV8",
+		"WXYZ9",
+		"*"
+};
+
 
 #define KEYBOARD_KEYS_PER_ROW  8U
 
@@ -398,7 +415,10 @@ void keyboardCheckKeyEvent(keyboardCode_t *keys, int *event)
 
 			if (tmp_timer_keypad == 0 && keypadAlphaKey != 0)
 			{
-				keys->key = keypadAlphaMap[keypadAlphaKey - 1][keypadAlphaIndex];
+				if (onlyLatin)
+					keys->key = keypadAlphaMapLatin[keypadAlphaKey - 1][keypadAlphaIndex];
+				else
+					keys->key = keypadAlphaMap[keypadAlphaKey - 1][keypadAlphaIndex];
 				keys->event = KEY_MOD_PRESS;
 				*event = EVENT_KEY_CHANGE;
 				keypadAlphaKey = 0;
@@ -455,23 +475,40 @@ void keyboardCheckKeyEvent(keyboardCode_t *keys, int *event)
 					if (newAlphaKey == keypadAlphaKey)
 					{
 						keypadAlphaIndex++;
-						if (keypadAlphaMap[keypadAlphaKey - 1][keypadAlphaIndex] == 0)
+						if (onlyLatin)
 						{
-							keypadAlphaIndex = 0;
+							if (keypadAlphaMapLatin[keypadAlphaKey - 1][keypadAlphaIndex] == 0)
+								{
+									keypadAlphaIndex = 0;
+								}
+						}
+						else
+						{
+						    if (keypadAlphaMap[keypadAlphaKey - 1][keypadAlphaIndex] == 0)
+						    {
+							    keypadAlphaIndex = 0;
+						    }
 						}
 					}
+
 				}
 
 				if (keypadAlphaKey != 0)
 				{
 					if (newAlphaKey == keypadAlphaKey)
 					{
-						keys->key =	keypadAlphaMap[keypadAlphaKey - 1][keypadAlphaIndex];
+						if (onlyLatin)
+							keys->key =	keypadAlphaMapLatin[keypadAlphaKey - 1][keypadAlphaIndex];
+						else
+						    keys->key =	keypadAlphaMap[keypadAlphaKey - 1][keypadAlphaIndex];
 						keys->event = KEY_MOD_PREVIEW;
 					}
 					else
 					{
-						keys->key = keypadAlphaMap[keypadAlphaKey - 1][keypadAlphaIndex];
+						if (onlyLatin)
+							keys->key = keypadAlphaMapLatin[keypadAlphaKey - 1][keypadAlphaIndex];
+						else
+						    keys->key = keypadAlphaMap[keypadAlphaKey - 1][keypadAlphaIndex];
 						keys->event = KEY_MOD_PRESS;
 						*event = EVENT_KEY_CHANGE;
 						keypadAlphaKey = newAlphaKey;
@@ -479,6 +516,8 @@ void keyboardCheckKeyEvent(keyboardCode_t *keys, int *event)
 						keyState = KEY_PRESS;
 					}
 				}
+
+
 			}
 			break;
 		case KEY_WAITLONG:

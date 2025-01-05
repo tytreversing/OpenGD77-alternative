@@ -124,6 +124,8 @@
 
 extern volatile bool keypadLocked;
 extern volatile bool keypadAlphaEnable;
+extern volatile bool onlyLatin;
+
 
 typedef struct keyboardCode
 {

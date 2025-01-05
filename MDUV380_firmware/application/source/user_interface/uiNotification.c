@@ -186,7 +186,7 @@ void uiNotificationRefresh(void)
 
 				displayThemeApply(THEME_ITEM_FG_DECORATION, THEME_ITEM_BG_NOTIFICATION);
 				displayDrawRoundRectWithDropShadow((DISPLAY_SIZE_X / 4), YBOX, (DISPLAY_SIZE_X / 2), INNERBOX_H, 3, true);
-				sprintf(buffer, "%s%s", getPowerLevel(powerLevel), getPowerLevelUnit(powerLevel));
+				sprintf(buffer, "%s %s", getPowerLevel(powerLevel), getPowerLevelUnit(powerLevel));
 				displayThemeApply(THEME_ITEM_FG_NOTIFICATION, THEME_ITEM_BG_NOTIFICATION);
 				displayPrintCentered(YTEXT, buffer, FONT_SIZE_3);
 			}

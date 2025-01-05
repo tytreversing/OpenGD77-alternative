@@ -462,6 +462,8 @@ void codeplugAllChannelsIndexSetUsed(int index)
 	}
 }
 
+
+
 void codeplugAllChannelsInitCache(void)
 {
 	// There are 8 banks
@@ -542,6 +544,11 @@ static uint8_t *_getFlag4(struct_codeplugChannel_t *chan)
 	return &chan->flag4;
 }
 
+static uint8_t *_getOpenGD77RUS(struct_codeplugChannel_t *chan)
+{
+	return &chan->openGD77RUS;
+}
+
 struct
 {
 		flagGetter_t getter;
@@ -569,7 +576,8 @@ struct
 		// Talkaround is unused (bit #3)
 		{ _getFlag4,     CODEPLUG_CHANNEL_FLAG4_RX_ONLY,                 2 }, // CHANNEL_FLAG_RX_ONLY,
 		{ _getFlag4,     CODEPLUG_CHANNEL_FLAG4_BW_25K,                  1 }, // CHANNEL_FLAG_BW_25K,
-		{ _getFlag4,     CODEPLUG_CHANNEL_FLAG4_SQUELCH,                 0 }  // CHANNEL_FLAG_SQUELCH,
+		{ _getFlag4,     CODEPLUG_CHANNEL_FLAG4_SQUELCH,                 0 }, // CHANNEL_FLAG_SQUELCH,
+		{ _getOpenGD77RUS,  CODEPLUG_CHANNEL_FASTCALL,                   7 }    //быстрый вызов канала
 };
 
 //
@@ -1317,8 +1325,9 @@ void codeplugGetRadioName(char *buf)
 
 void codeplugSetRadioName(char *buf)
 {
-	codeplugUtilConvertStringToBuf(buf, buf, 8);
-	EEPROM_Write(CODEPLUG_ADDR_USER_CALLSIGN, (uint8_t *)buf, 8);
+	char temp[8];
+	codeplugUtilConvertStringToBuf(buf, temp, 8);
+	EEPROM_Write(CODEPLUG_ADDR_USER_CALLSIGN, (uint8_t *)temp, 8);
 
 }
 

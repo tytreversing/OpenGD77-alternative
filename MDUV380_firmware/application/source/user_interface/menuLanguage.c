@@ -57,7 +57,7 @@ menuStatus_t menuLanguage(uiEvent_t *ev, bool isFirstRun)
 {
 	if (isFirstRun)
 	{
-		menuDataGlobal.numItems = languagesGetCount();
+		menuDataGlobal.numItems = 2;
 
 		voicePromptsInit();
 		voicePromptsAppendPrompt(PROMPT_SILENCE);
@@ -110,8 +110,6 @@ static void updateScreen(bool isFirstRun)
 					char buffer[17];
 
 					snprintf(buffer, 17, "%s", (char *)languages[mNum].LANGUAGE_NAME);
-
-					clearNonLatinChar((uint8_t *)&buffer[0]);
 
 					if (isFirstRun == false)
 					{

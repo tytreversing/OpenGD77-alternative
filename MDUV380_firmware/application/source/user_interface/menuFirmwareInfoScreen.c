@@ -214,7 +214,6 @@ static void displayBuildDetails(bool playVP)
 		voicePromptsAppendLanguageString(radioModel);
 		voicePromptsAppendLanguageString(currentLanguage->built);
 		voicePromptsAppendString(dateTimeBuf);
-		voicePromptsAppendLanguageString(currentLanguage->gitCommit);
 		voicePromptsAppendString(versionBuf);
 #if defined(PLATFORM_MD9600) || defined(PLATFORM_MDUV380) || defined(PLATFORM_MD380) || defined(PLATFORM_RT84_DM1701) || defined(PLATFORM_MD2017)
 		voicePromptsAppendString(cpuTypeBuf);

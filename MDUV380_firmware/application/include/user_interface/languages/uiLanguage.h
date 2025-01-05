@@ -186,7 +186,7 @@ typedef struct
    const char talkaround[LANGUAGE_TEXTS_LENGTH];
    const char APRS[LANGUAGE_TEXTS_LENGTH];
    const char no_keys[LANGUAGE_TEXTS_LENGTH];
-   const char gitCommit[LANGUAGE_TEXTS_LENGTH];
+   const char notset[LANGUAGE_TEXTS_LENGTH];
    const char voice_prompt_level_2[LANGUAGE_TEXTS_LENGTH];
    const char voice_prompt_level_3[LANGUAGE_TEXTS_LENGTH];
    const char dmr_filter[LANGUAGE_TEXTS_LENGTH];
@@ -335,6 +335,11 @@ typedef struct
    const char satcom[LANGUAGE_TEXTS_LENGTH];
    const char ham[LANGUAGE_TEXTS_LENGTH];
    const char cps[LANGUAGE_TEXTS_LENGTH];
+   const char p3button[LANGUAGE_TEXTS_LENGTH];
+   const char p3reverse[LANGUAGE_TEXTS_LENGTH];
+   const char p3talkaround[LANGUAGE_TEXTS_LENGTH];
+   const char p3fastcall[LANGUAGE_TEXTS_LENGTH];
+   const char p3filter[LANGUAGE_TEXTS_LENGTH];
 } stringsTable_t;
 
 #endif // _OPENGD77_UILANGUAGE_H_
