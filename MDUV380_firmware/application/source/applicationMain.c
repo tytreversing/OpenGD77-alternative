@@ -655,7 +655,7 @@ void applicationMainTask(void)
 
 			menuSystemPushNewMenu(MENU_LANGUAGE);// As language menu is now in Options, present the operator with the Language menu after the "Settings updated" message has been displayed.
 
-			snprintf(uiDataGlobal.MessageBox.message, MESSAGEBOX_MESSAGE_LEN_MAX, "%s", "Settings\nUpdated");
+			snprintf(uiDataGlobal.MessageBox.message, MESSAGEBOX_MESSAGE_LEN_MAX, "%s", "Настройки\nсброшены");
 			uiDataGlobal.MessageBox.type = MESSAGEBOX_TYPE_INFO;
 			uiDataGlobal.MessageBox.decoration = MESSAGEBOX_DECORATION_FRAME;
 			uiDataGlobal.MessageBox.buttons =

@@ -46,6 +46,7 @@ enum
 	RADIO_OPTIONS_MENU_DMR_MONITOR_CAPTURE_TIMEOUT,
 	RADIO_OPTIONS_MENU_SCAN_DELAY,
 	RADIO_OPTIONS_MENU_SCAN_STEP_TIME,
+	RADIO_OPTIONS_MENU_SCAN_MULTIPLIER,
 	RADIO_OPTIONS_MENU_SCAN_MODE,
 	RADIO_OPTIONS_MENU_SCAN_ON_BOOT,
 	RADIO_OPTIONS_MENU_SQUELCH_DEFAULT_VHF,
@@ -180,6 +181,12 @@ static void updateScreen(bool isFirstRun)
 					    rightSideUnitsStr = " мс";
 					else
 						rightSideUnitsStr = "ms";
+					break;
+				case RADIO_OPTIONS_MENU_SCAN_MULTIPLIER:
+					char multiplier[4];
+					snprintf(multiplier, 4, "%s%d", "x", nonVolatileSettings.scanPriority);
+					rightSideConst = multiplier;
+					leftSide = currentLanguage->priority;
 					break;
 				case RADIO_OPTIONS_MENU_SCAN_MODE:// scanning mode
 					leftSide = currentLanguage->scan_mode;
@@ -417,6 +424,12 @@ static void handleEvent(uiEvent_t *ev)
 						settingsIncrement(nonVolatileSettings.scanStepTime, 1);
 					}
 					break;
+				case RADIO_OPTIONS_MENU_SCAN_MULTIPLIER:
+					if (nonVolatileSettings.scanPriority < SCAN_PM_X10)
+						nonVolatileSettings.scanPriority++;
+					else
+						nonVolatileSettings.scanPriority = SCAN_PM_X2;
+					break;
 				case RADIO_OPTIONS_MENU_SCAN_MODE:
 					if (nonVolatileSettings.scanModePause < SCAN_MODE_STOP)
 					{
@@ -523,6 +536,12 @@ static void handleEvent(uiEvent_t *ev)
 					{
 						settingsDecrement(nonVolatileSettings.scanStepTime, 1);
 					}
+					break;
+				case RADIO_OPTIONS_MENU_SCAN_MULTIPLIER:
+					if (nonVolatileSettings.scanPriority > SCAN_PM_X2)
+						nonVolatileSettings.scanPriority--;
+					else
+						nonVolatileSettings.scanPriority = SCAN_PM_X10;
 					break;
 				case RADIO_OPTIONS_MENU_SCAN_MODE:
 					if (nonVolatileSettings.scanModePause > SCAN_MODE_HOLD)

@@ -78,8 +78,8 @@ const stringsTable_t russianLanguage =
 .stepFreq				= "Шаг", // MaxLen: 7 (with ':' + xx.xxkHz fitted)
 .tot					= "Таймер Tx", // MaxLen: 16 (with ':' + .off or 15..3825)
 .off					= "выкл", // MaxLen: 16 (with ':' + .timeout_beep, .band_limits, aprs_decay)
-.zone_skip				= "Пропуск в зоне", // MaxLen: 16 (with ':' + .yes or .no)
-.all_skip				= "Пропуск всегда", // MaxLen: 16 (with ':' + .yes or .no)
+.zone_skip				= "Проп. в зоне", // MaxLen: 16 (with ':' + .yes or .no)
+.all_skip				= "Проп. всегда", // MaxLen: 16 (with ':' + .yes or .no)
 .yes					= "да", // MaxLen: 16 (with ':' + .zone_skip, .all_skip)
 .no					= "нет", // MaxLen: 16 (with ':' + .zone_skip, .all_skip, .aprs_decay)
 .tg_list				= "Список групп", // MaxLen: 16 (with ':' and codeplug group name)
@@ -301,7 +301,7 @@ const stringsTable_t russianLanguage =
 .p3talkaround             = "прямая связь",
 .p3fastcall               = "быстр. канал",
 .p3filter                 = "фильтры",
-
+.priority                 = "Приоритет",
 };
 /********************************************************************
  *

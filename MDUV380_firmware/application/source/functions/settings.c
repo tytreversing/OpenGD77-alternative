@@ -40,7 +40,7 @@
 #endif
 
 
-#define STORAGE_MAGIC_NUMBER          0x477B // NOTE: never use 0xDEADBEEF, it's reserved value
+#define STORAGE_MAGIC_NUMBER          0x477D // NOTE: never use 0xDEADBEEF, it's reserved value
 // 0x477B: adds gpsLogMemBlockNum.
 // 0x477A: keypadTimer{Long/Repeat} changed from u16 to u8, autolockTimer added.
 // 0x4779: APRS beaconing settings added.
@@ -401,7 +401,7 @@ bool settingsRestoreDefaultSettings(void)
 	nonVolatileSettings.UNUSED_1 = 0;
 	nonVolatileSettings.UNUSED_2 = 0;
 #endif
-
+    nonVolatileSettings.scanPriority = SCAN_PM_X2;
 #if !defined(PLATFORM_GD77S)
 	aprsBeaconingUpdateSystemSettingsFromConfiguration();
 #endif

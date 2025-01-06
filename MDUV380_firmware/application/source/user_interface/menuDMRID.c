@@ -236,6 +236,7 @@ static void handleEvent(uiEvent_t *ev)
                     codeplugSetUserDMRID(strtol(digits, NULL, 10));
                     uiDataGlobal.userDMRId = codeplugGetUserDMRID();
 				    onlyLatin = false;
+					soundSetMelody(MELODY_ACK_BEEP);
 				    updateScreen(false, false);
 				    uiNotificationShow(NOTIFICATION_TYPE_MESSAGE, NOTIFICATION_ID_MESSAGE, 1000, currentLanguage->contact_saved, true);
 				    menuSystemPopPreviousMenu();

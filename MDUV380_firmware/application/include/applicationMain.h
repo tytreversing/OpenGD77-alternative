@@ -39,7 +39,7 @@
 #define HAS_SOFT_VOLUME    1
 #endif
 #define HAS_GPS            1
-#define LOG_GPS_DATA       1
+//#define LOG_GPS_DATA       1
 #elif defined(PLATFORM_MD9600)
 #define HAS_GPS            1
 #define LOG_GPS_DATA       1

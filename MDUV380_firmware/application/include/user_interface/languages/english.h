@@ -334,6 +334,7 @@ const stringsTable_t englishLanguage =
 .p3talkaround = "Talkaround",
 .p3fastcall               = "fast channel",
 .p3filter                 = "filters",
+.priority                 = "Priority",
 };
 /********************************************************************
  *

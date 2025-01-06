@@ -92,6 +92,7 @@ static uint16_t getCurrentChannelInCurrentZoneForGD77S(void);
 static void selectPrevNextZone(bool nextZone);
 static void handleUpKey(uiEvent_t *ev);
 static void handleDownKey(uiEvent_t *ev);
+static uint8_t priorityMultiplier = 1;
 
 #endif // PLATFORM_GD77S
 
@@ -520,7 +521,14 @@ static void scanApplyNextChannel(void)
 	{
 		uiDataGlobal.Scan.dwellTime = uiDataGlobal.Scan.stepTimeMilliseconds;
 	}
-
+    if (codeplugChannelGetFlag(currentChannelData, CHANNEL_FLAG_PRIORITY) != 0)
+    {
+    	priorityMultiplier = nonVolatileSettings.scanPriority;
+    }
+    else
+    {
+    	priorityMultiplier = 1;
+    }
 	uiDataGlobal.Scan.timer.timeout = uiDataGlobal.Scan.dwellTime;
 	uiDataGlobal.Scan.state = SCAN_STATE_SCANNING;
 	scanNextChannelReady = false;
@@ -863,6 +871,13 @@ void uiChannelModeUpdateScreen(int txTimeSecs)
 					uiUtilityDisplayInformation(nameBuf, DISPLAY_INFO_CONTACT, (trxTransmissionEnabled ? DISPLAY_Y_POS_CONTACT_TX : -1));
 				}
 
+			}
+			if ((codeplugChannelGetFlag(currentChannelData, CHANNEL_FLAG_PRIORITY) != 0) && (!uiDataGlobal.displayChannelSettings))
+			{
+				if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+				    displayPrintAt(DISPLAY_X_POS_PRIORITY, DISPLAY_Y_POS_PRIORITY, "ПС", FONT_SIZE_1);
+				else
+					displayPrintAt(DISPLAY_X_POS_PRIORITY, DISPLAY_Y_POS_PRIORITY, "PS", FONT_SIZE_1);
 			}
 			displayThemeApply(THEME_ITEM_FG_HEADER_TEXT, THEME_ITEM_BG_HEADER_TEXT);
 			displayFillRect(0, DISPLAY_SIZE_Y-18, DISPLAY_SIZE_X, 18, true);
@@ -2613,10 +2628,15 @@ static void scanning(void)
 	}
 	else
 	{
-		if (scanNextChannelReady)
+		if (priorityMultiplier > 1)
+		{
+			uiDataGlobal.Scan.timer.timeout = uiDataGlobal.Scan.stepTimeMilliseconds;
+			priorityMultiplier --;
+		}
+		else if (scanNextChannelReady)
 		{
 			hidesChannelDetails();
-
+            priorityMultiplier = 1;
 			scanApplyNextChannel();
 
 			// When less than 2 channel remain in the Zone

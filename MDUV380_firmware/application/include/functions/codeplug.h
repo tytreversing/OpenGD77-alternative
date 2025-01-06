@@ -131,6 +131,7 @@ typedef enum
 	CHANNEL_FLAG_BW_25K,
 	CHANNEL_FLAG_SQUELCH,
 	CHANNEL_FLAG_FASTCALL,
+	CHANNEL_FLAG_PRIORITY,
 } ChannelFlag_t;
 
 // LibreDMR_flag1
@@ -154,6 +155,7 @@ typedef enum
 #define CODEPLUG_CHANNEL_FLAG4_VOX                               0x40
 #define CODEPLUG_CHANNEL_FLAG4_POWER                             0x80
 #define CODEPLUG_CHANNEL_FASTCALL                                0x80
+#define CODEPLUG_CHANNEL_PRIORITY                                0x40
 
 extern int codeplugChannelsPerZone;
 

@@ -205,7 +205,15 @@ typedef struct
 #if defined(HAS_GPS)
 	uint8_t			gps; // Off / wait for fix / On
 #endif
+    uint8_t         scanPriority;
 } settingsStruct_t;
+
+typedef enum
+{
+    SCAN_PM_X2  = 2,
+	SCAN_PM_X10 = 10
+
+} scanPriorityMultiplier_t;
 
 typedef enum DMR_DESTINATION_FILTER_TYPE
 {

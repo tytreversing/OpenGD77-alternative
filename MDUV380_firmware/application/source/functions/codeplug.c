@@ -577,7 +577,8 @@ struct
 		{ _getFlag4,     CODEPLUG_CHANNEL_FLAG4_RX_ONLY,                 2 }, // CHANNEL_FLAG_RX_ONLY,
 		{ _getFlag4,     CODEPLUG_CHANNEL_FLAG4_BW_25K,                  1 }, // CHANNEL_FLAG_BW_25K,
 		{ _getFlag4,     CODEPLUG_CHANNEL_FLAG4_SQUELCH,                 0 }, // CHANNEL_FLAG_SQUELCH,
-		{ _getOpenGD77RUS,  CODEPLUG_CHANNEL_FASTCALL,                   7 }    //быстрый вызов канала
+		{ _getOpenGD77RUS,  CODEPLUG_CHANNEL_FASTCALL,                   7 }, // быстрый вызов канала
+		{ _getOpenGD77RUS,  CODEPLUG_CHANNEL_PRIORITY,                   6 }  // приоритет сканирования
 };
 
 //

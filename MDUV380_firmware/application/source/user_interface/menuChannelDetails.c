@@ -79,6 +79,7 @@ enum
 	CH_DETAILS_FREQ_STEP,
 	CH_DETAILS_TOT,
 	CH_DETAILS_RXONLY,
+	CH_DETAILS_PRIORITY,
 	CH_DETAILS_ZONE_SKIP,
 	CH_DETAILS_ALL_SKIP,
 	CH_DETAILS_VOX,
@@ -437,6 +438,10 @@ static void updateScreen(bool isFirstRun, bool allowedToSpeakUpdate)
 					case CH_DETAILS_RXONLY:
 						leftSide = currentLanguage->rx_only;
 						rightSideConst = ((codeplugChannelGetFlag(&tmpChannel, CHANNEL_FLAG_RX_ONLY) != 0) ? currentLanguage->yes : currentLanguage->no);
+						break;
+					case CH_DETAILS_PRIORITY:
+						leftSide = currentLanguage->priority;
+						rightSideConst = ((codeplugChannelGetFlag(&tmpChannel, CHANNEL_FLAG_PRIORITY) != 0) ? currentLanguage->yes : currentLanguage->no);
 						break;
 					case CH_DETAILS_ZONE_SKIP:						// Zone Scan Skip Channel (Using CPS Auto Scan flag)
 						leftSide = currentLanguage->zone_skip;
@@ -1060,6 +1065,9 @@ static void handleEvent(uiEvent_t *ev)
 				case CH_DETAILS_RXONLY:
 					codeplugChannelSetFlag(&tmpChannel, CHANNEL_FLAG_RX_ONLY, 1);// set Channel RX-Only Bit
 					break;
+				case CH_DETAILS_PRIORITY:
+					codeplugChannelSetFlag(&tmpChannel, CHANNEL_FLAG_PRIORITY, 1);
+					break;
 				case CH_DETAILS_ZONE_SKIP:
 					codeplugChannelSetFlag(&tmpChannel, CHANNEL_FLAG_ZONE_SKIP, 1);// set Channel Zone Skip bit (was Auto Scan)
 					break;
@@ -1283,6 +1291,9 @@ static void handleEvent(uiEvent_t *ev)
 					break;
 				case CH_DETAILS_RXONLY:
 					codeplugChannelSetFlag(&tmpChannel, CHANNEL_FLAG_RX_ONLY, 0);// clear Channel RX-Only Bit
+					break;
+				case CH_DETAILS_PRIORITY:
+					codeplugChannelSetFlag(&tmpChannel, CHANNEL_FLAG_PRIORITY, 0);// set Channel RX-Only Bit
 					break;
 				case CH_DETAILS_ZONE_SKIP:
 					codeplugChannelSetFlag(&tmpChannel, CHANNEL_FLAG_ZONE_SKIP, 0);// clear Channel Zone Skip Bit (was Auto Scan bit)
