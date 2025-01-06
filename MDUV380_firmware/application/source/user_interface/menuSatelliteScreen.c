@@ -374,7 +374,7 @@ static void updateScreen(uiEvent_t *ev, bool firstRun, bool announceVP)
 				if (hasRecalculated || announceVP)
 				{
 					// calculate these now for display later...
-					snprintf(azelBuffer, SCREEN_LINE_BUFFER_SIZE, "%s:%3d%c%s:%3d%c", currentLanguage->azimuth, currentSatelliteResults.azimuthAsInteger, 176, currentLanguage->elevation, currentSatelliteResults.elevationAsInteger, 176);
+					snprintf(azelBuffer, SCREEN_LINE_BUFFER_SIZE, "%s:%d%c %s:%d%c", currentLanguage->azimuth, currentSatelliteResults.azimuthAsInteger, 176, currentLanguage->elevation, currentSatelliteResults.elevationAsInteger, 176);
 					displayPrintCore(0, (DISPLAY_SIZE_Y / 4 - 4), currentActiveSatellite->name, FONT_SIZE_2, TEXT_ALIGN_LEFT, false);
 
 					displayPrintCore(0, (DISPLAY_SIZE_Y / 4 - 4), freqNames[currentSatelliteFreqIndex], FONT_SIZE_2, TEXT_ALIGN_RIGHT, false);
