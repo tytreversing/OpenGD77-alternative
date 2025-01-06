@@ -374,16 +374,16 @@ static void updateScreen(uiEvent_t *ev, bool firstRun, bool announceVP)
 				if (hasRecalculated || announceVP)
 				{
 					// calculate these now for display later...
-					snprintf(azelBuffer, SCREEN_LINE_BUFFER_SIZE, "%s:%3d%c %s:%3d%c", currentLanguage->azimuth, currentSatelliteResults.azimuthAsInteger, 176, currentLanguage->elevation, currentSatelliteResults.elevationAsInteger, 176);
-					displayPrintCore(0, (DISPLAY_SIZE_Y / 4), currentActiveSatellite->name, FONT_SIZE_2, TEXT_ALIGN_LEFT, false);
+					snprintf(azelBuffer, SCREEN_LINE_BUFFER_SIZE, "%s:%3d%c%s:%3d%c", currentLanguage->azimuth, currentSatelliteResults.azimuthAsInteger, 176, currentLanguage->elevation, currentSatelliteResults.elevationAsInteger, 176);
+					displayPrintCore(0, (DISPLAY_SIZE_Y / 4 - 4), currentActiveSatellite->name, FONT_SIZE_2, TEXT_ALIGN_LEFT, false);
 
-					displayPrintCore(0, (DISPLAY_SIZE_Y / 4), freqNames[currentSatelliteFreqIndex], FONT_SIZE_2, TEXT_ALIGN_RIGHT, false);
+					displayPrintCore(0, (DISPLAY_SIZE_Y / 4 - 4), freqNames[currentSatelliteFreqIndex], FONT_SIZE_2, TEXT_ALIGN_RIGHT, false);
 
 					displayPrintCentered((DISPLAY_SIZE_Y / 2)
 #if defined(PLATFORM_RD5R)
 							- 4
 #else
-							- 6
+							+ 6
 #endif
 							, azelBuffer, FONT_SIZE_2);
 
@@ -391,16 +391,16 @@ static void updateScreen(uiEvent_t *ev, bool firstRun, bool announceVP)
 					{
 						rxIntPart = currentSatelliteResults.freqs[currentSatelliteFreqIndex].rxFreq / 1E6;
 						rxDecPart = (currentSatelliteResults.freqs[currentSatelliteFreqIndex].rxFreq - (rxIntPart * 1E6)) / 10;
-						snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "R:%3d.%05u",rxIntPart,rxDecPart);
-						displayPrintCentered((DISPLAY_SIZE_Y / 2) + 6, buffer, FONT_SIZE_2);
+						snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "Rx:%3d.%05u",rxIntPart,rxDecPart);
+						displayPrintCentered((DISPLAY_SIZE_Y / 2) + 26, buffer, FONT_SIZE_3);
 
 						if (currentSatelliteResults.freqs[currentSatelliteFreqIndex].txFreq != 0)
 						{
 							txIntPart = currentSatelliteResults.freqs[currentSatelliteFreqIndex].txFreq / 1E6;
 							txDecPart = (currentSatelliteResults.freqs[currentSatelliteFreqIndex].txFreq - (txIntPart * 1E6)) / 10;
 
-							snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "T:%3d.%05u",txIntPart,txDecPart);
-							displayPrintCentered((DISPLAY_SIZE_Y / 2) + 16, buffer, FONT_SIZE_2);
+							snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "Tx:%3d.%05u",txIntPart,txDecPart);
+							displayPrintCentered((DISPLAY_SIZE_Y / 2) + 42, buffer, FONT_SIZE_3);
 						}
 					}
 
@@ -408,7 +408,7 @@ static void updateScreen(uiEvent_t *ev, bool firstRun, bool announceVP)
 				}
 				else
 				{
-					displayRenderRows(0,2);
+					displayRender();
 				}
 
 				if (announceVP || hasRecalculated)
