@@ -57,6 +57,7 @@ enum
 #if defined(PLATFORM_MD2017)
 	GENERAL_OPTIONS_TRACKBALL_ENABLED,
 #endif
+	GENERAL_OPTIONS_SK1_BUTTON,
 	GENERAL_OPTIONS_MENU_HOTSPOT_TYPE,
 	//GENERAL_OPTIONS_MENU_TEMPERATURE_CALIBRATON,
 	GENERAL_OPTIONS_MENU_BATTERY_CALIBRATON,
@@ -214,6 +215,31 @@ static void updateScreen(bool isFirstRun)
 							(settingsIsOptionBitSet(BIT_TRACKBALL_FAST_MOTION) ? currentLanguage->high : currentLanguage->low) : currentLanguage->off);
 					break;
 #endif
+			    case GENERAL_OPTIONS_SK1_BUTTON:
+			    	leftSide = currentLanguage->p3button; //режим кнопки P3
+			    	switch (nonVolatileSettings.buttonSK1)
+			    	{
+			    	case SK1_MODE_INFO:
+			    		rightSideConst = currentLanguage->p3info;
+			    		break;
+			    	case SK1_MODE_REVERSE:
+			    		rightSideConst = currentLanguage->p3reverse;
+			    		break;
+			    	case SK1_MODE_TALKAROUND:
+			    		rightSideConst = currentLanguage->p3talkaround;
+			    		break;
+			    	case SK1_MODE_FASTCALL:
+			    		rightSideConst = currentLanguage->p3fastcall;
+			    		break;
+			    	case SK1_MODE_FILTER:
+			    		rightSideConst = currentLanguage->p3filter;
+			    		break;
+			    	default:
+			    		rightSideConst = currentLanguage->p3info;
+			    		nonVolatileSettings.buttonSK1 = SK1_MODE_INFO;
+			    		break;
+			    	}
+			    	break;
 				case GENERAL_OPTIONS_MENU_HOTSPOT_TYPE:
 					leftSide = currentLanguage->hotspot_mode;
 #if defined(PLATFORM_RD5R)
@@ -523,6 +549,12 @@ static void handleEvent(uiEvent_t *ev)
 					}
 					break;
 #endif
+			    case GENERAL_OPTIONS_SK1_BUTTON:
+			    	if (nonVolatileSettings.buttonSK1 < SK1_MODES_MAX - 1)
+			    	{
+			    		settingsIncrement(nonVolatileSettings.buttonSK1, 1);
+			    	}
+			    	break;
 #if defined(PLATFORM_MD2017)
 				case GENERAL_OPTIONS_TRACKBALL_ENABLED:
 					if (settingsIsOptionBitSet(BIT_TRACKBALL_ENABLED) == false)
@@ -666,6 +698,12 @@ static void handleEvent(uiEvent_t *ev)
 					}
 					break;
 #endif
+			    case GENERAL_OPTIONS_SK1_BUTTON:
+			    	if (nonVolatileSettings.buttonSK1 > SK1_MODE_INFO)
+			    	{
+			    		settingsDecrement(nonVolatileSettings.buttonSK1, 1);
+			    	}
+			    	break;
 				case GENERAL_OPTIONS_MENU_HOTSPOT_TYPE:
 #if !defined(PLATFORM_RD5R)
 					if ((uiDataGlobal.dmrDisabled == false) && (nonVolatileSettings.hotspotType > HOTSPOT_TYPE_OFF))

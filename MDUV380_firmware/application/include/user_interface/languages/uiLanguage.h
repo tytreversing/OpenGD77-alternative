@@ -330,17 +330,20 @@ typedef struct
    const char dmrid[LANGUAGE_TEXTS_LENGTH];
    const char dmridtext[LANGUAGE_TEXTS_LENGTH];
    const char aliastext[LANGUAGE_TEXTS_LENGTH];
+   const char promiscuity[LANGUAGE_TEXTS_LENGTH];
    const char vfomenu[21];
    const char chmenu[21];
    const char satcom[LANGUAGE_TEXTS_LENGTH];
    const char ham[LANGUAGE_TEXTS_LENGTH];
    const char cps[LANGUAGE_TEXTS_LENGTH];
    const char p3button[LANGUAGE_TEXTS_LENGTH];
+   const char p3info[LANGUAGE_TEXTS_LENGTH];
    const char p3reverse[LANGUAGE_TEXTS_LENGTH];
    const char p3talkaround[LANGUAGE_TEXTS_LENGTH];
    const char p3fastcall[LANGUAGE_TEXTS_LENGTH];
    const char p3filter[LANGUAGE_TEXTS_LENGTH];
    const char priority[LANGUAGE_TEXTS_LENGTH];
+
 } stringsTable_t;
 
 #endif // _OPENGD77_UILANGUAGE_H_

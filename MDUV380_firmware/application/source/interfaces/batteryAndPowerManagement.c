@@ -66,6 +66,7 @@ volatile int lastValidBatteryVoltage = 64;
 volatile uint32_t resumeTicks = 0;
 
 
+
 #if !defined(PLATFORM_GD77S)
 ticksTimer_t apoTimer;
 #endif
@@ -284,7 +285,8 @@ void powerDown(bool doNotSavePowerOffState)
 		batteryRAM_Write(0,(uint8_t *)&radioIsInStandby,2);
 #endif
 	}
-
+	restoreVFOFilteringStatusIfSet();
+	restoreChFilteringStatusIfSet();
 	settingsSaveSettings(true);
 	codeplugSaveLastUsedChannelInZone();
 

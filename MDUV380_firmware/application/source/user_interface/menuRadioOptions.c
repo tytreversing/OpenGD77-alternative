@@ -143,9 +143,6 @@ static void updateScreen(bool isFirstRun)
 					leftSide = currentLanguage->band_limits;
 					switch(nonVolatileSettings.txFreqLimited)
 					{
-						case BAND_LIMITS_NONE:
-							rightSideConst = currentLanguage->satcom;
-							break;
 						case BAND_LIMITS_ON_LEGACY_DEFAULT:
 							rightSideConst = currentLanguage->ham;
 							break;
@@ -514,7 +511,7 @@ static void handleEvent(uiEvent_t *ev)
 			switch(menuDataGlobal.currentItemIndex)
 			{
 				case RADIO_OPTIONS_MENU_TX_FREQ_LIMITS:
-					if (nonVolatileSettings.txFreqLimited > BAND_LIMITS_NONE)
+					if (nonVolatileSettings.txFreqLimited > BAND_LIMITS_ON_LEGACY_DEFAULT)
 					{
 						settingsDecrement(nonVolatileSettings.txFreqLimited, 1);
 					}

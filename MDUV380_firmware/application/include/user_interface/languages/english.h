@@ -324,17 +324,20 @@ const stringsTable_t englishLanguage =
 .dmrid                    = "Set DMR ID",
 .dmridtext = "ID",
 .aliastext = "Alias",
+.promiscuity                  = "Filters off",
 .vfomenu = " Menu      Channels ",
 .chmenu = " Menu           VFO ",
 .satcom = "SATCOM",
 .ham = "HAM",
 .cps = "by CPS",
-.p3button = "P3 Mode",
+.p3button = "SK1 Mode",
+.p3info = "information",
 .p3reverse = "Reverse",
 .p3talkaround = "Talkaround",
 .p3fastcall               = "fast channel",
 .p3filter                 = "filters",
 .priority                 = "Priority",
+
 };
 /********************************************************************
  *

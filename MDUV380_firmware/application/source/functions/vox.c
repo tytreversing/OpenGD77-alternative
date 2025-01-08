@@ -80,7 +80,7 @@ void voxSetParameters(uint8_t threshold, uint8_t tailHalfSecond)
 bool voxIsEnabled(void)
 {
 	return ((codeplugChannelGetFlag(currentChannelData, CHANNEL_FLAG_VOX) != 0) &&
-			(codeplugChannelGetFlag(currentChannelData, CHANNEL_FLAG_RX_ONLY) == 0) && ((nonVolatileSettings.txFreqLimited == BAND_LIMITS_NONE) || trxCheckFrequencyInAmateurBand(currentChannelData->txFreq)
+			(codeplugChannelGetFlag(currentChannelData, CHANNEL_FLAG_RX_ONLY) == 0) && (trxCheckFrequencyInAmateurBand(currentChannelData->txFreq)
 #if defined(PLATFORM_MD9600)
 					|| (codeplugChannelGetFlag(currentChannelData, CHANNEL_FLAG_OUT_OF_BAND) != 0)
 #endif

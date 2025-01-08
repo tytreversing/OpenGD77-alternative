@@ -1465,7 +1465,7 @@ bool aprsBeaconingSendBeacon(bool fromSatScreen)
 			case APRS_BEACONING_MODE_SMART_BEACONING:
 				if ((currentChannelData->txFreq != 0) &&
 						(codeplugChannelGetFlag(currentChannelData, CHANNEL_FLAG_RX_ONLY) == 0) &&
-						((nonVolatileSettings.txFreqLimited == BAND_LIMITS_NONE) || trxCheckFrequencyInAmateurBand(currentChannelData->txFreq)
+						((nonVolatileSettings.txFreqLimited == BAND_LIMITS_FROM_CPS) || trxCheckFrequencyInAmateurBand(currentChannelData->txFreq)
 #if defined(PLATFORM_MD9600)
 								|| (codeplugChannelGetFlag(currentChannelData, CHANNEL_FLAG_OUT_OF_BAND) != 0)
 #endif

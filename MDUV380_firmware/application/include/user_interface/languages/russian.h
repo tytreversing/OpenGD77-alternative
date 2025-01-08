@@ -291,17 +291,21 @@ const stringsTable_t russianLanguage =
 .dmrid                    = "Ввод DMR ID",
 .dmridtext                = "ID",
 .aliastext                = "Алиас",
+.promiscuity                  = "Фильтры выкл.",
 .vfomenu                  = " Меню        Каналы ",
 .chmenu                   = " Меню           VFO ",
 .satcom                   = "SATCOM",
 .ham                      = "Р/Л",
 .cps                      = "по CPS",
-.p3button                 = "P3",
+.p3button                 = "SK1",
+.p3info                   = "информация",
 .p3reverse                = "реверс",
 .p3talkaround             = "прямая связь",
-.p3fastcall               = "быстр. канал",
+.p3fastcall               = "быстрый канал",
 .p3filter                 = "фильтры",
 .priority                 = "Приоритет",
+
+
 };
 /********************************************************************
  *

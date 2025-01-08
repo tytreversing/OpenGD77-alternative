@@ -289,9 +289,9 @@ bool settingsRestoreDefaultSettings(void)
 	nonVolatileSettings.extendedInfosOnScreen = INFO_ON_SCREEN_OFF;
 	nonVolatileSettings.txFreqLimited =
 #if defined(PLATFORM_GD77S)
-			BAND_LIMITS_NONE;//GD-77S is channelised, and there is no way to disable band limits from the UI, so disable limits by default.
+			BAND_LIMITS_ON_LEGACY_DEFAULT;//GD-77S is channelised, and there is no way to disable band limits from the UI, so disable limits by default.
 #else
-			BAND_LIMITS_NONE;// Limit Tx frequency to US Amateur bands
+			BAND_LIMITS_ON_LEGACY_DEFAULT;// Limit Tx frequency to US Amateur bands
 #endif
 	nonVolatileSettings.txPowerLevel =
 #if defined(PLATFORM_GD77S)
@@ -401,6 +401,7 @@ bool settingsRestoreDefaultSettings(void)
 	nonVolatileSettings.UNUSED_1 = 0;
 	nonVolatileSettings.UNUSED_2 = 0;
 #endif
+	nonVolatileSettings.buttonSK1 = SK1_MODE_INFO;
     nonVolatileSettings.scanPriority = SCAN_PM_X2;
 #if !defined(PLATFORM_GD77S)
 	aprsBeaconingUpdateSystemSettingsFromConfiguration();

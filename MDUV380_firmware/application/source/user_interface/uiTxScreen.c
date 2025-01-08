@@ -101,7 +101,7 @@ menuStatus_t menuTxScreen(uiEvent_t *ev, bool isFirstRun)
 			updateScreen();
 		}
 
-		if ((codeplugChannelGetFlag(currentChannelData, CHANNEL_FLAG_RX_ONLY) == 0) && ((nonVolatileSettings.txFreqLimited == BAND_LIMITS_NONE) || trxCheckFrequencyInAmateurBand(currentChannelData->txFreq)
+		if ((codeplugChannelGetFlag(currentChannelData, CHANNEL_FLAG_RX_ONLY) == 0) && (trxCheckFrequencyInAmateurBand(currentChannelData->txFreq)
 #if defined(PLATFORM_MD9600)
 				|| (codeplugChannelGetFlag(currentChannelData, CHANNEL_FLAG_OUT_OF_BAND) != 0)
 #endif

@@ -3772,7 +3772,7 @@ void dtmfSequenceTick(bool popPreviousMenuOnEnding)
 
 			rxPowerSavingSetState(ECOPHASE_POWERSAVE_INACTIVE);
 
-			if ((codeplugChannelGetFlag(currentChannelData, CHANNEL_FLAG_RX_ONLY) == 0) && ((nonVolatileSettings.txFreqLimited == BAND_LIMITS_NONE) || trxCheckFrequencyInAmateurBand(currentChannelData->txFreq)))
+			if ((codeplugChannelGetFlag(currentChannelData, CHANNEL_FLAG_RX_ONLY) == 0) && ((trxCheckFrequencyInAmateurBand(currentChannelData->txFreq))))
 			{
 
 				// Start TX DTMF, prepare for ANALOG

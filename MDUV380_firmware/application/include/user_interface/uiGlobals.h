@@ -113,7 +113,9 @@ typedef uint32_t time_t_custom;     /* date/time in unix secs past 1-Jan-70 */
 #define DISPLAY_Y_POS_HEADER                   2
 #define DISPLAY_X_POS_MENU_OFFSET              4
 #define DISPLAY_X_POS_MENU_TEXT_OFFSET       (DISPLAY_X_POS_MENU_OFFSET + 4)
-#define DISPLAY_X_POS_PRIORITY               (DISPLAY_SIZE_X - 13)
+#define DISPLAY_X_POS_FASTCALL               (DISPLAY_SIZE_X - 13)
+#define DISPLAY_X_POS_PRIORITY               (DISPLAY_SIZE_X - 26)
+#define DISPLAY_Y_POS_FASTCALL                16
 #define DISPLAY_Y_POS_PRIORITY                16
 #define DISPLAY_Y_POS_MENU_START             (16 + MENU_ENTRY_HEIGHT)
 #define DISPLAY_X_POS_DBM                     80
@@ -155,7 +157,9 @@ typedef uint32_t time_t_custom;     /* date/time in unix secs past 1-Jan-70 */
 #define DISPLAY_Y_POS_HEADER                   2
 #define DISPLAY_X_POS_MENU_OFFSET              4
 #define DISPLAY_X_POS_MENU_TEXT_OFFSET       (DISPLAY_X_POS_MENU_OFFSET + 4)
-#define DISPLAY_X_POS_PRIORITY               (DISPLAY_SIZE_X - 13)
+#define DISPLAY_X_POS_FASTCALL               (DISPLAY_SIZE_X - 13)
+#define DISPLAY_X_POS_PRIORITY               (DISPLAY_SIZE_X - 26)
+#define DISPLAY_Y_POS_FASTCALL                16
 #define DISPLAY_Y_POS_PRIORITY                16
 #define DISPLAY_Y_POS_MENU_START             (16 + MENU_ENTRY_HEIGHT)
 #define DISPLAY_Y_POS_MENU_ENTRY_HIGHLIGHT   (32 + DISPLAY_V_OFFSET)
@@ -593,6 +597,9 @@ extern settingsStruct_t 		originalNonVolatileSettings; // used to store previous
 #if !defined(PLATFORM_GD77S)
 extern aprsBeaconingSettings_t 	aprsSettingsCopy; // used to store previous APRS settings in options edition related menu.
 #endif
+
+extern void restoreVFOFilteringStatusIfSet(void);
+extern void restoreChFilteringStatusIfSet(void);
 
 extern struct_codeplugZone_t 	currentZone;
 extern struct_codeplugRxGroup_t currentRxGroupData;
