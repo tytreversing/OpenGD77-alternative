@@ -890,6 +890,7 @@ void uiChannelModeUpdateScreen(int txTimeSecs)
 			displayFillRect(0, DISPLAY_SIZE_Y-18, DISPLAY_SIZE_X, 18, true);
 			displayPrintAt(0, DISPLAY_SIZE_Y-17, currentLanguage->chmenu, FONT_SIZE_3);
 			displayRender();
+			displayThemeResetToDefault();
 			break;
 
 		case QSO_DISPLAY_CALLER_DATA:

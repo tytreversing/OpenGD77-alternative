@@ -81,7 +81,7 @@ static struct tm timeAndDate;
 static int displayMode = SATELLITE_SCREEN_ALL_PREDICTIONS_LIST;
 static uint32_t nextCalculationTime = 0;
 static uint32_t menuSatelliteScreenNextUpdateTime;
-static char azelBuffer[SCREEN_LINE_BUFFER_SIZE];
+static char azelBuffer[21];
 static uint32_t numSatellitesLoaded;
 static predictionStateMachineData_t currentPrediction;
 static int currentlyDisplayedListPosition = 0;
@@ -374,7 +374,7 @@ static void updateScreen(uiEvent_t *ev, bool firstRun, bool announceVP)
 				if (hasRecalculated || announceVP)
 				{
 					// calculate these now for display later...
-					snprintf(azelBuffer, SCREEN_LINE_BUFFER_SIZE, "%s:%d%c %s:%d%c", currentLanguage->azimuth, currentSatelliteResults.azimuthAsInteger, 176, currentLanguage->elevation, currentSatelliteResults.elevationAsInteger, 176);
+					snprintf(azelBuffer, 21, "%s:%d%c %s:%d%c", currentLanguage->azimuth, currentSatelliteResults.azimuthAsInteger, 176, currentLanguage->elevation, currentSatelliteResults.elevationAsInteger, 176);
 					displayPrintCore(0, (DISPLAY_SIZE_Y / 4 - 4), currentActiveSatellite->name, FONT_SIZE_2, TEXT_ALIGN_LEFT, false);
 
 					displayPrintCore(0, (DISPLAY_SIZE_Y / 4 - 4), freqNames[currentSatelliteFreqIndex], FONT_SIZE_2, TEXT_ALIGN_RIGHT, false);
@@ -392,6 +392,7 @@ static void updateScreen(uiEvent_t *ev, bool firstRun, bool announceVP)
 						rxIntPart = currentSatelliteResults.freqs[currentSatelliteFreqIndex].rxFreq / 1E6;
 						rxDecPart = (currentSatelliteResults.freqs[currentSatelliteFreqIndex].rxFreq - (rxIntPart * 1E6)) / 10;
 						snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "Rx:%3d.%05u",rxIntPart,rxDecPart);
+						displayThemeApply(THEME_ITEM_FG_RX_FREQ, THEME_ITEM_BG);
 						displayPrintCentered((DISPLAY_SIZE_Y / 2) + 26, buffer, FONT_SIZE_3);
 
 						if (currentSatelliteResults.freqs[currentSatelliteFreqIndex].txFreq != 0)
@@ -400,10 +401,12 @@ static void updateScreen(uiEvent_t *ev, bool firstRun, bool announceVP)
 							txDecPart = (currentSatelliteResults.freqs[currentSatelliteFreqIndex].txFreq - (txIntPart * 1E6)) / 10;
 
 							snprintf(buffer, SCREEN_LINE_BUFFER_SIZE, "Tx:%3d.%05u",txIntPart,txDecPart);
+							displayThemeApply(THEME_ITEM_FG_TX_FREQ, THEME_ITEM_BG);
 							displayPrintCentered((DISPLAY_SIZE_Y / 2) + 42, buffer, FONT_SIZE_3);
+
 						}
 					}
-
+					displayThemeResetToDefault();
 					displayRender();// render the whole screen;
 				}
 				else
