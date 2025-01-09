@@ -371,7 +371,7 @@ bool settingsRestoreDefaultSettings(void)
 #if defined(PLATFORM_GD77S)
 	nonVolatileSettings.audioPromptMode = AUDIO_PROMPT_MODE_VOICE_LEVEL_3;
 #else
-	nonVolatileSettings.audioPromptMode = (voicePromptDataIsLoaded ? AUDIO_PROMPT_MODE_VOICE_LEVEL_1 : AUDIO_PROMPT_MODE_BEEP);
+	nonVolatileSettings.audioPromptMode = AUDIO_PROMPT_MODE_BEEP;
 #endif
 
 	nonVolatileSettings.temperatureCalibration = 0;

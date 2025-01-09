@@ -653,8 +653,7 @@ void applicationMainTask(void)
 			wasRestoringDefaultsettings = false;
 			updateMessageOnScreen = true;
 
-			menuSystemPushNewMenu(MENU_LANGUAGE);// As language menu is now in Options, present the operator with the Language menu after the "Settings updated" message has been displayed.
-
+			menuSystemPushNewMenu(MENU_LANGUAGE);
 			snprintf(uiDataGlobal.MessageBox.message, MESSAGEBOX_MESSAGE_LEN_MAX, "%s", "Настройки\nсброшены");
 			uiDataGlobal.MessageBox.type = MESSAGEBOX_TYPE_INFO;
 			uiDataGlobal.MessageBox.decoration = MESSAGEBOX_DECORATION_FRAME;
@@ -666,7 +665,7 @@ void applicationMainTask(void)
 #endif
 			uiDataGlobal.MessageBox.validatorCallback = validateUpdateCallback;
 			menuSystemPushNewMenu(UI_MESSAGE_BOX);
-
+			settingsSaveSettings(true);
 			(void)addTimerCallback(settingsUpdateAudioAlert, 100, UI_MESSAGE_BOX, false);// Need to delay playing this for a while, because otherwise it may get played before the volume is turned up enough to hear it.
 		}
 

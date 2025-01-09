@@ -36,17 +36,12 @@
 const uint32_t VOICE_PROMPTS_DATA_MAGIC = 0x5056;//'VP'
 const uint32_t VOICE_PROMPTS_DATA_VERSION =
 #if defined(HAS_COLOURS)
-											0x0009; // Version 9 TOC increased to 368 (10 slots free)
-													// Version 7 TOC increased to 350.
+											0x00011; //версия под новое меню
 #define VOICE_PROMPTS_TOC_SIZE 				368
 #else
-											0x0008; // Version 8 TOC increased to 331 (10 slots free)
-													// Version 6 TOC increased to 320. Added PROMOT_VOX and PROMPT_UNUSED_1 to PROMPT_UNUSED_10
-#define VOICE_PROMPTS_TOC_SIZE 				331
+											0x00010; //версия под новое меню
 #endif
-													// Version 5 TOC increased to 300
-													// Version 4 does not have unused items
-                                                    // Version 3 does not have the PROMPT_TBD items in it
+
 
 typedef struct
 {
@@ -87,6 +82,8 @@ static __attribute__((section(".ccmram"))) VoicePromptsSequence_t voicePromptsCu
 static __attribute__((section(".ccmram"))) uint32_t tableOfContents[VOICE_PROMPTS_TOC_SIZE];
 
 static bool temporaryOverride = false;
+
+
 
 void voicePromptsCacheInit(void)
 {

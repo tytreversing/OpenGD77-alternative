@@ -147,7 +147,7 @@ const stringsTable_t russianLanguage =
 .talkaround 				= "Прям. связь", // Maxlen 16 (with ':' + .on , .off or .n_a)
 .APRS 					= "APRS", // Maxlen 16 (with : + .transmitTalkerAliasTS1 or transmitTalkerAliasTS2)
 .no_keys 				= "без клав.", // Maxlen 16 (with : + audio_prompt)
-.notset                   = "Не задано",
+.notset                   = "Не найдено",
 .voice_prompt_level_2			= "голос L2", // Maxlen 16 (with : + audio_prompt)
 .voice_prompt_level_3			= "голос L3", // Maxlen 16 (with : + audio_prompt)
 .dmr_filter				= "Фильтр DMR",// MaxLen: 12 (with ':' + settings: "TG" or "Ct" or "TGL")
@@ -301,7 +301,7 @@ const stringsTable_t russianLanguage =
 .p3info                   = "информация",
 .p3reverse                = "реверс",
 .p3talkaround             = "прямая связь",
-.p3fastcall               = "быстрый канал",
+.p3fastcall               = "быстр. канал",
 .p3filter                 = "фильтры",
 .priority                 = "Приоритет",
 

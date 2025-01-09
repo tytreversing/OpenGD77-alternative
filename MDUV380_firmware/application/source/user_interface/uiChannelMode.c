@@ -36,6 +36,7 @@
 #include "hardware/radioHardwareInterface.h"
 #endif
 
+
 #if defined(HAS_COLOURS)
 #define NAME_BUFFER_LEN   25
 #else
@@ -1159,7 +1160,32 @@ static void handleEvent(uiEvent_t *ev)
 		    		{
 		    			scanStop(true); // останавливаем сканирование
 		    		}
-	                //nonVolatileSettings.currentZone =
+		    		else
+		    		{
+		    			uint16_t channel = 1;
+		    			struct_codeplugChannel_t tempChannel;
+		    			bool found = false;
+		    			while (!found && channel <= 1024)
+		    			{
+		    				codeplugChannelGetDataForIndex(channel, &tempChannel);
+                            found = (codeplugChannelGetFlag(&tempChannel, CHANNEL_FLAG_FASTCALL) != 0);
+                            channel++;
+		    			}
+		    			if (found)
+		    			{
+		    				// найден канал быстрого вызова
+		    				soundSetMelody(MELODY_ACK_BEEP);
+                            memcpy(currentChannelData, &tempChannel, sizeof(struct_codeplugChannel_t));
+                            uiChannelModeLoadChannelData(true, false);
+
+		    			}
+		    			else
+		    			{
+		    				//канал не найден
+		    				soundSetMelody(MELODY_ERROR_BEEP);
+		    				uiNotificationShow(NOTIFICATION_TYPE_MESSAGE, NOTIFICATION_ID_MESSAGE, 1000, currentLanguage->notset, true);
+		    			}
+		    		}
 
 		    		break;
 		    	case SK1_MODE_FILTER:
