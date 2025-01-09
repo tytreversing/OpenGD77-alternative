@@ -37,10 +37,10 @@ const uint32_t VOICE_PROMPTS_DATA_MAGIC = 0x5056;//'VP'
 const uint32_t VOICE_PROMPTS_DATA_VERSION =
 #if defined(HAS_COLOURS)
 											0x00011; //версия под новое меню
-#define VOICE_PROMPTS_TOC_SIZE 				368
+#define VOICE_PROMPTS_TOC_SIZE 				378
 #else
 											0x00010; //версия под новое меню
-#define VOICE_PROMPTS_TOC_SIZE 				331
+#define VOICE_PROMPTS_TOC_SIZE 				341
 #endif
 
 

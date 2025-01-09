@@ -200,8 +200,11 @@ typedef struct
    const char info[LANGUAGE_TEXTS_LENGTH];
    const char pwr[LANGUAGE_TEXTS_LENGTH];
    const char user_power[LANGUAGE_TEXTS_LENGTH];
+   const char temperature[LANGUAGE_TEXTS_LENGTH];
+   const char celcius[LANGUAGE_TEXTS_LENGTH];
    const char seconds[LANGUAGE_TEXTS_LENGTH];
    const char radio_info[LANGUAGE_TEXTS_LENGTH];
+   const char temperature_calibration[LANGUAGE_TEXTS_LENGTH];
    const char pin_code[LANGUAGE_TEXTS_LENGTH];
    const char please_confirm[LANGUAGE_TEXTS_LENGTH];
    const char vfo_freq_bind_mode[LANGUAGE_TEXTS_LENGTH];
@@ -220,9 +223,11 @@ typedef struct
    const char carrier[LANGUAGE_TEXTS_LENGTH];
    const char zone_empty[LANGUAGE_TEXTS_LENGTH];
    const char time[LANGUAGE_TEXTS_LENGTH];
+   const char uptime[LANGUAGE_TEXTS_LENGTH];
    const char hours[LANGUAGE_TEXTS_LENGTH];
    const char minutes[LANGUAGE_TEXTS_LENGTH];
    const char satellite[LANGUAGE_TEXTS_LENGTH];
+   const char alarm_time[LANGUAGE_TEXTS_LENGTH];
    const char location[LANGUAGE_TEXTS_LENGTH];
    const char date[LANGUAGE_TEXTS_LENGTH];
    const char timeZone[LANGUAGE_TEXTS_LENGTH];
