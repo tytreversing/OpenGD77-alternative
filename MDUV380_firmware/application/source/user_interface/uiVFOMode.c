@@ -1233,7 +1233,33 @@ static void handleEvent(uiEvent_t *ev)
 		    	case SK1_MODE_FASTCALL:
 		    		if (uiDataGlobal.Scan.active)
 		    		{
-		    			uiVFOModeStopScanning();
+		    			uiVFOModeStopScanning(); // останавливаем сканирование
+		    		}
+		    		else
+		    		{
+		    			uint16_t channel = 1;
+		    			struct_codeplugChannel_t tempChannel;
+		    			bool found = false;
+		    			while (!found && channel <= 1024)
+		    			{
+		    				codeplugChannelGetDataForIndex(channel, &tempChannel);
+                            found = (codeplugChannelGetFlag(&tempChannel, CHANNEL_FLAG_FASTCALL) != 0);
+                            channel++;
+		    			}
+		    			if (found)
+		    			{
+		    				// найден канал быстрого вызова
+		    				soundSetMelody(MELODY_ACK_BEEP);
+                            memcpy(currentChannelData, &tempChannel, sizeof(struct_codeplugChannel_t));
+                            uiVFOModeLoadChannelData(true);
+                            trxSetFrequency(currentChannelData->rxFreq, currentChannelData->txFreq, (((currentChannelData->chMode == RADIO_MODE_DIGITAL) && codeplugChannelGetFlag(currentChannelData, CHANNEL_FLAG_FORCE_DMO)) ? DMR_MODE_DMO : DMR_MODE_AUTO));
+		    			}
+		    			else
+		    			{
+		    				//канал не найден
+		    				soundSetMelody(MELODY_ERROR_BEEP);
+		    				uiNotificationShow(NOTIFICATION_TYPE_MESSAGE, NOTIFICATION_ID_MESSAGE, 1000, currentLanguage->notset, true);
+		    			}
 		    		}
 		    		break;
 		    	case SK1_MODE_FILTER:

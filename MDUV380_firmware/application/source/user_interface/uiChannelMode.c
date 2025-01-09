@@ -1177,7 +1177,7 @@ static void handleEvent(uiEvent_t *ev)
 		    				soundSetMelody(MELODY_ACK_BEEP);
                             memcpy(currentChannelData, &tempChannel, sizeof(struct_codeplugChannel_t));
                             uiChannelModeLoadChannelData(true, false);
-
+                            trxSetFrequency(currentChannelData->rxFreq, currentChannelData->txFreq, (((currentChannelData->chMode == RADIO_MODE_DIGITAL) && codeplugChannelGetFlag(currentChannelData, CHANNEL_FLAG_FORCE_DMO)) ? DMR_MODE_DMO : DMR_MODE_AUTO));
 		    			}
 		    			else
 		    			{

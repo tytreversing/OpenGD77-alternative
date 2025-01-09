@@ -40,6 +40,7 @@ const uint32_t VOICE_PROMPTS_DATA_VERSION =
 #define VOICE_PROMPTS_TOC_SIZE 				368
 #else
 											0x00010; //версия под новое меню
+#define VOICE_PROMPTS_TOC_SIZE 				331
 #endif
 
 
