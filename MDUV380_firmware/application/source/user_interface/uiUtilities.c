@@ -2547,18 +2547,7 @@ void announceEcoLevel(bool voicePromptWasPlaying)
 }
 #endif
 
-ANNOUNCE_STATIC void announceTemperature(bool voicePromptWasPlaying)
-{
-	char buffer[17];
-	int temperature = getTemperature();
-	if (!voicePromptWasPlaying)
-	{
-		voicePromptsAppendLanguageString(currentLanguage->temperature);
-	}
-	snprintf(buffer, 17, "%d.%1d", (temperature / 10), (temperature % 10));
-	voicePromptsAppendString(buffer);
-	voicePromptsAppendLanguageString(currentLanguage->celcius);
-}
+
 
 ANNOUNCE_STATIC void announceBatteryVoltage(void)
 {
@@ -2920,10 +2909,6 @@ void announceItemWithInit(bool init, voicePromptItem_t item, audioPromptThreshol
 
 		case PROMPT_SQUENCE_SQUELCH:
 			announceSquelchLevel(voicePromptWasPlaying);
-			break;
-
-		case PROMPT_SEQUENCE_TEMPERATURE:
-			announceTemperature(voicePromptWasPlaying);
 			break;
 
 		case PROMPT_SEQUENCE_DIRECTION_TX:
