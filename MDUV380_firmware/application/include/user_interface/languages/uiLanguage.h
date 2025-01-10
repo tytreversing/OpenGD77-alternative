@@ -200,11 +200,11 @@ typedef struct
    const char info[LANGUAGE_TEXTS_LENGTH];
    const char pwr[LANGUAGE_TEXTS_LENGTH];
    const char user_power[LANGUAGE_TEXTS_LENGTH];
-   const char temperature[LANGUAGE_TEXTS_LENGTH];
-   const char celcius[LANGUAGE_TEXTS_LENGTH];
+   const char dmrid[LANGUAGE_TEXTS_LENGTH];
+   const char dmridtext[LANGUAGE_TEXTS_LENGTH];
    const char seconds[LANGUAGE_TEXTS_LENGTH];
    const char radio_info[LANGUAGE_TEXTS_LENGTH];
-   const char temperature_calibration[LANGUAGE_TEXTS_LENGTH];
+   const char aliastext[LANGUAGE_TEXTS_LENGTH];
    const char pin_code[LANGUAGE_TEXTS_LENGTH];
    const char please_confirm[LANGUAGE_TEXTS_LENGTH];
    const char vfo_freq_bind_mode[LANGUAGE_TEXTS_LENGTH];
@@ -223,7 +223,7 @@ typedef struct
    const char carrier[LANGUAGE_TEXTS_LENGTH];
    const char zone_empty[LANGUAGE_TEXTS_LENGTH];
    const char time[LANGUAGE_TEXTS_LENGTH];
-   const char uptime[LANGUAGE_TEXTS_LENGTH];
+   const char promiscuity[LANGUAGE_TEXTS_LENGTH];
    const char hours[LANGUAGE_TEXTS_LENGTH];
    const char minutes[LANGUAGE_TEXTS_LENGTH];
    const char satellite[LANGUAGE_TEXTS_LENGTH];
@@ -327,12 +327,6 @@ typedef struct
    const char auto_lock[LANGUAGE_TEXTS_LENGTH];
    const char trackball[LANGUAGE_TEXTS_LENGTH];
    const char dmr_force_dmo[LANGUAGE_TEXTS_LENGTH];
-   const char dmrid[LANGUAGE_TEXTS_LENGTH];
-   const char dmridtext[LANGUAGE_TEXTS_LENGTH];
-   const char aliastext[LANGUAGE_TEXTS_LENGTH];
-   const char promiscuity[LANGUAGE_TEXTS_LENGTH];
-   const char vfomenu[21];
-   const char chmenu[21];
    const char satcom[LANGUAGE_TEXTS_LENGTH];
    const char ham[LANGUAGE_TEXTS_LENGTH];
    const char cps[LANGUAGE_TEXTS_LENGTH];
@@ -343,6 +337,8 @@ typedef struct
    const char p3fastcall[LANGUAGE_TEXTS_LENGTH];
    const char p3filter[LANGUAGE_TEXTS_LENGTH];
    const char priority[LANGUAGE_TEXTS_LENGTH];
+   const char vfomenu[21];
+   const char chmenu[21];
 
 } stringsTable_t;
 
