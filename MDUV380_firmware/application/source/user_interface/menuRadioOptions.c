@@ -180,9 +180,7 @@ static void updateScreen(bool isFirstRun)
 						rightSideUnitsStr = "ms";
 					break;
 				case RADIO_OPTIONS_MENU_SCAN_MULTIPLIER:
-					char multiplier[4];
-					snprintf(multiplier, 4, "%s%d", "x", nonVolatileSettings.scanPriority);
-					rightSideConst = multiplier;
+					snprintf(rightSideVar, 4, "%s%d", "x", nonVolatileSettings.scanPriority);
 					leftSide = currentLanguage->priority;
 					break;
 				case RADIO_OPTIONS_MENU_SCAN_MODE:// scanning mode
