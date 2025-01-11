@@ -578,12 +578,14 @@ void uiVFOModeUpdateScreen(int txTimeSecs)
 					if ((screenOperationMode[nonVolatileSettings.currentVFONumber] == VFO_SCREEN_OPERATION_NORMAL) ||
 							(screenOperationMode[nonVolatileSettings.currentVFONumber] == VFO_SCREEN_OPERATION_DUAL_SCAN))
 					{
-						snprintf(buffer, SCREEN_LINE_BUFFER_SIZE,
-#if defined(PLATFORM_RD5R)
-								"%c%c%c.%c%c%c%c%c",
-#else
+						if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+							snprintf(buffer, SCREEN_LINE_BUFFER_SIZE,
+															"%c%c%c.%c%c%c%c%c МГц",
+															uiDataGlobal.FreqEnter.digits[0], uiDataGlobal.FreqEnter.digits[1], uiDataGlobal.FreqEnter.digits[2],
+															uiDataGlobal.FreqEnter.digits[3], uiDataGlobal.FreqEnter.digits[4], uiDataGlobal.FreqEnter.digits[5], uiDataGlobal.FreqEnter.digits[6], uiDataGlobal.FreqEnter.digits[7]);
+						else
+						    snprintf(buffer, SCREEN_LINE_BUFFER_SIZE,
 								"%c%c%c.%c%c%c%c%c MHz",
-#endif
 								uiDataGlobal.FreqEnter.digits[0], uiDataGlobal.FreqEnter.digits[1], uiDataGlobal.FreqEnter.digits[2],
 								uiDataGlobal.FreqEnter.digits[3], uiDataGlobal.FreqEnter.digits[4], uiDataGlobal.FreqEnter.digits[5], uiDataGlobal.FreqEnter.digits[6], uiDataGlobal.FreqEnter.digits[7]);
 
@@ -1035,15 +1037,7 @@ static void handleEvent(uiEvent_t *ev)
 		}
 #endif
 
-		if (rebuildVoicePromptOnExtraLongSK1(ev))
-		{
-			return;
-		}
 
-		if (repeatVoicePromptOnSK1(ev))
-		{
-			return;
-		}
 
 		uint32_t tg = (LinkHead->talkGroupOrPcId & 0xFFFFFF);
 
@@ -1250,6 +1244,7 @@ static void handleEvent(uiEvent_t *ev)
 		    			{
 		    				// найден канал быстрого вызова
 		    				soundSetMelody(MELODY_ACK_BEEP);
+		    				memcpy(tempChannel.name, currentChannelData->name, 16); //сохраняем имя VFO
                             memcpy(currentChannelData, &tempChannel, sizeof(struct_codeplugChannel_t));
                             uiVFOModeLoadChannelData(true);
                             trxSetFrequency(currentChannelData->rxFreq, currentChannelData->txFreq, (((currentChannelData->chMode == RADIO_MODE_DIGITAL) && codeplugChannelGetFlag(currentChannelData, CHANNEL_FLAG_FORCE_DMO)) ? DMR_MODE_DMO : DMR_MODE_AUTO));
@@ -1299,6 +1294,15 @@ static void handleEvent(uiEvent_t *ev)
 			uiDataGlobal.displayQSOState = QSO_DISPLAY_DEFAULT_SCREEN;
 			uiVFOModeUpdateScreen(0);
 
+		}
+		if (rebuildVoicePromptOnExtraLongSK1(ev))
+		{
+			return;
+		}
+
+		if (repeatVoicePromptOnSK1(ev))
+		{
+			return;
 		}
 #if !defined(PLATFORM_RD5R)
 		if (BUTTONCHECK_SHORTUP(ev, BUTTON_ORANGE))

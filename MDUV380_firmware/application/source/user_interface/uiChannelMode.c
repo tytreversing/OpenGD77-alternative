@@ -1037,15 +1037,7 @@ static void handleEvent(uiEvent_t *ev)
 
 	if (ev->events & BUTTON_EVENT)
 	{
-		if (rebuildVoicePromptOnExtraLongSK1(ev))
-		{
-			return;
-		}
 
-		if (repeatVoicePromptOnSK1(ev))
-		{
-			return;
-		}
 
 		uint32_t tg = (LinkHead->talkGroupOrPcId & 0xFFFFFF);
 
@@ -1230,7 +1222,15 @@ static void handleEvent(uiEvent_t *ev)
 
 		}
 
+		if (rebuildVoicePromptOnExtraLongSK1(ev))
+		{
+			return;
+		}
 
+		if (repeatVoicePromptOnSK1(ev))
+		{
+			return;
+		}
 #if !defined(PLATFORM_RD5R)
 		if (BUTTONCHECK_SHORTUP(ev, BUTTON_ORANGE) && (BUTTONCHECK_DOWN(ev, BUTTON_SK1) == 0))
 		{

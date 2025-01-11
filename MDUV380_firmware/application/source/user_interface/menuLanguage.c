@@ -50,8 +50,6 @@ static void handleEvent(uiEvent_t *ev);
 static menuStatus_t menuLanguageExitCode = MENU_STATUS_SUCCESS;
 
 
-static void clearNonLatinChar(uint8_t *str)
-{}
 
 menuStatus_t menuLanguage(uiEvent_t *ev, bool isFirstRun)
 {
