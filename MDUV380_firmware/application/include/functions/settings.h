@@ -206,6 +206,7 @@ typedef struct
 	uint8_t			gps; // Off / wait for fix / On
 #endif
 	uint8_t         buttonSK1;
+	uint8_t         buttonSK1Long;
     uint8_t         scanPriority;
 } settingsStruct_t;
 

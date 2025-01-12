@@ -325,6 +325,7 @@ const stringsTable_t englishLanguage =
 .ham = "HAM",
 .cps = "by CPS",
 .p3button = "SK1 Mode",
+.p3buttonLong             = "[SK1] Mode",
 .p3info                   = "info",
 .p3reverse = "Reverse",
 .p3talkaround = "Talkaround",

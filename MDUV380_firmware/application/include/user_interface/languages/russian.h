@@ -292,6 +292,7 @@ const stringsTable_t russianLanguage =
 .ham                      = "Р/Л",
 .cps                      = "по CPS",
 .p3button                 = "SK1",
+.p3buttonLong             = "[SK1]",
 .p3info                   = "информация",
 .p3reverse                = "реверс",
 .p3talkaround             = "прямая связь",

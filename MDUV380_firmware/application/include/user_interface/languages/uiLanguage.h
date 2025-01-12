@@ -331,6 +331,7 @@ typedef struct
    const char ham[LANGUAGE_TEXTS_LENGTH];
    const char cps[LANGUAGE_TEXTS_LENGTH];
    const char p3button[LANGUAGE_TEXTS_LENGTH];
+   const char p3buttonLong[LANGUAGE_TEXTS_LENGTH];
    const char p3info[LANGUAGE_TEXTS_LENGTH];
    const char p3reverse[LANGUAGE_TEXTS_LENGTH];
    const char p3talkaround[LANGUAGE_TEXTS_LENGTH];
