@@ -333,7 +333,7 @@ const stringsTable_t englishLanguage =
 .priority                 = "Priority",
 .vfomenu = " Menu      Channels ",
 .chmenu = " Menu           VFO ",
-
+.scanmenu = " Menu          Stop ",
 };
 /********************************************************************
  *

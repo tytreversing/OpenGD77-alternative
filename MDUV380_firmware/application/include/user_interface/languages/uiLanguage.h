@@ -339,6 +339,7 @@ typedef struct
    const char priority[LANGUAGE_TEXTS_LENGTH];
    const char vfomenu[21];
    const char chmenu[21];
+   const char scanmenu[21];
 
 } stringsTable_t;
 

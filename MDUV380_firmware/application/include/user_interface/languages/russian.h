@@ -300,7 +300,7 @@ const stringsTable_t russianLanguage =
 .priority                 = "Приоритет",
 .vfomenu                  = " Меню        Каналы ",
 .chmenu                   = " Меню           VFO ",
-
+.scanmenu                   = " Меню          Стоп ",
 };
 /********************************************************************
  *

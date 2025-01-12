@@ -645,7 +645,11 @@ void uiVFOModeUpdateScreen(int txTimeSecs)
 			}
 			displayThemeApply(THEME_ITEM_FG_HEADER_TEXT, THEME_ITEM_BG_HEADER_TEXT);
 			displayFillRect(0, DISPLAY_SIZE_Y-18, DISPLAY_SIZE_X, 18, true);
-			displayPrintAt(0, DISPLAY_SIZE_Y-17, currentLanguage->vfomenu, FONT_SIZE_3);
+			if ((uiDataGlobal.Scan.active &&
+					(screenOperationMode[nonVolatileSettings.currentVFONumber] != VFO_SCREEN_OPERATION_DUAL_SCAN) && (uiDataGlobal.Scan.state == SCAN_STATE_SCANNING)))
+				displayPrintAt(0, DISPLAY_SIZE_Y-17, currentLanguage->scanmenu, FONT_SIZE_3);
+			else
+				displayPrintAt(0, DISPLAY_SIZE_Y-17, currentLanguage->vfomenu, FONT_SIZE_3);
 			displayRender();
 			displayThemeResetToDefault();
 			break;

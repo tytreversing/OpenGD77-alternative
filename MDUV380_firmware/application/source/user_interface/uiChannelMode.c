@@ -889,7 +889,10 @@ void uiChannelModeUpdateScreen(int txTimeSecs)
 			}
 			displayThemeApply(THEME_ITEM_FG_HEADER_TEXT, THEME_ITEM_BG_HEADER_TEXT);
 			displayFillRect(0, DISPLAY_SIZE_Y-18, DISPLAY_SIZE_X, 18, true);
-			displayPrintAt(0, DISPLAY_SIZE_Y-17, currentLanguage->chmenu, FONT_SIZE_3);
+			if (uiDataGlobal.Scan.active)
+				displayPrintAt(0, DISPLAY_SIZE_Y-17, currentLanguage->scanmenu, FONT_SIZE_3);
+			else
+			    displayPrintAt(0, DISPLAY_SIZE_Y-17, currentLanguage->chmenu, FONT_SIZE_3);
 			displayRender();
 			displayThemeResetToDefault();
 			break;
