@@ -365,7 +365,7 @@ void voicePromptsPlay(void)
 		{
 			HRC6000SetDmrAGCGain(0);
 		}
-
+		HRC6000SetDmrRxGain(getVolumeControl());
 		taskENTER_CRITICAL();
 
 		// Early state change to lock out HR-C6000.

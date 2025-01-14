@@ -1008,7 +1008,7 @@ static void handleFastButton(uint8_t action)
     			while (!found && channel <= 1024)
     			{
     				codeplugChannelGetDataForIndex(channel, &tempChannel);
-                    found = (codeplugChannelGetFlag(&tempChannel, CHANNEL_FLAG_FASTCALL) != 0);
+    				found = ((codeplugChannelGetFlag(&tempChannel, CHANNEL_FLAG_FASTCALL) != 0) && (tempChannel.name[0] != 0xff));
                     channel++;
     			}
     			if (found)
