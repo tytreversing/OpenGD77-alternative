@@ -2206,7 +2206,7 @@ void uiUtilityDrawRSSIBarGraph(void)
 				    snprintf(buffer, 10, "%d%s", dBm, " дБм");
 				else
 					snprintf(buffer, 10, "%d%s", dBm, "dBm");
-	displayPrintAt(DISPLAY_X_POS_DBM, DISPLAY_Y_POS_RSSI, buffer, FONT_SIZE_2);
+	displayPrintCentered(DISPLAY_Y_POS_RSSI, buffer, FONT_SIZE_2);
 }
 
 void uiUtilityDrawFMMicLevelBarGraph(void)
