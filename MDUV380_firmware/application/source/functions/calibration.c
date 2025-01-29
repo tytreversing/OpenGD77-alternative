@@ -31,9 +31,9 @@
 #include "functions/calibration.h"
 #include "functions/trx.h"
 
-const int MAX_PA_DAC_VALUE = 4095;
+const int MAX_PA_DAC_VALUE = 4080;
 
-typedef struct
+typedef struct __attribute__((__packed__))
 {
 //0x00
 	uint8_t VoxLevel1;				//calibration for Vox Setting 1
@@ -83,9 +83,10 @@ typedef struct
 //0x70
 	uint8_t UHFCloseSquelch1[9];   //UHF Squelch Level 1 Closing 9 frequencies
 //0x79
-	uint8_t UnknownBlock10[7];		//Unknown
+	uint16_t UHFCalPower4[9];
+//	uint8_t UnknownBlock10[7];		//Unknown
 //0x80
-	uint8_t UnknownBlock11[16];		//Unknown
+	uint8_t UnknownBlock11[5];		//Unknown
 //0x90
 	uint8_t UHFCTC67[9];			//UHF CTCSS Deviation for 67Hz Tone 9 frequencies
 //0x99
@@ -117,12 +118,17 @@ typedef struct
 	uint8_t VHFCloseSquelch9[5];     //VHF Squelch Level 9 Closing  5 frequencies
 	uint8_t VHFOpenSquelch1[5];     //VHF Squelch Level 1 Opening  5 frequencies
 	uint8_t VHFCloseSquelch1[5];     //VHF Squelch Level 1 Closing  5 frequencies
-//0xF4
-	uint8_t UnknownBlock17[12];		//Unknown
+//0xF4 - кусок 60 байт
+	uint16_t VHFCalPower4[5];
+	uint16_t VHFCalPower3[5];
+	uint16_t VHFCalPower2[5];
+	uint16_t VHFCalPower1[5];
+	uint16_t VHFCalPower0[5];
+//	uint8_t UnknownBlock17[12];		//Unknown
 //0x100
-	uint8_t VHFCalFreqs[10][4];		// VHF Calibration Frequencies 4 BCD bytes per freq, 5 pairs of freqs Rx and Tx
+//	uint8_t VHFCalFreqs[10][4];		// VHF Calibration Frequencies 4 BCD bytes per freq, 5 pairs of freqs Rx and Tx
 //0x128
-	uint8_t UnknownBlock18[8];		//Unknown
+	uint8_t UnknownBlock18[10];		//Unknown
 //0x130
 	uint8_t UHFDMRIGain[9];			//UHF I Gain for DMR	9 Frequencies
 //0x139
@@ -134,7 +140,8 @@ typedef struct
 	uint8_t VHFDMRQGain[5];			//VHF Q Gain for DMR	5 Frequencies
 	uint8_t UnknownBlock20[2];		//Unknown
 //0x150
-	uint8_t UnknownBlock21[32];		//Unknown
+	uint16_t useless[9];
+	uint8_t UnknownBlock21[14];		//Unknown
 //0x170
 	uint8_t UHFFMIGain[9];			//UHF I Gain for FM	9 Frequencies
 //0x179
@@ -152,13 +159,17 @@ typedef struct
 //0x19E
 	uint8_t UnknownBlock24[2];		//Unknown
 //0x1A0
-	uint8_t UHFVeryLowPowerCal[9];		//UHF VeryLow Power Calibration 9 frequencies (not used or initialised by official firmware)
+	uint8_t UHFMidLowPowerCal[9];		//UHF MidLow Power Calibration 9 frequencies
 //0x1A9
-	uint8_t VHFVeryLowPowerCal[5];		//VHF VeryLow Power Calibration 5 frequencies (not used or initialised by official firmware)
+	uint8_t VHFMidLowPowerCal[5];		//VHF MidLow Power Calibration 5 frequencies
 //0x1AE
 	uint8_t UnknownBlock25[2];		//Unknown
 //0x1B0
-	uint8_t UHFCalFreqs[18][4];		// UHF Calibration Frequencies 4 BCD bytes per freq, 9 pairs of freqs Rx and Tx
+	uint16_t UHFCalPower3[9];
+	uint16_t UHFCalPower2[9];
+	uint16_t UHFCalPower1[9];
+	uint16_t UHFCalPower0[9];
+//	uint8_t UHFCalFreqs[18][4];		// UHF Calibration Frequencies 4 BCD bytes per freq, 9 pairs of freqs Rx and Tx
 	uint8_t UnknownBlock26[8];		//Unknown
 //0x200
 } CalibrationData_t;
@@ -172,29 +183,8 @@ const uint8_t MARKER_BYTES[] = {0xCD, 0xE8, 0xEA, 0xE0};
 
 void calibrationInit(void)
 {
-	calibrationReadLocal();					//first try to read the local copy of the calibration table
-
-	if(memcmp(MARKER_BYTES, &calibrationData.MARKER[0], MARKER_BYTES_LENGTH) != 0)				//do we have a good local copy?
-	{
-	    calibrationReadFactory(true);																//no so copy the factory values
-            memcpy(&calibrationData.MARKER[0] , MARKER_BYTES , MARKER_BYTES_LENGTH);
-            calibrationSaveLocal();																    //to the local copy
-	}
-}
-
-void calibrationReadLocal(void)
-{
-	(void)SPI_Flash_read(CALIBRATION_TABLE_LOCAL_COPY_ADDRESS , (uint8_t *)&calibrationData, CALIBRATION_TABLE_LENGTH);
-}
-
-void calibrationSaveLocal(void)
-{
-	(void)SPI_Flash_write(CALIBRATION_TABLE_LOCAL_COPY_ADDRESS , (uint8_t *)&calibrationData, CALIBRATION_TABLE_LENGTH);
-}
-
-void calibrationReadFactory(bool applyConversion)
-{
-	static const float fractionalPowers[2][4] = {
+    uint16_t temp;
+	static const float fractionalPowers1[2][4] = {
 #if defined(PLATFORM_RT84_DM1701)
 		// DM1701 or RT84 which have same RF hardware
 			{0.61f, 1.00f, 0.85f, 1.30f},// VHF
@@ -210,34 +200,82 @@ void calibrationReadFactory(bool applyConversion)
 		{0.72f, 1.00f, 1.05f, 1.25f},// UHF
 	#endif
 #endif
-	};//fractionalPowers
+	};
+
+	static const float fractionalPowers2[2][5] = {
+#if defined(PLATFORM_RT84_DM1701)
+		// DM1701 or RT84 which have same RF hardware
+		{0.10f, 0.25f, 0.45f, 0.53f, 0.75f},// VHF
+		{0.07f, 0.14f, 0.36f, 0.46f, 0.73f},// UHF
+
+#else
+	#if defined(PLATFORM_VARIANT_UV380_PLUS_10W)
+		// 10W UV380
+		{0.09f, 0.21f, 0.45f, 0.58f, 0.83f},// VHF
+		{0.07f, 0.17f, 0.43f, 0.55f, 0.75f},// UHF
+
+	#else
+		//  5W UV380
+		{0.21f, 0.34f, 0.35f, 0.61f, 0.70f},// VHF
+		{0.15f, 0.25f, 0.40f, 0.55f, 0.70f},// UHF
+	#endif
+#endif
+	};
+
+	calibrationReadLocal();
+
+	if(memcmp(MARKER_BYTES, &calibrationData.MARKER[0], MARKER_BYTES_LENGTH) != 0)
+	{
+	    calibrationReadFactory();
+
+        for (int i = 0; i < 5; i++)
+        {
+        	calibrationData.VHFMidLowPowerCal[i] = calibrationData.VHFLowPowerCal[i];
+        	calibrationData.VHFLowPowerCal[i] = calibrationData.VHFMidLowPowerCal[i] * fractionalPowers1[0][0];
+        	calibrationData.VHFMidLowPowerCal[i] *= fractionalPowers1[0][1];
+        	calibrationData.VHFMidPowerCal[i] *= fractionalPowers1[0][2];
+        	calibrationData.VHFHighPowerCal[i] *= fractionalPowers1[0][3];
+        	temp = calibrationData.VHFLowPowerCal[i] << 4;
+        	calibrationData.VHFCalPower4[i] = (uint16_t)((float)temp * fractionalPowers2[0][4]);
+        	calibrationData.VHFCalPower3[i] = (uint16_t)((float)temp * fractionalPowers2[0][3]);
+        	calibrationData.VHFCalPower2[i] = (uint16_t)((float)temp * fractionalPowers2[0][2]);
+        	calibrationData.VHFCalPower1[i] = (uint16_t)((float)temp * fractionalPowers2[0][1]);
+        	calibrationData.VHFCalPower0[i] = (uint16_t)((float)temp * fractionalPowers2[0][0]);
+        }
+        for (int i = 0; i < 9; i++)
+        {
+        	calibrationData.UHFMidLowPowerCal[i] = calibrationData.UHFLowPowerCal[i];
+        	calibrationData.UHFLowPowerCal[i] = calibrationData.UHFMidLowPowerCal[i] * fractionalPowers1[1][0];
+            calibrationData.UHFMidLowPowerCal[i]	*= fractionalPowers1[1][1];
+        	calibrationData.UHFMidPowerCal[i]	*= fractionalPowers1[1][2];
+        	calibrationData.UHFHighPowerCal[i]	*= fractionalPowers1[1][3];
+        	temp = calibrationData.UHFLowPowerCal[i] << 4;
+        	calibrationData.UHFCalPower4[i] = (uint16_t)((float)temp * fractionalPowers2[1][4]);
+        	calibrationData.UHFCalPower3[i] = (uint16_t)((float)temp * fractionalPowers2[1][3]);
+        	calibrationData.UHFCalPower2[i] = (uint16_t)((float)temp * fractionalPowers2[1][2]);
+        	calibrationData.UHFCalPower1[i] = (uint16_t)((float)temp * fractionalPowers2[1][1]);
+        	calibrationData.UHFCalPower0[i] = (uint16_t)((float)temp * fractionalPowers2[1][0]);
+        }
+            memcpy(&calibrationData.MARKER[0] , MARKER_BYTES , MARKER_BYTES_LENGTH);
+            calibrationSaveLocal();																    //to the local copy
+	}
+}
+
+void calibrationReadLocal(void)
+{
+	(void)SPI_Flash_read(CALIBRATION_TABLE_LOCAL_COPY_ADDRESS , (uint8_t *)&calibrationData, CALIBRATION_TABLE_LENGTH);
+}
+
+void calibrationSaveLocal(void)
+{
+	(void)SPI_Flash_write(CALIBRATION_TABLE_LOCAL_COPY_ADDRESS , (uint8_t *)&calibrationData, CALIBRATION_TABLE_LENGTH);
+}
+
+void calibrationReadFactory(void)
+{
 
 	(void)SPI_Flash_readSecurityRegisters(0, (uint8_t *)&calibrationData, CALIBRATION_TABLE_LENGTH);
 
-    
-
-    for(uint8_t freqRangeIndex = 0; freqRangeIndex < 5 ; freqRangeIndex++)
-    {
-		calibrationData.VHFVeryLowPowerCal[freqRangeIndex]	 = calibrationData.VHFLowPowerCal[freqRangeIndex] * fractionalPowers[0][0];
-		if (applyConversion)
-		{
-			calibrationData.VHFLowPowerCal[freqRangeIndex]		*= fractionalPowers[0][1];
-			calibrationData.VHFMidPowerCal[freqRangeIndex]		*= fractionalPowers[0][2];
-			calibrationData.VHFHighPowerCal[freqRangeIndex]		*= fractionalPowers[0][3];
-		}
-    }
-
-    for(uint8_t freqRangeIndex = 0; freqRangeIndex < 9; freqRangeIndex++)
-    {
-		calibrationData.UHFVeryLowPowerCal[freqRangeIndex]	 = calibrationData.UHFLowPowerCal[freqRangeIndex] * fractionalPowers[1][0];
-
-    	if (applyConversion)
-    	{
-    		calibrationData.UHFLowPowerCal[freqRangeIndex]		*= fractionalPowers[1][1];
-    		calibrationData.UHFMidPowerCal[freqRangeIndex]		*= fractionalPowers[1][2];
-    		calibrationData.UHFHighPowerCal[freqRangeIndex]		*= fractionalPowers[1][3];
-    	}
-    }
 }
 
 //look up the tuning voltage and interpolate between points (not used on MDuV380 but retained for MD-9600)
@@ -490,6 +528,80 @@ void calibrationGetPowerForFrequency(int freq, calibrationPowerValues_t *powerSe
 		offset = (freq - RADIO_HARDWARE_FREQUENCY_BANDS[RADIO_BAND_UHF].calPowerTableMinFreq) % 1000000;
 		limit = 8;
 		index = CLAMP(index, 0, limit);
+		lower = calibrationData.UHFCalPower0[index];				// get the Lower lookup point and scale it to 12 bits
+		if (index < limit)
+		{
+			upper = calibrationData.UHFCalPower0[index + 1];			//get the higher lookup point and scale it to 12 bits
+		}
+		else
+		{
+			upper = lower + (lower - (calibrationData.UHFCalPower0[index - 1]));       //extrapolate outside top point using the same slope
+		}
+
+		powerSettings->power0 = CLAMP(interpolate(lower, upper, offset, 1000000), 0, 4080);
+
+
+		lower = calibrationData.UHFCalPower1[index];				// get the Lower lookup point and scale it to 12 bits
+		if (index < limit)
+		{
+			upper = calibrationData.UHFCalPower1[index + 1];			//get the higher lookup point and scale it to 12 bits
+		}
+		else
+		{
+			upper = lower + (lower - (calibrationData.UHFCalPower1[index - 1]));       //extrapolate outside top point using the same slope
+		}
+
+		powerSettings->power1 = CLAMP(interpolate(lower, upper, offset, 1000000), 0, 4080);
+
+
+		lower = calibrationData.UHFCalPower2[index];				// get the Lower lookup point and scale it to 12 bits
+		if (index < limit)
+		{
+			upper = calibrationData.UHFCalPower2[index + 1];			//get the higher lookup point and scale it to 12 bits
+		}
+		else
+		{
+			upper = lower + (lower - (calibrationData.UHFCalPower2[index - 1]));       //extrapolate outside top point using the same slope
+		}
+
+		powerSettings->power2 = CLAMP(interpolate(lower, upper, offset, 1000000), 0, 4080);
+
+
+		lower = calibrationData.UHFCalPower3[index];				// get the Lower lookup point and scale it to 12 bits
+		if (index < limit)
+		{
+			upper = calibrationData.UHFCalPower3[index + 1];			//get the higher lookup point and scale it to 12 bits
+		}
+		else
+		{
+			upper = lower + (lower - (calibrationData.UHFCalPower3[index - 1]));       //extrapolate outside top point using the same slope
+		}
+
+		powerSettings->power3 = CLAMP(interpolate(lower, upper, offset, 1000000), 0, 4080);
+
+		lower = calibrationData.UHFCalPower4[index];				// get the Lower lookup point and scale it to 12 bits
+		if (index < limit)
+		{
+			upper = calibrationData.UHFCalPower4[index + 1];			//get the higher lookup point and scale it to 12 bits
+		}
+		else
+		{
+			upper = lower + (lower - (calibrationData.UHFCalPower4[index - 1]));       //extrapolate outside top point using the same slope
+		}
+
+		powerSettings->power4 = CLAMP(interpolate(lower, upper, offset, 1000000), 0, 4080);
+		lower = calibrationData.UHFMidLowPowerCal[index] << 4;				// get the Lower lookup point and scale it to 12 bits
+
+		if (index < limit)
+		{
+			upper = calibrationData.UHFMidLowPowerCal[index + 1] << 4;			//get the higher lookup point and scale it to 12 bits
+		}
+		else
+		{
+			upper = lower + (lower - (calibrationData.UHFMidLowPowerCal[index - 1] << 4));       //extrapolate outside top point using the same slope
+		}
+
+		powerSettings->midLowPower = CLAMP(interpolate(lower, upper, offset, 1000000), 0, 4080);
 		lower = calibrationData.UHFLowPowerCal[index] << 4;				// get the Lower lookup point and scale it to 12 bits
 
 		if (index < limit)
@@ -501,19 +613,7 @@ void calibrationGetPowerForFrequency(int freq, calibrationPowerValues_t *powerSe
 			upper = lower + (lower - (calibrationData.UHFLowPowerCal[index - 1] << 4));       //extrapolate outside top point using the same slope
 		}
 
-		powerSettings->lowPower = CLAMP(interpolate(lower, upper, offset, 1000000), 0, 4096);
-		lower = calibrationData.UHFVeryLowPowerCal[index] << 4;				// get the Lower lookup point and scale it to 12 bits
-
-		if (index < limit)
-		{
-			upper = calibrationData.UHFVeryLowPowerCal[index + 1] << 4;			//get the higher lookup point and scale it to 12 bits
-		}
-		else
-		{
-			upper = lower + (lower - (calibrationData.UHFVeryLowPowerCal[index - 1] << 4));       //extrapolate outside top point using the same slope
-		}
-
-		powerSettings->veryLowPower = CLAMP(interpolate(lower, upper, offset, 1000000), 0, 4096);
+		powerSettings->lowPower = CLAMP(interpolate(lower, upper, offset, 1000000), 0, 4080);
 		lower = calibrationData.UHFMidPowerCal[index] << 4;				// get the Lower lookup point and scale it to 12 bits
 
 		if (index < limit)
@@ -525,7 +625,7 @@ void calibrationGetPowerForFrequency(int freq, calibrationPowerValues_t *powerSe
 			upper = lower + (lower - (calibrationData.UHFMidPowerCal[index - 1] << 4));       //extrapolate outside top point using the same slope
 		}
 
-		powerSettings->midPower = CLAMP(interpolate(lower, upper, offset, 1000000), 0, 4096);
+		powerSettings->midPower = CLAMP(interpolate(lower, upper, offset, 1000000), 0, 4080);
 		lower = calibrationData.UHFHighPowerCal[index] << 4;				// get the Lower lookup point and scale it to 12 bits
 
 		if (index < limit)
@@ -537,7 +637,7 @@ void calibrationGetPowerForFrequency(int freq, calibrationPowerValues_t *powerSe
 			upper = lower + (lower - (calibrationData.UHFHighPowerCal[index - 1] << 4));       //extrapolate outside top point using the same slope
 		}
 
-		powerSettings->highPower = CLAMP(interpolate(lower, upper, offset, 1000000), 0, 4096);
+		powerSettings->highPower = CLAMP(interpolate(lower, upper, offset, 1000000), 0, 4080);
 
 		return;
 	}
@@ -546,6 +646,71 @@ void calibrationGetPowerForFrequency(int freq, calibrationPowerValues_t *powerSe
 	offset = (freq - RADIO_HARDWARE_FREQUENCY_BANDS[RADIO_BAND_VHF].calPowerTableMinFreq) % 1000000;
 	limit = 4;
 	index = CLAMP(index, 0, limit);
+	lower = calibrationData.VHFCalPower0[index];				// get the Lower lookup point and scale it to 12 bits
+
+	if (index < limit)
+	{
+		upper = calibrationData.VHFCalPower0[index + 1];			//get the higher lookup point and scale it to 12 bits
+	}
+	else
+	{
+		upper = lower + (lower - (calibrationData.VHFCalPower0[index - 1]));       //extrapolate outside top point using the same slope
+	}
+
+	powerSettings->power0 = CLAMP(interpolate(lower, upper, offset, 950000), 0, 4080);
+
+	lower = calibrationData.VHFCalPower1[index];				// get the Lower lookup point and scale it to 12 bits
+
+	if (index < limit)
+	{
+		upper = calibrationData.VHFCalPower1[index + 1];			//get the higher lookup point and scale it to 12 bits
+	}
+	else
+	{
+		upper = lower + (lower - (calibrationData.VHFCalPower1[index - 1]));       //extrapolate outside top point using the same slope
+	}
+
+	powerSettings->power1 = CLAMP(interpolate(lower, upper, offset, 950000), 0, 4080);
+
+	lower = calibrationData.VHFCalPower2[index];				// get the Lower lookup point and scale it to 12 bits
+
+	if (index < limit)
+	{
+		upper = calibrationData.VHFCalPower2[index + 1];			//get the higher lookup point and scale it to 12 bits
+	}
+	else
+	{
+		upper = lower + (lower - (calibrationData.VHFCalPower2[index - 1]));       //extrapolate outside top point using the same slope
+	}
+
+	powerSettings->power2 = CLAMP(interpolate(lower, upper, offset, 950000), 0, 4080);
+
+	lower = calibrationData.VHFCalPower3[index];				// get the Lower lookup point and scale it to 12 bits
+
+	if (index < limit)
+	{
+		upper = calibrationData.VHFCalPower3[index + 1];			//get the higher lookup point and scale it to 12 bits
+	}
+	else
+	{
+		upper = lower + (lower - (calibrationData.VHFCalPower3[index - 1]));       //extrapolate outside top point using the same slope
+	}
+
+	powerSettings->power3 = CLAMP(interpolate(lower, upper, offset, 950000), 0, 4080);
+
+
+	lower = calibrationData.VHFCalPower4[index];				// get the Lower lookup point and scale it to 12 bits
+
+	if (index < limit)
+	{
+		upper = calibrationData.VHFCalPower4[index + 1];			//get the higher lookup point and scale it to 12 bits
+	}
+	else
+	{
+		upper = lower + (lower - (calibrationData.VHFCalPower4[index - 1]));       //extrapolate outside top point using the same slope
+	}
+
+	powerSettings->power4 = CLAMP(interpolate(lower, upper, offset, 950000), 0, 4080);
 	lower = calibrationData.VHFLowPowerCal[index] << 4;				// get the Lower lookup point and scale it to 12 bits
 
 	if (index < limit)
@@ -557,19 +722,19 @@ void calibrationGetPowerForFrequency(int freq, calibrationPowerValues_t *powerSe
 		upper = lower + (lower - (calibrationData.VHFLowPowerCal[index - 1] << 4));       //extrapolate outside top point using the same slope
 	}
 
-	powerSettings->lowPower = CLAMP(interpolate(lower, upper, offset, 1000000), 0, 4096);
-	lower = calibrationData.VHFVeryLowPowerCal[index] << 4;				// get the Lower lookup point and scale it to 12 bits
+	powerSettings->lowPower = CLAMP(interpolate(lower, upper, offset, 1000000), 0, 4080);
+	lower = calibrationData.VHFMidLowPowerCal[index] << 4;				// get the Lower lookup point and scale it to 12 bits
 
 	if (index < limit)
 	{
-		upper = calibrationData.VHFVeryLowPowerCal[index + 1] << 4;			//get the higher lookup point and scale it to 12 bits
+		upper = calibrationData.VHFMidLowPowerCal[index + 1] << 4;			//get the higher lookup point and scale it to 12 bits
 	}
 	else
 	{
-		upper = lower + (lower - (calibrationData.VHFVeryLowPowerCal[index - 1] << 4));       //extrapolate outside top point using the same slope
+		upper = lower + (lower - (calibrationData.VHFMidLowPowerCal[index - 1] << 4));       //extrapolate outside top point using the same slope
 	}
 
-	powerSettings->veryLowPower = CLAMP(interpolate(lower, upper, offset, 1000000), 0, 4096);
+	powerSettings->midLowPower = CLAMP(interpolate(lower, upper, offset, 1000000), 0, 4080);
 	lower = calibrationData.VHFMidPowerCal[index] << 4;				// get the Lower lookup point and scale it to 12 bits
 
 	if (index < limit)
@@ -581,7 +746,7 @@ void calibrationGetPowerForFrequency(int freq, calibrationPowerValues_t *powerSe
 		upper = lower + (lower - (calibrationData.VHFMidPowerCal[index - 1] << 4));       //extrapolate outside top point using the same slope
 	}
 
-	powerSettings->midPower = CLAMP(interpolate(lower, upper, offset, 1000000), 0, 4096);
+	powerSettings->midPower = CLAMP(interpolate(lower, upper, offset, 1000000), 0, 4080);
 	lower = calibrationData.VHFHighPowerCal[index] << 4;				// get the Lower lookup point and scale it to 12 bits
 
 	if (index < limit)
@@ -593,7 +758,7 @@ void calibrationGetPowerForFrequency(int freq, calibrationPowerValues_t *powerSe
 		upper = lower + (lower - (calibrationData.VHFHighPowerCal[index - 1] << 4));       //extrapolate outside top point using the same slope
 	}
 
-	powerSettings->highPower = CLAMP(interpolate(lower, upper, offset, 1000000), 0, 4096);
+	powerSettings->highPower = CLAMP(interpolate(lower, upper, offset, 1000000), 0, 4080);
 }
 
 int8_t calibrationGetMod2Offset(int band)
@@ -640,10 +805,10 @@ uint8_t calibrationGetPower(int freqindex, int powerindex)
 		switch(powerindex)
 		{
 			case 0:
-				return calibrationData.VHFVeryLowPowerCal[freqindex];
+				return calibrationData.VHFLowPowerCal[freqindex];
 				break;
 			case 1:
-				return calibrationData.VHFLowPowerCal[freqindex];
+				return calibrationData.VHFMidLowPowerCal[freqindex];
 				break;
 			case 2:
 				return calibrationData.VHFMidPowerCal[freqindex];
@@ -658,10 +823,10 @@ uint8_t calibrationGetPower(int freqindex, int powerindex)
 		switch(powerindex)
 		{
 			case 0:
-				return calibrationData.UHFVeryLowPowerCal[freqindex - 5];
+				return calibrationData.UHFLowPowerCal[freqindex - 5];
 				break;
 			case 1:
-				return calibrationData.UHFLowPowerCal[freqindex - 5];
+				return calibrationData.UHFMidLowPowerCal[freqindex - 5];
 				break;
 			case 2:
 				return calibrationData.UHFMidPowerCal[freqindex - 5];
@@ -682,10 +847,10 @@ void calibrationPutPower(int freqindex, int powerindex, uint8_t val)
 		switch(powerindex)
 		{
 			case 0:
-				calibrationData.VHFVeryLowPowerCal[freqindex] = val;
+				calibrationData.VHFLowPowerCal[freqindex] = val;
 				break;
 			case 1:
-				calibrationData.VHFLowPowerCal[freqindex] = val;
+				calibrationData.VHFMidLowPowerCal[freqindex] = val;
 				break;
 			case 2:
 				calibrationData.VHFMidPowerCal[freqindex] = val;
@@ -700,10 +865,10 @@ void calibrationPutPower(int freqindex, int powerindex, uint8_t val)
 		switch(powerindex)
 		{
 			case 0:
-				calibrationData.UHFVeryLowPowerCal[freqindex - 5] = val;
+				calibrationData.UHFLowPowerCal[freqindex - 5] = val;
 				break;
 			case 1:
-				calibrationData.UHFLowPowerCal[freqindex - 5] = val;
+				calibrationData.UHFMidLowPowerCal[freqindex - 5] = val;
 				break;
 			case 2:
 				calibrationData.UHFMidPowerCal[freqindex - 5] = val;

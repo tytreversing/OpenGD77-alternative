@@ -57,9 +57,9 @@ const frequencyHardwareBand_t RADIO_HARDWARE_FREQUENCY_BANDS[RADIO_BANDS_TOTAL_N
 const frequencyHardwareBand_t RADIO_HARDWARE_FREQUENCY_BANDS[RADIO_BANDS_TOTAL_NUM] =  {
 													{
 														.calIQTableMinFreq = 13600000,
-														.calPowerTableMinFreq = 13500000,
+														.calPowerTableMinFreq = 13600000,
 														.minFreq=12700000,
-														.maxFreq=17800000
+														.maxFreq=17400000
 													},// VHF
 
 													{
@@ -785,56 +785,31 @@ void trxSetPowerFromLevel(uint8_t powerLevel)
 
 void trxUpdate_PA_DAC_Drive(void)
 {
-	static const float fractionalPowers[2][4] = {
-#if defined(PLATFORM_RT84_DM1701)
-		// DM1701 or RT84 which have same RF hardware
-		{0.45f, 0.75f, 0.25f, 0.53f},// VHF
-		{0.46f, 0.73f, 0.14f, 0.36f},// UHF
 
-#else
-	#if defined(PLATFORM_VARIANT_UV380_PLUS_10W)
-		// 10W UV380
-		{0.58f, 0.83f, 0.21f, 0.45f},// VHF
-		{0.55f, 0.75f, 0.17f, 0.43f},// UHF
-
-	#else
-		//  5W UV380
-		{0.35f, 0.70f, 0.34f, 0.61f},// VHF
-		{0.40f, 0.70f, 0.25f, 0.55f},// UHF
-	#endif
-#endif
-	};//fractionalPowers
 
 #if defined(PLATFORM_VARIANT_UV380_PLUS_10W)
 	switch(currentRadioDevice->txPowerLevel)
 	{
 		case 0:// 50mW
-			if(trxPowerSettings.veryLowPower > 160)
-			{
-				txDACDrivePower = trxPowerSettings.veryLowPower - 160 ;		           //50mW power setting using a typical value for low gain radios
-			}
-			else
-			{
-				txDACDrivePower = 0 ;		           //min power setting for high gain radios (may still be more than 50mW)
-			}
+			txDACDrivePower = trxPowerSettings.power0;
 			break;
 		case 1:// 250mW
-			txDACDrivePower = trxPowerSettings.veryLowPower;
+			txDACDrivePower = trxPowerSettings.power1;
 			break;
 		case 2:// 500mW
-			txDACDrivePower = trxPowerSettings.veryLowPower + ((trxPowerSettings.lowPower - trxPowerSettings.veryLowPower) * fractionalPowers[currentRadioDevice->trxCurrentBand[TRX_TX_FREQ_BAND]][0]);
+			txDACDrivePower = trxPowerSettings.power2;
 			break;
 		case 3:// 750mW
-			txDACDrivePower = trxPowerSettings.veryLowPower + ((trxPowerSettings.lowPower - trxPowerSettings.veryLowPower) * fractionalPowers[currentRadioDevice->trxCurrentBand[TRX_TX_FREQ_BAND]][1]);
+			txDACDrivePower = trxPowerSettings.power3;
 			break;
 		case 4:// 1W
-			txDACDrivePower = trxPowerSettings.lowPower;
+			txDACDrivePower = trxPowerSettings.power4;
 			break;
 		case 5:// 2W
-			txDACDrivePower = trxPowerSettings.lowPower + ((trxPowerSettings.midPower - trxPowerSettings.lowPower) * fractionalPowers[currentRadioDevice->trxCurrentBand[TRX_TX_FREQ_BAND]][2]);//calculate based on mid and low datapoints
+			txDACDrivePower = trxPowerSettings.lowPower;//calculate based on mid and low datapoints
 			break;
 		case 6:// 3W
-			txDACDrivePower = trxPowerSettings.lowPower + ((trxPowerSettings.midPower - trxPowerSettings.lowPower) * fractionalPowers[currentRadioDevice->trxCurrentBand[TRX_TX_FREQ_BAND]][3]);//calculate based on mid and low datapoints
+			txDACDrivePower = trxPowerSettings.midLowPower;//calculate based on mid and low datapoints
 			break;
 		case 7:// 5W
 			txDACDrivePower = trxPowerSettings.midPower;
@@ -853,35 +828,28 @@ void trxUpdate_PA_DAC_Drive(void)
 	switch(currentRadioDevice->txPowerLevel)
 	{
 		case 0:// 50mW
-			if(trxPowerSettings.veryLowPower > 160)
-			{
-				txDACDrivePower = trxPowerSettings.veryLowPower - 160 ;		           //50mW power setting using a typical value for low gain radios
-			}
-			else
-			{
-				txDACDrivePower = 0 ;		           //min power setting for high gain radios (may still be more than 50mW)
-			}
+			txDACDrivePower = trxPowerSettings.power0;
 			break;
 		case 1:// 250mW
-			txDACDrivePower = trxPowerSettings.veryLowPower;
+			txDACDrivePower = trxPowerSettings.power1;
 			break;
 		case 2:// 500mW
-			txDACDrivePower = trxPowerSettings.veryLowPower + ((trxPowerSettings.lowPower - trxPowerSettings.veryLowPower) * fractionalPowers[currentRadioDevice->trxCurrentBand[TRX_TX_FREQ_BAND]][0]);
+			txDACDrivePower = trxPowerSettings.power2;
 			break;
 		case 3:// 750mW
-			txDACDrivePower = trxPowerSettings.veryLowPower + ((trxPowerSettings.lowPower - trxPowerSettings.veryLowPower) * fractionalPowers[currentRadioDevice->trxCurrentBand[TRX_TX_FREQ_BAND]][1]);
+			txDACDrivePower = trxPowerSettings.power3;
 			break;
 		case 4:// 1W
-			txDACDrivePower = trxPowerSettings.lowPower;
+			txDACDrivePower = trxPowerSettings.power4;
 			break;
 		case 5:// 2W
-			txDACDrivePower = trxPowerSettings.midPower;// 2W on 5W radios
+			txDACDrivePower = trxPowerSettings.lowPower;// 2W on 5W radios
 			break;
 		case 6:// 3W
-			txDACDrivePower = trxPowerSettings.midPower + ((trxPowerSettings.highPower - trxPowerSettings.midPower) * fractionalPowers[currentRadioDevice->trxCurrentBand[TRX_TX_FREQ_BAND]][2]);//calculate based on high and mid datapoints
+			txDACDrivePower = trxPowerSettings.midLowPower;//calculate based on high and mid datapoints
 			break;
 		case 7:// 4W
-			txDACDrivePower = trxPowerSettings.midPower + ((trxPowerSettings.highPower - trxPowerSettings.midPower) * fractionalPowers[currentRadioDevice->trxCurrentBand[TRX_TX_FREQ_BAND]][3]);//calculate based on high and mid datapoints
+			txDACDrivePower = trxPowerSettings.midPower;//calculate based on high and mid datapoints
 			break;
 		case 8:// 5W
 			txDACDrivePower = trxPowerSettings.highPower;

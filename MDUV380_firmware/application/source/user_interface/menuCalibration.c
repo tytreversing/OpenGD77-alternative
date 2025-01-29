@@ -749,7 +749,7 @@ static void applySettings(bool sk2Down, bool sk1Down)
 	{
 		if (pageNumber == CALIBRATION_MENU_PAGE_FACTORY_RESET)
 		{
-			calibrationReadFactory(!sk1Down);//restore the factory values
+			calibrationReadFactory();//restore the factory values
 			calibrationSaveLocal();	        // save as the local copy
 
 			pageNumber = CALIBRATION_MENU_PAGE_POWER;
