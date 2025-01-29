@@ -100,7 +100,7 @@ static volatile gpsReceiveData_t gpsRxData;
 static gpsReceiveData_t gpsRxData;
 #endif
 
-
+bool isGlonassMode = false;
 static uint8_t gpsBufferIndexProcessing = 0U;
 #if defined(STM32F405xx)
 static uint8_t gpsDMABuf[GPS_DMA_BUFFER_SIZE]; // double buffer (two halves) for GPS UART DMA receive
@@ -113,7 +113,7 @@ static uint8_t gpsDMABuf[GPS_DMA_BUFFER_SIZE]; // double buffer (two halves) for
 #define GPS_FIX_GRACE_MAX        15U
 static uint8_t gpsFixGraceCount = 0U;
 
-//#define GNSS_MULTI_GSV 1 // Uncomment this to support GB, GA and GL GSVs sentences (not with genuine GPS modules).
+#define GNSS_MULTI_GSV 1 // Uncomment this to support GB, GA and GL GSVs sentences (not with genuine GPS modules).
 #define USE_CHECKSUM 1
 #if USE_CHECKSUM
 static uint16_t gpsLineChecksum = 0xDEAD;
@@ -1027,11 +1027,11 @@ void gpsTick(void)
 						pCurrentGPSIndex = &gpsData.currentGPSIndex;
 						gpsStatus        = GPS_STATUS_GPS_SATS_UPDATED;
 					}
-					else if((gpsLine[1] == 'B') // (BD) BeiDou GSV`
+					else if(((gpsLine[1] == 'B') && (gpsLine[2] == 'D'))
 #if defined(GNSS_MULTI_GSV)
 							|| ((gpsLine[1] == 'G') &&
 									((gbSatSub = (gpsLine[2] == 'B'))  // (GB) BeiDou GSV (100 should be subtracted to the PRN number to determine the BeiDou PRN number)
-											|| (gpsLine[2] == 'A') // (GA) Galileo GSV
+											
 											|| ((glSatSub = (gpsLine[2] == 'L'))) // (GL) GLONASS GSV (64 should be subtracted to the PRN number to determine the GLONASS PRN number)
 									)
 							)
@@ -1044,6 +1044,7 @@ void gpsTick(void)
 						gpsStatus        = GPS_STATUS_BD_SATS_UPDATED;
 #if defined(GNSS_MULTI_GSV)
 						prnSub           = (gbSatSub ? 100 : (glSatSub ? 64 : 0));
+                                                isGlonassMode = glSatSub;
 #endif
 					}
 

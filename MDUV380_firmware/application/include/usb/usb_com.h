@@ -72,6 +72,56 @@ bool USB_DeviceIsResetting(void);
 void USB_DEBUG_PRINT(char *str);
 void USB_DEBUG_printf(const char *format, ...) __attribute__((format(__printf__, 1, 2)));
 
+typedef struct __attribute__ ((__packed__))
+{
+	uint32_t 		magicNumber;
+	uint8_t			timezone;// Lower 7 bits are the timezone. 64 = UTC, values < 64 are negative TZ values.  Bit 8 is a flag which indicates TZ/UTC. 0 = UTC
+	uint8_t			beepOptions; // 2 pairs of bits + 1 (TX and RX beeps)
+	uint32_t		bitfieldOptions; // see bitfieldOptions_t
+	uint32_t		aprsBeaconingSettingsPart1;
+	uint32_t		aprsBeaconingSettingsPart2;
+	uint16_t		aprsBeaconingSettingsPart3;
+	uint8_t			txPowerLevel;
+	uint8_t			txTimeoutBeepX5Secs;
+	uint8_t			beepVolumeDivider;
+	uint8_t			micGainDMR;
+	uint8_t			micGainFM;
+	uint8_t			backlightMode; // see BACKLIGHT_MODE enum
+	uint8_t			backLightTimeout; // 0 = never timeout. 1 - 255 time in seconds
+	int8_t			displayContrast;
+	int8_t			displayBacklightPercentageDay;
+	int8_t			displayBacklightPercentageNight;
+	int8_t			displayBacklightPercentageOff; // backlight level when "off"
+	uint8_t			extendedInfosOnScreen;
+	uint8_t			scanModePause;
+	uint8_t			scanDelay;
+	uint8_t			DMR_RxAGC;
+	uint8_t			hotspotType;
+	uint8_t			scanStepTime;
+	uint8_t			dmrCaptureTimeout;
+	uint8_t    		privateCalls;
+	uint8_t			contactDisplayPriority;
+	uint8_t			splitContact;
+	uint8_t			voxThreshold; // 0: disabled
+	uint8_t			voxTailUnits; // 500ms units
+	uint8_t			audioPromptMode;
+	uint8_t			batteryCalibration; // Units of 0.01V (NOTE: only the 4 lower bits are used)
+	uint8_t			squelchDefaultVHF;
+	uint8_t			squelchDefaultUHF;
+	uint8_t			placeHolder;
+	uint8_t			ecoLevel;// Power saving / economy level
+	uint8_t			apo; // unit: 30 minutes (5 is skipped, as we want 0, 30, 60, 90, 120 and 180)
+	uint8_t			keypadTimerLong;
+	uint8_t			keypadTimerRepeat;
+	uint8_t			autolockTimer; // in minutes
+	uint8_t         buttonP3; //����� ������ ������ P3
+	uint8_t         buttonP3Long;
+	uint8_t         scanPriority; //��������� ������������� ������������, 2...10
+	uint8_t         txFreqLimited;
+	uint8_t         reserve1;
+	uint16_t        reserve2;
+	uint32_t        reserve3;
+} settingsAlignedStruct_t;
 
 
 #endif /* _OPENGD77_USB_COM_H_ */

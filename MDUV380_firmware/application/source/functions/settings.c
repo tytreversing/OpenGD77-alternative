@@ -40,20 +40,6 @@
 #endif
 
 
-#define STORAGE_MAGIC_NUMBER          0x477D // NOTE: never use 0xDEADBEEF, it's reserved value
-// 0x477B: adds gpsLogMemBlockNum.
-// 0x477A: keypadTimer{Long/Repeat} changed from u16 to u8, autolockTimer added.
-// 0x4779: APRS beaconing settings added.
-// 0x4778: abandon languageIndex, use BIT_SECONDARY_LANGUAGE instead. Struct reorg.
-// 0x4777: add night backlight support.
-// 0x4776: structure change:
-//           - currentChannelIndexInZone and currentChannelIndexInAllZone members are only used on RD5R (moved to the end of the struct)
-//           - settings address changed to 0x604B (due to Last Used Channel In Zone feature)
-// 0x4775: due to theme addition, it handles and convert theme regarding the display invert bit (then clear that inversion bit).
-// 0x4774: Fix incorrect settings storage of Lat Lon
-// 0x4764: moves location at the top of the struct, make it upgradable.
-// 0x4770: adds apo entry, upgradable.
-// 0x4771: settings struct reorg
 
 const uint32_t SETTINGS_UNITIALISED_LOCATION_LAT = 0x7F000000;
 
@@ -291,7 +277,7 @@ bool settingsRestoreDefaultSettings(void)
 #if defined(PLATFORM_GD77S)
 			BAND_LIMITS_ON_LEGACY_DEFAULT;//GD-77S is channelised, and there is no way to disable band limits from the UI, so disable limits by default.
 #else
-			BAND_LIMITS_ON_LEGACY_DEFAULT;// Limit Tx frequency to US Amateur bands
+			BAND_LIMITS_FROM_CPS;// Limit Tx frequency to US Amateur bands
 #endif
 	nonVolatileSettings.txPowerLevel =
 #if defined(PLATFORM_GD77S)
@@ -338,9 +324,7 @@ bool settingsRestoreDefaultSettings(void)
 	nonVolatileSettings.scanStepTime = 0;// 30ms
 	nonVolatileSettings.scanModePause = SCAN_MODE_HOLD;
 	nonVolatileSettings.squelchDefaults[RADIO_BAND_VHF]		= 4U;// 1 - 21 = 0 - 100% , same as from the CPS variable squelch
-#if !(defined(PLATFORM_MD9600) || defined(PLATFORM_MD380))
-	nonVolatileSettings.squelchDefaults[RADIO_BAND_220MHz]	= 4U;// 1 - 21 = 0 - 100% , same as from the CPS variable squelch
-#endif
+
 	nonVolatileSettings.squelchDefaults[RADIO_BAND_UHF]		= 4U;// 1 - 21 = 0 - 100% , same as from the CPS variable squelch
 	nonVolatileSettings.hotspotType =
 #if defined(PLATFORM_GD77S)
@@ -374,7 +358,7 @@ bool settingsRestoreDefaultSettings(void)
 	nonVolatileSettings.audioPromptMode = AUDIO_PROMPT_MODE_BEEP;
 #endif
 
-	nonVolatileSettings.temperatureCalibration = 0;
+	
 	nonVolatileSettings.batteryCalibration = (0x05) + (0x07 << 4);// Time is in upper 4 bits battery calibration in upper 4 bits
 
 	nonVolatileSettings.ecoLevel = 1;
@@ -389,19 +373,18 @@ bool settingsRestoreDefaultSettings(void)
 
 #if defined(HAS_GPS)
 	nonVolatileSettings.gps = GPS_NOT_DETECTED;
-#if defined(LOG_GPS_DATA)
-	nonVolatileSettings.gpsLogMemOffset = 0U;
-#endif
+
 #endif
 
 #if defined(PLATFORM_RD5R)
 	nonVolatileSettings.currentChannelIndexInZone = 0;
 	nonVolatileSettings.currentChannelIndexInAllZone = 1;
 #else // These two has to be used on any platform but RD5R
-	nonVolatileSettings.UNUSED_1 = 0;
-	nonVolatileSettings.UNUSED_2 = 0;
+	nonVolatileSettings.UNUSED = 0;
+
 #endif
 	nonVolatileSettings.buttonSK1 = SK1_MODE_INFO;
+        nonVolatileSettings.buttonSK1Long = SK1_MODE_INFO;
     nonVolatileSettings.scanPriority = SCAN_PM_X2;
 #if !defined(PLATFORM_GD77S)
 	aprsBeaconingUpdateSystemSettingsFromConfiguration();

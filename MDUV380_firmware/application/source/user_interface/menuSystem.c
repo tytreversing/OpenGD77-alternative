@@ -645,7 +645,7 @@ void menuSystemLanguageHasChanged(void)
 
 const menuItemNewData_t mainMenuItems[] =
 {
-	{ 147, MENU_DMRID           },
+	{ 146, MENU_DMRID           },
 	{   3, MENU_ZONE_LIST       },
 	{   6, MENU_CONTACTS_MENU   },
 	{  12, MENU_CHANNEL_DETAILS },
@@ -653,9 +653,9 @@ const menuItemNewData_t mainMenuItems[] =
 	{   8, MENU_FIRMWARE_INFO   },
 
 	{   7, MENU_LAST_HEARD      },
-	{ 173, MENU_SATELLITE       },
+	{ 172, MENU_SATELLITE       },
 #if defined(HAS_GPS)
-	{ 195, MENU_GPS		        },
+	{ 194, MENU_GPS		        },
 #endif
 	{   9, MENU_OPTIONS         },
 };
@@ -669,7 +669,7 @@ const menuItemsList_t menuDataMainMenu =
 static const menuItemNewData_t contactMenuItems[] =
 {
 	{ 15,  MENU_CONTACT_LIST      },
-	{ 139, MENU_DTMF_CONTACT_LIST },
+	{ 138, MENU_DTMF_CONTACT_LIST },
 	{ 14,  MENU_CONTACT_NEW       },
 };
 
@@ -681,19 +681,19 @@ const menuItemsList_t menuDataContact =
 
 static const menuItemNewData_t optionsMenuItems[] =
 {
-		{ 190, MENU_GENERAL         },
-			{ 191, MENU_RADIO           },
+		{ 189, MENU_GENERAL         },
+			{ 190, MENU_RADIO           },
 			{  10, MENU_DISPLAY         },
 			{  11, MENU_SOUND           },
 			{  13, MENU_LANGUAGE        },
-			{ 206, MENU_CALIBRATION     },
+			{ 205, MENU_CALIBRATION     },
 		#if defined(HAS_COLOURS)
-			{ 218, MENU_THEME           },
+			{ 217, MENU_THEME           },
 		#endif
 		#if !defined(PLATFORM_GD77S)
-			{ 257, MENU_APRS            },
+			{ 256, MENU_APRS            },
 		#endif
-			{ 150, MENU_RADIO_INFOS     },
+			{ 149, MENU_RADIO_INFOS     },
 };
 
 const menuItemsList_t menuDataOptions =

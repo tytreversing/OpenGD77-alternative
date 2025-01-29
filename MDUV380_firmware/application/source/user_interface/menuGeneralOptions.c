@@ -78,6 +78,8 @@ enum
 	GENERAL_OPTIONS_MENU_SATELLITE_MANUAL_AUTO,
 #if defined(HAS_GPS)
 	GENERAL_OPTIONS_GPS,
+	
+
 #endif
 	NUM_GENERAL_OPTIONS_MENU_ITEMS
 };
@@ -355,7 +357,7 @@ static void updateScreen(bool isFirstRun)
 					break;
 #endif
 				case GENERAL_OPTIONS_MENU_SATELLITE_MANUAL_AUTO:
-					leftSide = currentLanguage->satellite_short;
+					leftSide = currentLanguage->satellite;
 					rightSideConst = (settingsIsOptionBitSet(BIT_SATELLITE_MANUAL_AUTO) ? currentLanguage->Auto : currentLanguage->manual);
 					break;
 #if defined(HAS_GPS)
@@ -383,6 +385,7 @@ static void updateScreen(bool isFirstRun)
 							break;
 					}
 					break;
+
 #endif
 			}
 
@@ -681,6 +684,7 @@ static void handleEvent(uiEvent_t *ev)
 						settingsIncrement(nonVolatileSettings.gps, 1);
 					}
 					break;
+
 #endif
 			}
 		}
@@ -820,6 +824,7 @@ static void handleEvent(uiEvent_t *ev)
 						}
 					}
 					break;
+
 #endif
 			}
 		}

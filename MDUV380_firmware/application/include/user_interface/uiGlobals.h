@@ -51,6 +51,7 @@
 #define KNOT_PER_KMPH  0.53995680 //35
 #define MPS_PER_KMPH   0.277778
 
+#define POWER_LEVELS_COUNT 8
 
 #define MILLISECS_PER_MIN  60000L
 #define MILLISECS_PER_SEC  1000L
@@ -611,6 +612,7 @@ extern LinkItem_t 				*LinkHead;
 extern bool 					PTTToggledDown;
 extern uint32_t					xmitErrorTimer;
 
+extern bool isGlonassMode;
 #if ! defined(PLATFORM_GD77S)
 #define DAYTIME_CURRENT ((uiDataGlobal.daytimeOverridden != UNDEFINED) ? uiDataGlobal.daytimeOverridden : uiDataGlobal.daytime)
 

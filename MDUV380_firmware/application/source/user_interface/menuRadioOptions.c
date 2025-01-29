@@ -29,6 +29,7 @@
 #include "user_interface/menuSystem.h"
 #include "user_interface/uiLocalisation.h"
 #include "user_interface/uiUtilities.h"
+#include "functions/settings.h"
 #include "interfaces/wdog.h"
 #include "utils.h"
 #include "functions/rxPowerSaving.h"
@@ -42,7 +43,8 @@ static menuStatus_t menuOptionsExitCode = MENU_STATUS_SUCCESS;
 
 enum
 {
-	RADIO_OPTIONS_MENU_TX_FREQ_LIMITS = 0U,
+RADIO_OPTIONS_TX_POWER = 0U,
+	RADIO_OPTIONS_MENU_TX_FREQ_LIMITS,
 	RADIO_OPTIONS_MENU_DMR_MONITOR_CAPTURE_TIMEOUT,
 	RADIO_OPTIONS_MENU_SCAN_DELAY,
 	RADIO_OPTIONS_MENU_SCAN_STEP_TIME,
@@ -50,13 +52,12 @@ enum
 	RADIO_OPTIONS_MENU_SCAN_MODE,
 	RADIO_OPTIONS_MENU_SCAN_ON_BOOT,
 	RADIO_OPTIONS_MENU_SQUELCH_DEFAULT_VHF,
-#if ! (defined(PLATFORM_MD9600) || defined(PLATFORM_MD380))
-	RADIO_OPTIONS_MENU_SQUELCH_DEFAULT_220MHz,
-#endif
 	RADIO_OPTIONS_MENU_SQUELCH_DEFAULT_UHF,
 	RADIO_OPTIONS_MENU_PTT_TOGGLE,
 	RADIO_OPTIONS_MENU_PRIVATE_CALLS,
+#if defined(USER_POWER_ALLOWED)
 	RADIO_OPTIONS_MENU_USER_POWER,
+#endif
 	RADIO_OPTIONS_MENU_DMR_CRC,
 #if defined(PLATFORM_MDUV380) && !defined(PLATFORM_VARIANT_UV380_PLUS_10W)
 	RADIO_OPTIONS_MENU_FORCE_10W,
@@ -139,6 +140,34 @@ static void updateScreen(bool isFirstRun)
 
 			switch(mNum)
 			{
+			    case RADIO_OPTIONS_TX_POWER:
+			    	leftSide = currentLanguage->cal_pwr;
+#if defined(PLATFORM_MDUV380) && !defined(PLATFORM_VARIANT_UV380_PLUS_10W)
+			    	if (settingsIsOptionBitSet(BIT_FORCE_10W_RADIO))
+			    	    sprintf(rightSideVar, "%s", POWER_LEVELS[1][nonVolatileSettings.txPowerLevel]);
+			    	else
+			    		sprintf(rightSideVar, "%s", POWER_LEVELS[0][nonVolatileSettings.txPowerLevel]);
+#elif defined(PLATFORM_VARIANT_UV380_PLUS_10W)
+			    	sprintf(rightSideVar, "%s", POWER_LEVELS[1][nonVolatileSettings.txPowerLevel]);
+#endif
+
+			    	if (nonVolatileSettings.txPowerLevel < 4)
+			    	{
+			    		rightSideUnitsPrompt = PROMPT_MILLIWATTS;
+			    		if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+			    	        rightSideUnitsStr = " мВт";
+			    		else
+			    			rightSideUnitsStr = "mW";
+			    	}
+			    	else
+			    	{
+			    		rightSideUnitsPrompt = PROMPT_WATT;
+			    		if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
+			    			rightSideUnitsStr = " Вт";
+			    		else
+			    			rightSideUnitsStr = "W";
+			    	}
+			    	break;
 				case RADIO_OPTIONS_MENU_TX_FREQ_LIMITS:// Tx Freq limits
 					leftSide = currentLanguage->band_limits;
 					switch(nonVolatileSettings.txFreqLimited)
@@ -198,12 +227,7 @@ static void updateScreen(bool isFirstRun)
 					leftSide = currentLanguage->squelch_VHF;
 					snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%d%%", (nonVolatileSettings.squelchDefaults[RADIO_BAND_VHF] - 1) * 5);// 5% steps
 					break;
-#if ! (defined(PLATFORM_MD9600) || defined(PLATFORM_MD380))
-				case RADIO_OPTIONS_MENU_SQUELCH_DEFAULT_220MHz:
-					leftSide = currentLanguage->squelch_220;
-					snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%d%%", (nonVolatileSettings.squelchDefaults[RADIO_BAND_220MHz] - 1) * 5);// 5% steps
-					break;
-#endif
+
 				case RADIO_OPTIONS_MENU_SQUELCH_DEFAULT_UHF:
 					leftSide = currentLanguage->squelch_UHF;
 					snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%d%%", (nonVolatileSettings.squelchDefaults[RADIO_BAND_UHF] - 1) * 5);// 5% steps
@@ -217,10 +241,12 @@ static void updateScreen(bool isFirstRun)
 					const char *allowPCOptions[] = { currentLanguage->off, currentLanguage->on, currentLanguage->ptt, currentLanguage->Auto};
 					rightSideConst = allowPCOptions[nonVolatileSettings.privateCalls];
 					break;
+#if defined(USER_POWER_ALLOWED)
 				case RADIO_OPTIONS_MENU_USER_POWER:
 					leftSide = currentLanguage->user_power;
 					snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%d", (nonVolatileSettings.userPower));
 					break;
+#endif
 				case RADIO_OPTIONS_MENU_DMR_CRC:
 					leftSide = currentLanguage->dmr_crc;
 					rightSideConst = (settingsIsOptionBitSet(BIT_DMR_CRC_IGNORED) ? currentLanguage->off : currentLanguage->on);
@@ -231,7 +257,7 @@ static void updateScreen(bool isFirstRun)
 					snprintf(rightSideVar, SCREEN_LINE_BUFFER_SIZE, "%s", (settingsIsOptionBitSet(BIT_FORCE_10W_RADIO) ? "10" : "5"));
 					rightSideUnitsPrompt = PROMPT_WATTS;
 					if (currentLanguage->LANGUAGE_NAME[0] == 'Р')
-					    rightSideUnitsStr = "Вт";
+					    rightSideUnitsStr = " Вт";
 					else
 						rightSideUnitsStr = "W";
 					break;
@@ -395,6 +421,10 @@ static void handleEvent(uiEvent_t *ev)
 			menuDataGlobal.newOptionSelected = false;
 			switch(menuDataGlobal.currentItemIndex)
 			{
+			    case RADIO_OPTIONS_TX_POWER:
+			    	if (nonVolatileSettings.txPowerLevel < POWER_LEVELS_COUNT)
+			    		settingsIncrement(nonVolatileSettings.txPowerLevel, 1);
+			    	break;
 				case RADIO_OPTIONS_MENU_TX_FREQ_LIMITS:
 					if (nonVolatileSettings.txFreqLimited < BAND_LIMITS_FROM_CPS)
 					{
@@ -443,14 +473,6 @@ static void handleEvent(uiEvent_t *ev)
 						settingsIncrement(nonVolatileSettings.squelchDefaults[RADIO_BAND_VHF], 1);
 					}
 					break;
-#if ! (defined(PLATFORM_MD9600) || defined(PLATFORM_MD380))
-				case RADIO_OPTIONS_MENU_SQUELCH_DEFAULT_220MHz:
-					if (nonVolatileSettings.squelchDefaults[RADIO_BAND_220MHz] < CODEPLUG_MAX_VARIABLE_SQUELCH)
-					{
-						settingsIncrement(nonVolatileSettings.squelchDefaults[RADIO_BAND_220MHz], 1);
-					}
-					break;
-#endif
 				case RADIO_OPTIONS_MENU_SQUELCH_DEFAULT_UHF:
 					if (nonVolatileSettings.squelchDefaults[RADIO_BAND_UHF] < CODEPLUG_MAX_VARIABLE_SQUELCH)
 					{
@@ -470,6 +492,7 @@ static void handleEvent(uiEvent_t *ev)
 						settingsIncrement(nonVolatileSettings.privateCalls, 1);
 					}
 					break;
+#if defined(USER_POWER_ALLOWED)
 				case RADIO_OPTIONS_MENU_USER_POWER:
 					{
 						int newVal = (int)nonVolatileSettings.userPower;
@@ -482,6 +505,7 @@ static void handleEvent(uiEvent_t *ev)
 						trxUpdate_PA_DAC_Drive();
 					}
 					break;
+#endif
 				case RADIO_OPTIONS_MENU_DMR_CRC:
 					if (settingsIsOptionBitSet(BIT_DMR_CRC_IGNORED))
 					{
@@ -508,6 +532,10 @@ static void handleEvent(uiEvent_t *ev)
 			menuDataGlobal.newOptionSelected = false;
 			switch(menuDataGlobal.currentItemIndex)
 			{
+			    case RADIO_OPTIONS_TX_POWER:
+				    if (nonVolatileSettings.txPowerLevel > 0)
+						settingsDecrement(nonVolatileSettings.txPowerLevel, 1);
+					break;
 				case RADIO_OPTIONS_MENU_TX_FREQ_LIMITS:
 					if (nonVolatileSettings.txFreqLimited > BAND_LIMITS_ON_LEGACY_DEFAULT)
 					{
@@ -556,14 +584,6 @@ static void handleEvent(uiEvent_t *ev)
 						settingsDecrement(nonVolatileSettings.squelchDefaults[RADIO_BAND_VHF], 1);
 					}
 					break;
-#if ! (defined(PLATFORM_MD9600) || defined(PLATFORM_MD380))
-				case RADIO_OPTIONS_MENU_SQUELCH_DEFAULT_220MHz:
-					if (nonVolatileSettings.squelchDefaults[RADIO_BAND_220MHz] > 1)
-					{
-						settingsDecrement(nonVolatileSettings.squelchDefaults[RADIO_BAND_220MHz], 1);
-					}
-					break;
-#endif
 				case RADIO_OPTIONS_MENU_SQUELCH_DEFAULT_UHF:
 					if (nonVolatileSettings.squelchDefaults[RADIO_BAND_UHF] > 1)
 					{
@@ -582,6 +602,7 @@ static void handleEvent(uiEvent_t *ev)
 						settingsDecrement(nonVolatileSettings.privateCalls, 1);
 					}
 					break;
+#if defined(USER_POWER_ALLOWED)
 				case RADIO_OPTIONS_MENU_USER_POWER:
 					{
 						int newVal = (int)nonVolatileSettings.userPower;
@@ -594,6 +615,7 @@ static void handleEvent(uiEvent_t *ev)
 						trxUpdate_PA_DAC_Drive();
 					}
 					break;
+#endif
 				case RADIO_OPTIONS_MENU_DMR_CRC:
 					if (settingsIsOptionBitSet(BIT_DMR_CRC_IGNORED) == false)
 					{

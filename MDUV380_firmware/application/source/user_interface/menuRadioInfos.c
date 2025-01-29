@@ -43,9 +43,7 @@ static const uint8_t daysPerMonth[12] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
 static char keypadInputDigits[17]; // HHMMSS + terminator (Displayed as HH:MM:SS, or YYYY:MM:DD or LAT.LATIT,LON.LONGI)
 static int keypadInputDigitsLength = 0;
 static menuStatus_t menuRadioInfosExitCode = MENU_STATUS_SUCCESS;
-static uint32_t hours;
-static uint32_t minutes;
-static uint32_t seconds;
+
 static struct tm timeAndDate;
 bool latLonIsSouthernHemisphere = false;
 bool latLonIsWesternHemisphere = false;

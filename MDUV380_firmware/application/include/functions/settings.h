@@ -30,6 +30,33 @@
 #ifndef _OPENGD77_SETTINGS_H_
 #define _OPENGD77_SETTINGS_H_
 
+#define STORAGE_MAGIC_NUMBER          0xDEFECA7E // NOTE: never use 0xDEADBEEF, it's reserved value
+// 0xDEFECA7E: ������� �� ��������������� ������
+// 0x477D: ��������� ������������, ������� �����, ������ � ������ ��������
+// 0x477A: adds gpsLogMemBlockNum.
+// 0x4779: keypadTimer{Long/Repeat} changed from u16 to u8, autolockTimer added.
+// 0x4778: APRS beaconing settings added.
+// 0x4777: abandon languageIndex, use BIT_SECONDARY_LANGUAGE instead. Struct reorg.
+// 0x4776: add night backlight support.
+// 0x4775:  structure change:
+//           - currentChannelIndexInZone and currentChannelIndexInAllZone members are only used on RD5R (moved to the end of the struct)
+//           - settings address changed to 0x604B (due to Last Used Channel In Zone feature)
+// 0x4774: Use Flash for settings and VFO storage
+// 0x4773: Initial work on GPS back-port of gps screen from UV380
+// 0x4772: never used.
+// 0x4771: Increase bitfieldOptions from u16 to u32.
+// 0x4770: Add APO feature
+// 0x4769: Use bitfield variable for IS_RADIO_POWERED
+// 0x4768: Variable DMR Rx AGC
+// 0x4767: Remove 220Mhz band
+// 0x4766: safety version change
+// 0x4765: MD6000 port.
+// 0x4764: moves location at the top of the struct, make it upgradable.
+// 0x4770: adds apo entry, upgradable.
+// 0x4771: settings struct reorg
+
+
+
 #include "functions/codeplug.h"
 #include "functions/trx.h"
 
@@ -44,6 +71,12 @@ enum ALLOW_PRIVATE_CALLS_MODE { ALLOW_PRIVATE_CALLS_OFF = 0, ALLOW_PRIVATE_CALLS
 enum BAND_LIMITS_ENUM {BAND_LIMITS_ON_LEGACY_DEFAULT = 0, BAND_LIMITS_FROM_CPS };
 enum INFO_ON_SCREEN { INFO_ON_SCREEN_OFF = 0x00, INFO_ON_SCREEN_TS = 0x01, INFO_ON_SCREEN_PWR = 0x02, INFO_ON_SCREEN_BOTH = 0x03 };
 
+enum GPS_MODULE_TYPE
+{
+	GPS_MODULE_FACTORY = 0,
+	GPS_MODULE_CUSTOM,
+	GPS_MODULE_MAX,
+};
 #if defined(HAS_GPS)
 typedef enum
 {
@@ -127,13 +160,12 @@ typedef enum
 #if defined(PLATFORM_MDUV380) && !defined(PLATFORM_VARIANT_UV380_PLUS_10W)
 	BIT_FORCE_10W_RADIO             = (1 << 24),
 #endif
+        BIT_GLONASS_ONLY           = (1 << 25),
 } bitfieldOptions_t;
 
-#if defined(PLATFORM_MD9600)
+
 #define RADIO_BANDS_TOTAL_NUM_SQUELCH 2
-#else
-#define RADIO_BANDS_TOTAL_NUM_SQUELCH 3
-#endif
+
 
 typedef struct
 {
@@ -150,9 +182,7 @@ typedef struct
 	uint32_t		vfoScanHigh[2]; // High frequency for VFO Scanning
 	uint32_t		bitfieldOptions; // see bitfieldOptions_t
 	uint32_t		aprsBeaconingSettingsPart1[2];
-#if defined(LOG_GPS_DATA)
-	uint32_t		gpsLogMemOffset; // Current offset from the NMEA logging flash memory address start.
-#endif
+
 	int16_t			currentIndexInTRxGroupList[3]; // Current Channel, VFO A and VFO B
 	int16_t			currentZone;
 	uint16_t		userPower;
@@ -161,8 +191,8 @@ typedef struct
 	int16_t			currentChannelIndexInZone;
 	int16_t			currentChannelIndexInAllZone;
 #else // These two has to be used on any platform but RD5R
-	int16_t			UNUSED_1;
-	int16_t			UNUSED_2;
+	uint32_t			UNUSED;
+	
 #endif
 	uint16_t		aprsBeaconingSettingsPart2;
 	uint8_t			txPowerLevel;
@@ -194,17 +224,17 @@ typedef struct
 	uint8_t			voxThreshold; // 0: disabled
 	uint8_t			voxTailUnits; // 500ms units
 	uint8_t			audioPromptMode;
-	int8_t			temperatureCalibration;// Units of 0.5 deg C
 	uint8_t			batteryCalibration; // Units of 0.01V (NOTE: only the 4 lower bits are used)
-	uint8_t			squelchDefaults[RADIO_BANDS_TOTAL_NUM_SQUELCH]; // VHF, 200 and UHF
+	uint8_t			squelchDefaults[RADIO_BANDS_TOTAL_NUM_SQUELCH];
+	uint8_t         placeHolder;
 	uint8_t			ecoLevel;// Power saving / economy level
 	uint8_t			apo; // unit: 30 minutes (5 is skipped, as we want 0, 30, 60, 90, 120 and 180)
 	uint8_t			keypadTimerLong;
 	uint8_t			keypadTimerRepeat;
 	uint8_t			autolockTimer; // in minutes
-#if defined(HAS_GPS)
+
 	uint8_t			gps; // Off / wait for fix / On
-#endif
+
 	uint8_t         buttonSK1;
 	uint8_t         buttonSK1Long;
     uint8_t         scanPriority;

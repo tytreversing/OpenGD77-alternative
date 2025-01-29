@@ -44,7 +44,7 @@
 #include "interfaces/settingsStorage.h"
 #include "interfaces/gps.h"
 
-#define GITVERSIONREV GITVERSION
+
 
 enum CPS_ACCESS_AREA
 {
@@ -58,6 +58,10 @@ enum CPS_ACCESS_AREA
 #if ! defined(CPU_MK22FN512VLL12)
 	CPS_ACCESS_FLASH_SECURITY_REGISTERS = 10,
 #endif
+    CPS_READ_SETTINGS = 11,
+	CPS_WRITE_SETTINGS = 12,
+    CPS_READ_FACTORY_CALIBRATIONS = 13,
+	CPS_READ_BANDLIMITS = 14,
 };
 
 
@@ -259,11 +263,11 @@ static void cpsHandleReadCommand(void)
 					uint32_t radioType;
 					char identifier[16];
 					char buildDateTime[16];
-					uint32_t flashId;
+					uint32_t settingsIdentifier;
 					uint16_t features;
 				} radioInfo;
 
-				radioInfo.structVersion = 0x03;
+				radioInfo.structVersion = 0x04;
 #if defined(PLATFORM_GD77)
 				radioInfo.radioType = 0;
 #elif defined(PLATFORM_GD77S)
@@ -291,12 +295,12 @@ static void cpsHandleReadCommand(void)
 
 				snprintf(radioInfo.identifier, sizeof(radioInfo.identifier), "%s", "RUSSIAN");
 				snprintf(radioInfo.buildDateTime, sizeof(radioInfo.buildDateTime), "%04d%02d%02d", BUILD_YEAR, BUILD_MONTH, BUILD_DAY);
-				radioInfo.flashId = flashChipPartNumber;
+				radioInfo.settingsIdentifier = STORAGE_MAGIC_NUMBER;
 				// Features bitfield (16 bits)
 				radioInfo.features = (settingsIsOptionBitSet(BIT_INVERSE_VIDEO) ? 1 : 0);
 				radioInfo.features |= (((dmrIDDatabaseMemoryLocation2 == VOICE_PROMPTS_FLASH_HEADER_ADDRESS) ? 1 : 0) << 1);
 				radioInfo.features |= ((voicePromptDataIsLoaded ? 1 : 0) << 2);
-
+                                radioInfo.features |= 0x08; //флаг "читаемые настройки" для CPS
 				length = sizeof(radioInfo);
 				memcpy((uint8_t *)&usbComSendBuf[3], &radioInfo, length);
 				result = true;
@@ -310,6 +314,84 @@ static void cpsHandleReadCommand(void)
 			TASK_LOCK_WRITE();
 			break;
 #endif
+		case CPS_READ_SETTINGS:
+			length = sizeof(settingsAlignedStruct_t);
+			settingsAlignedStruct_t settingsBuffer;
+			settingsBuffer.magicNumber = nonVolatileSettings.magicNumber;
+			settingsBuffer.timezone = nonVolatileSettings.timezone;
+			settingsBuffer.beepOptions = nonVolatileSettings.beepOptions;
+			settingsBuffer.bitfieldOptions = nonVolatileSettings.bitfieldOptions;
+			settingsBuffer.aprsBeaconingSettingsPart1 = nonVolatileSettings.aprsBeaconingSettingsPart1[0];
+			settingsBuffer.aprsBeaconingSettingsPart2 = nonVolatileSettings.aprsBeaconingSettingsPart1[1];
+			settingsBuffer.aprsBeaconingSettingsPart3 = nonVolatileSettings.aprsBeaconingSettingsPart2;
+			settingsBuffer.txPowerLevel = nonVolatileSettings.txPowerLevel;
+			settingsBuffer.txTimeoutBeepX5Secs = nonVolatileSettings.txTimeoutBeepX5Secs;
+			settingsBuffer.beepVolumeDivider = nonVolatileSettings.beepVolumeDivider;
+			settingsBuffer.micGainDMR = nonVolatileSettings.micGainDMR;
+			settingsBuffer.micGainFM = nonVolatileSettings.micGainFM;
+			settingsBuffer.backlightMode = nonVolatileSettings.backlightMode;
+			settingsBuffer.backLightTimeout = nonVolatileSettings.backLightTimeout;
+			settingsBuffer.displayContrast = nonVolatileSettings.displayContrast;
+			settingsBuffer.displayBacklightPercentageDay = nonVolatileSettings.displayBacklightPercentage[0];
+			settingsBuffer.displayBacklightPercentageNight = nonVolatileSettings.displayBacklightPercentage[1];
+			settingsBuffer.displayBacklightPercentageOff = nonVolatileSettings.displayBacklightPercentageOff;
+			settingsBuffer.extendedInfosOnScreen = nonVolatileSettings.extendedInfosOnScreen;
+			settingsBuffer.scanModePause = nonVolatileSettings.scanModePause;
+			settingsBuffer.scanDelay = nonVolatileSettings.scanDelay;
+			settingsBuffer.DMR_RxAGC = nonVolatileSettings.DMR_RxAGC;
+			settingsBuffer.hotspotType = nonVolatileSettings.hotspotType;
+			settingsBuffer.scanStepTime = nonVolatileSettings.scanStepTime;
+			settingsBuffer.dmrCaptureTimeout = nonVolatileSettings.dmrCaptureTimeout;
+			settingsBuffer.privateCalls = nonVolatileSettings.privateCalls;
+			settingsBuffer.contactDisplayPriority = nonVolatileSettings.contactDisplayPriority;
+			settingsBuffer.splitContact = nonVolatileSettings.splitContact;
+			settingsBuffer.voxThreshold = nonVolatileSettings.voxThreshold;
+			settingsBuffer.voxTailUnits = nonVolatileSettings.voxTailUnits;
+			settingsBuffer.audioPromptMode = nonVolatileSettings.audioPromptMode;
+			settingsBuffer.batteryCalibration = nonVolatileSettings.batteryCalibration;
+			settingsBuffer.squelchDefaultVHF = nonVolatileSettings.squelchDefaults[0];
+			settingsBuffer.squelchDefaultUHF = nonVolatileSettings.squelchDefaults[1];
+			settingsBuffer.placeHolder = 0;
+			settingsBuffer.ecoLevel = nonVolatileSettings.ecoLevel;
+			settingsBuffer.apo = nonVolatileSettings.apo;
+			settingsBuffer.keypadTimerLong = nonVolatileSettings.keypadTimerLong;
+			settingsBuffer.keypadTimerRepeat = nonVolatileSettings.keypadTimerRepeat;
+			settingsBuffer.autolockTimer = nonVolatileSettings.autolockTimer;
+			settingsBuffer.buttonP3 = nonVolatileSettings.buttonSK1;
+			settingsBuffer.buttonP3Long = nonVolatileSettings.buttonSK1Long;
+			settingsBuffer.scanPriority = nonVolatileSettings.scanPriority;
+			settingsBuffer.txFreqLimited = nonVolatileSettings.txFreqLimited;
+			memcpy((uint8_t *)&usbComSendBuf[3], (uint8_t *)&settingsBuffer, length);
+			result = true;
+            break;
+		case CPS_READ_FACTORY_CALIBRATIONS:
+			length = 0x200;
+			TASK_UNLOCK_WRITE();
+			result = SPI_Flash_readSecurityRegisters(0, (uint8_t *)&usbComSendBuf[3], length);
+			TASK_LOCK_WRITE();
+			break;
+		case CPS_READ_BANDLIMITS:
+			struct __attribute__((__packed__))
+			{
+				uint32_t VHFLowCal;
+				uint32_t VHFLow;
+				uint32_t VHFHigh;
+				uint32_t UHFLowCal;
+				uint32_t UHFLow;
+				uint32_t UHFHigh;
+			} radioBands;
+			radioBands.VHFLowCal = RADIO_HARDWARE_FREQUENCY_BANDS[0].calPowerTableMinFreq;
+			radioBands.VHFLow = RADIO_HARDWARE_FREQUENCY_BANDS[0].minFreq;
+			radioBands.VHFHigh = RADIO_HARDWARE_FREQUENCY_BANDS[0].maxFreq;
+			radioBands.UHFLowCal = RADIO_HARDWARE_FREQUENCY_BANDS[1].calPowerTableMinFreq;
+			radioBands.UHFLow = RADIO_HARDWARE_FREQUENCY_BANDS[1].minFreq;
+			radioBands.UHFHigh = RADIO_HARDWARE_FREQUENCY_BANDS[1].maxFreq;
+
+			length = sizeof(radioBands);
+			memcpy((uint8_t *)&usbComSendBuf[3], &radioBands, length);
+			result = true;
+			break;
+
 	}
 
 	hasToReply = true;
@@ -580,6 +662,56 @@ static void cpsHandleWriteCommand(void)
 			break;
 
 		case CPS_ACCESS_RADIO_INFO:
+			break;
+		case CPS_WRITE_SETTINGS:
+			settingsAlignedStruct_t settingsBuffer;
+			memcpy((uint8_t *)&settingsBuffer, (uint8_t *)&usbComSendBuf[8], sizeof(settingsAlignedStruct_t));
+			nonVolatileSettings.magicNumber = settingsBuffer.magicNumber;
+			nonVolatileSettings.timezone = settingsBuffer.timezone;
+			nonVolatileSettings.beepOptions = settingsBuffer.beepOptions;
+			nonVolatileSettings.bitfieldOptions = settingsBuffer.bitfieldOptions;
+			nonVolatileSettings.aprsBeaconingSettingsPart1[0] = settingsBuffer.aprsBeaconingSettingsPart1;
+			nonVolatileSettings.aprsBeaconingSettingsPart1[1] = settingsBuffer.aprsBeaconingSettingsPart2;
+			nonVolatileSettings.aprsBeaconingSettingsPart2 = settingsBuffer.aprsBeaconingSettingsPart3;
+			nonVolatileSettings.txPowerLevel = settingsBuffer.txPowerLevel;
+			nonVolatileSettings.txTimeoutBeepX5Secs = settingsBuffer.txTimeoutBeepX5Secs;
+			nonVolatileSettings.beepVolumeDivider = settingsBuffer.beepVolumeDivider;
+			nonVolatileSettings.micGainDMR = settingsBuffer.micGainDMR;
+			nonVolatileSettings.micGainFM = settingsBuffer.micGainFM;
+			nonVolatileSettings.backlightMode = settingsBuffer.backlightMode;
+			nonVolatileSettings.backLightTimeout = settingsBuffer.backLightTimeout;
+			nonVolatileSettings.displayContrast = settingsBuffer.displayContrast;
+			nonVolatileSettings.displayBacklightPercentage[0] = settingsBuffer.displayBacklightPercentageDay;
+			nonVolatileSettings.displayBacklightPercentage[1] = settingsBuffer.displayBacklightPercentageNight;
+			nonVolatileSettings.displayBacklightPercentageOff = settingsBuffer.displayBacklightPercentageOff;
+			nonVolatileSettings.extendedInfosOnScreen = settingsBuffer.extendedInfosOnScreen;
+			nonVolatileSettings.scanModePause = settingsBuffer.scanModePause;
+			nonVolatileSettings.scanDelay = settingsBuffer.scanDelay;
+			nonVolatileSettings.DMR_RxAGC = settingsBuffer.DMR_RxAGC;
+			nonVolatileSettings.hotspotType = settingsBuffer.hotspotType;
+			nonVolatileSettings.scanStepTime = settingsBuffer.scanStepTime;
+			nonVolatileSettings.dmrCaptureTimeout = settingsBuffer.dmrCaptureTimeout;
+			nonVolatileSettings.privateCalls = settingsBuffer.privateCalls;
+			nonVolatileSettings.contactDisplayPriority = settingsBuffer.contactDisplayPriority;
+			nonVolatileSettings.splitContact = settingsBuffer.splitContact;
+			nonVolatileSettings.voxThreshold = settingsBuffer.voxThreshold;
+			nonVolatileSettings.voxTailUnits = settingsBuffer.voxTailUnits;
+			nonVolatileSettings.audioPromptMode = settingsBuffer.audioPromptMode;
+			nonVolatileSettings.batteryCalibration = settingsBuffer.batteryCalibration;
+			nonVolatileSettings.squelchDefaults[0] = settingsBuffer.squelchDefaultVHF;
+			nonVolatileSettings.squelchDefaults[1] = settingsBuffer.squelchDefaultUHF;
+			nonVolatileSettings.placeHolder = settingsBuffer.placeHolder;
+			nonVolatileSettings.ecoLevel = settingsBuffer.ecoLevel;
+			nonVolatileSettings.apo = settingsBuffer.apo;
+			nonVolatileSettings.keypadTimerLong = settingsBuffer.keypadTimerLong;
+			nonVolatileSettings.keypadTimerRepeat = settingsBuffer.keypadTimerRepeat;
+			nonVolatileSettings.autolockTimer = settingsBuffer.autolockTimer;
+			nonVolatileSettings.buttonSK1 = settingsBuffer.buttonP3;
+			nonVolatileSettings.buttonSK1Long = settingsBuffer.buttonP3Long;
+			nonVolatileSettings.scanPriority = settingsBuffer.scanPriority;
+			nonVolatileSettings.txFreqLimited = settingsBuffer.txFreqLimited;
+			settingsSaveSettings(false);
+			ok = true;
 			break;
 	}
 

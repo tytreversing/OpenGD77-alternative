@@ -70,7 +70,8 @@ typedef struct
 //0x40
 	uint8_t UHFOpenSquelch9[9];   //UHF Squelch Level 9 Opening  9 frequencies
 //0x49
-	uint8_t UnknownBlock7[7];		//Unknown
+	uint8_t MARKER[4];
+	uint8_t UnknownBlock7[3];		//Unknown
 //0x50
 	uint8_t UHFCloseSquelch9[9];   //UHF Squelch Level 9 Closing 9 frequencies
 //0x59
@@ -166,17 +167,18 @@ typedef struct
 static __attribute__((section(".ccmram"))) CalibrationData_t calibrationData;
 #define CALIBRATION_TABLE_LOCAL_COPY_ADDRESS  0x10000        //Flash address for local calibration copy.
 
-const int MARKER_BYTES_LENGTH = 8;													//	we will use the 8 bytes of the first UHF calibration frequency as a marker
-const uint8_t MARKER_BYTES[] = {0x00, 0x25, 0x00, 0x40, 0x00, 0x45, 0x01, 0x40};	//  400.02500   400.145
+const int MARKER_BYTES_LENGTH = 4;
+const uint8_t MARKER_BYTES[] = {0xCD, 0xE8, 0xEA, 0xE0};
 
 void calibrationInit(void)
 {
 	calibrationReadLocal();					//first try to read the local copy of the calibration table
 
-	if(memcmp(MARKER_BYTES, calibrationData.UHFCalFreqs[0], MARKER_BYTES_LENGTH) != 0)			//do we have a good local copy?
+	if(memcmp(MARKER_BYTES, &calibrationData.MARKER[0], MARKER_BYTES_LENGTH) != 0)				//do we have a good local copy?
 	{
 	    calibrationReadFactory(true);																//no so copy the factory values
-        calibrationSaveLocal();																    //to the local copy
+            memcpy(&calibrationData.MARKER[0] , MARKER_BYTES , MARKER_BYTES_LENGTH);
+            calibrationSaveLocal();																    //to the local copy
 	}
 }
 
@@ -212,8 +214,7 @@ void calibrationReadFactory(bool applyConversion)
 
 	(void)SPI_Flash_readSecurityRegisters(0, (uint8_t *)&calibrationData, CALIBRATION_TABLE_LENGTH);
 
-    memcpy(calibrationData.UHFCalFreqs[0] , MARKER_BYTES , MARKER_BYTES_LENGTH);
-    //add the marker bytes just in case they are different in this radio.
+    
 
     for(uint8_t freqRangeIndex = 0; freqRangeIndex < 5 ; freqRangeIndex++)
     {

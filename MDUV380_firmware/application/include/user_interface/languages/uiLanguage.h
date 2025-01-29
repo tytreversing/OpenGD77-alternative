@@ -179,7 +179,6 @@ typedef struct
    const char voice_prompt_level_1[LANGUAGE_TEXTS_LENGTH];
    const char transmitTalkerAliasTS1[LANGUAGE_TEXTS_LENGTH];
    const char squelch_VHF[LANGUAGE_TEXTS_LENGTH];
-   const char squelch_220[LANGUAGE_TEXTS_LENGTH];
    const char squelch_UHF[LANGUAGE_TEXTS_LENGTH];
    const char display_screen_invert[LANGUAGE_TEXTS_LENGTH];
    const char openGD77[LANGUAGE_TEXTS_LENGTH];
@@ -338,6 +337,8 @@ typedef struct
    const char p3fastcall[LANGUAGE_TEXTS_LENGTH];
    const char p3filter[LANGUAGE_TEXTS_LENGTH];
    const char priority[LANGUAGE_TEXTS_LENGTH];
+   const char gpsModuleFactory[LANGUAGE_TEXTS_LENGTH];
+   const char gpsModuleCustom[LANGUAGE_TEXTS_LENGTH];
    const char vfomenu[21];
    const char chmenu[21];
    const char scanmenu[21];

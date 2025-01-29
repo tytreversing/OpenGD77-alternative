@@ -47,12 +47,7 @@ const frequencyHardwareBand_t RADIO_HARDWARE_FREQUENCY_BANDS[RADIO_BANDS_TOTAL_N
 														.minFreq=13600000,
 														.maxFreq=17400000
 													},// VHF
-#if !(defined(PLATFORM_MD9600) || defined(PLATORM_MD380)
-													{
-														.minFreq=20000000,
-														.maxFreq=26000000
-													},// 220Mhz
-#endif
+
 													{
 														.minFreq=40000000,
 														.maxFreq=52000000
@@ -66,14 +61,7 @@ const frequencyHardwareBand_t RADIO_HARDWARE_FREQUENCY_BANDS[RADIO_BANDS_TOTAL_N
 														.minFreq=12700000,
 														.maxFreq=17800000
 													},// VHF
-#if !(defined(PLATFORM_MD9600) || defined(PLATFORM_MD380))
-													{
-														.calIQTableMinFreq = 13600000,
-														.calPowerTableMinFreq = 13500000,
-														.minFreq=19000000,
-														.maxFreq=34900000
-													},// 220Mhz
-#endif
+
 													{
 														.calIQTableMinFreq = 40000000,
 														.calPowerTableMinFreq = 40000000,
@@ -116,10 +104,7 @@ frequencyBand_t USER_FREQUENCY_BANDS[RADIO_BANDS_TOTAL_NUM] =  {
 														.minFreq=14400000,
 														.maxFreq=14800000
 													},// VHF
-													{
-														.minFreq=22200000,
-														.maxFreq=34900000
-													},// 220Mhz
+
 													{
 														.minFreq=42000000,
 														.maxFreq=45000000
@@ -131,10 +116,7 @@ const frequencyBand_t DEFAULT_USER_FREQUENCY_BANDS[RADIO_BANDS_TOTAL_NUM] =  {
 														.minFreq=14400000,
 														.maxFreq=14800000
 													},// VHF
-													{
-														.minFreq=22200000,
-														.maxFreq=34900000
-													},// 220Mhz
+
 													{
 														.minFreq=42000000,
 														.maxFreq=45000000
@@ -363,9 +345,7 @@ bool trxCheckFrequencyInAmateurBand(uint32_t frequency)
 	else if (nonVolatileSettings.txFreqLimited == BAND_LIMITS_ON_LEGACY_DEFAULT)
 	{
 		return ((frequency >= DEFAULT_USER_FREQUENCY_BANDS[RADIO_BAND_VHF].minFreq) && (frequency <= DEFAULT_USER_FREQUENCY_BANDS[RADIO_BAND_VHF].maxFreq)) ||
-#if !(defined(PLATFORM_MD9600) || defined(PLATFORM_MD380))
-			((frequency >= DEFAULT_USER_FREQUENCY_BANDS[RADIO_BAND_220MHz].minFreq) && (frequency <= DEFAULT_USER_FREQUENCY_BANDS[RADIO_BAND_220MHz].maxFreq)) ||
-#endif
+
 			((frequency >= DEFAULT_USER_FREQUENCY_BANDS[RADIO_BAND_UHF].minFreq) && (frequency <= DEFAULT_USER_FREQUENCY_BANDS[RADIO_BAND_UHF].maxFreq));
 	}
 
@@ -805,24 +785,21 @@ void trxSetPowerFromLevel(uint8_t powerLevel)
 
 void trxUpdate_PA_DAC_Drive(void)
 {
-	static const float fractionalPowers[3][4] = {
+	static const float fractionalPowers[2][4] = {
 #if defined(PLATFORM_RT84_DM1701)
 		// DM1701 or RT84 which have same RF hardware
 		{0.45f, 0.75f, 0.25f, 0.53f},// VHF
-		{0.45f, 0.75f, 0.25f, 0.53f},// 220Mhz - ESTIMATED - NOT TESTED PROBABLY NOT CORRECT
 		{0.46f, 0.73f, 0.14f, 0.36f},// UHF
 
 #else
 	#if defined(PLATFORM_VARIANT_UV380_PLUS_10W)
 		// 10W UV380
 		{0.58f, 0.83f, 0.21f, 0.45f},// VHF
-		{0.58f, 0.83f, 0.21f, 0.45f},// 220Mhz - ESTIMATED - NOT TESTED PROBABLY NOT CORRECT
 		{0.55f, 0.75f, 0.17f, 0.43f},// UHF
 
 	#else
 		//  5W UV380
 		{0.35f, 0.70f, 0.34f, 0.61f},// VHF
-		{0.38f, 0.70f, 0.30f, 0.59f},// 220Mhz - ESTIMATED - NOT TESTED PROBABLY NOT CORRECT
 		{0.40f, 0.70f, 0.25f, 0.55f},// UHF
 	#endif
 #endif
